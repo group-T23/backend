@@ -10,10 +10,12 @@ const product = require('./routes/product');
 app.use('/search', search);
 app.use('/product', product);
 
+const mail = require('./utils/email');
 const PORT = process.env.PORT || 3000;
 
 const main = async () => {
-  await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+  //await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+  mail.send('dorijan.dizepp@studenti.unitn.it', 'Test', 'Test email');
 
   /*
   const UserSchema = new mongoose.Schema({
