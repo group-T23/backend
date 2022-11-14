@@ -3,7 +3,7 @@ const mail = require('../utils/email');
 const User = require('../models/User');
 
 const newUser = async (req, res) => {
-  const url = 'http://localhost:5173';
+  const url = require('../utils/address');
 
   const data = req.body;
   const hash = crypto.createHash('sha256');
@@ -44,4 +44,14 @@ const findUser = async (req, res) => {
   res.json({ available: ( result ? false : true ) });
 };
 
-module.exports = { newUser, findUser };
+const loginUser = async (req, res) => {
+  const data = req.body;
+  const hash = crypto.createHash('sha256');
+  const password = hash.update(data.password, 'utf-8').digest('hex');
+  
+  const result = await User.findOne({ email: data.email });
+  if (result.password == password) res.json({ ok: true });
+  else res.json({ ok: false });
+}
+
+module.exports = { newUser, findUser, loginUser };
