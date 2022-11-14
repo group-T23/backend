@@ -10,9 +10,10 @@ const UserSchema = new mongoose.Schema({
   phone: { type: String, default: null },
   isSeller: { type: Boolean, default: false },
   isTerms: { type: Boolean, default: false },
+  isVerified: { type: Boolean, default: false },
 
   articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
-  chats: [{ id: { type: mongoose.Types.BojectId, required: true }}],
+  chats: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
   reviews: [{ rating: { type: Number, required: true }, text: { type: String, default: null }}],
 });
 

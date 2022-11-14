@@ -11,6 +11,4 @@ const OrderSchema = new mongoose.schema({
 
 const Order = mongoose.model('Order', OrderSchema);
 
-module.exports = {
-  Order: Order,
-}
+module.exports = Order

@@ -9,6 +9,4 @@ const ShipmentSchema = new mongoose.schema({
 
 const Shipment = mongoose.model('Shipment', ShipmentSchema);
 
-module.exports = {
-  Shipment: Shipment,
-}
+module.exports = Shipment

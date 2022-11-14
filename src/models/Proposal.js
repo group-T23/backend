@@ -8,6 +8,4 @@ const ProposalSchema = new mongoose.Schema({
 
 const Proposal = mongoose.model('Proposal', ProposalSchema);
 
-module.exports = {
-  Proposal: Proposal,
-}
+module.exports = Proposal
