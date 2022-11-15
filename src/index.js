@@ -12,10 +12,12 @@ app.use(cors(corsOptions));
 
 const email = require('./routes/email');
 const user = require('./routes/user');
+const login = require('./routes/login');
 const search = require('./routes/search');
 const product = require('./routes/product');
 app.use('/email', email);
 app.use('/user', user);
+app.use('/login', login);
 app.use('/search', search);
 app.use('/product', product);
 

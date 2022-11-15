@@ -54,4 +54,4 @@ const loginUser = async (req, res) => {
   else res.json({ ok: false });
 }
 
-module.exports = { newUser, findUser, loginUser };
+module.exports = { newUser, findUser };
