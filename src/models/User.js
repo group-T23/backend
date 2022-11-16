@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
   isSeller: { type: Boolean, default: false },
   isTerms: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
+  creationDate: { type: Date, default: Date.now },
 
   articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
   chats: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
