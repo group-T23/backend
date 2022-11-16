@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  username: { type: String, required: true, unique : true, dropDups: true },
-  email: { type: String, required: true, unique : true, dropDups: true },
+  username: { type: String, required: true, unique: true, dropDups: true },
+  email: { type: String, required: true, unique: true, dropDups: true },
   password: { type: String, required: true },
   address: { type: String, default: null },
   phone: { type: String, default: null },
@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   isTerms: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
   creationDate: { type: Date, default: Date.now },
+  verificationCode: { type: String, required: true, unique: true },
 
   articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
   chats: [{ id: { type: mongoose.Types.ObjectId, required: true }}],

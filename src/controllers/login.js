@@ -26,4 +26,12 @@ const loginUser = async (req, res) => {
   else res.json({ ok: false });
 }
 
-module.exports = { loginUser };
+const verifyUser = async (req, res) => {
+  const code = req.body.code;
+  User.findOneAndUpdate({ verificationCode: code }, { $set: { isVerified: true } }, error => {
+    if (error) res.json({ ok: false })
+    else res.json({ ok: true });
+  });
+}
+
+module.exports = { loginUser, verifyUser };
