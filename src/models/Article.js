@@ -8,7 +8,7 @@ const ArticleSchema = new mongoose.schema({
   quantity: { type: Number, required: true },
   shipment: { type: String, required: true },
   shipmentPrice: { type: mongoose.Types.Decimal128, default: 0.0 },
-  handDeliver: { type: Bollean, default: false },
+  handDeliver: { type: Boolean, default: false },
   handDeliverZone: { type: String, default: null },
   isPublished: { type: Boolean, default: false },
 
