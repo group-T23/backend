@@ -22,14 +22,14 @@ const loginUser = async (req, res) => {
   
   const result = await User.findOne({ email: data.email });
   const token = jwt.sign(data.email, process.env.ACCESS_TOKEN);
-  if (result.password == password) res.json({ ok: true, token: token });
+  if (result && result.password == password) res.json({ ok: true, token: token });
   else res.json({ ok: false });
 }
 
 const verifyUser = async (req, res) => {
   const code = req.body.code;
-  User.findOneAndUpdate({ verificationCode: code }, { $set: { isVerified: true } }, error => {
-    if (error) res.json({ ok: false })
+  User.findOneAndUpdate({ verificationCode: code }, { $set: { isVerified: true } }, (error, result) => {
+    if (error || !result) res.json({ ok: false })
     else res.json({ ok: true });
   });
 }
