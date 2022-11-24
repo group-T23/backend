@@ -22,7 +22,7 @@ const loginUser = async (req, res) => {
   
   const result = await User.findOne({ email: data.email });
   const token = jwt.sign(data.email, process.env.ACCESS_TOKEN);
-  if (result && result.password == password) res.json({ ok: true, token: token });
+  if (result && result.password == password) res.json({ ok: true, token: token, username: result.username });
   else res.json({ ok: false });
 }
 
