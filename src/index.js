@@ -37,19 +37,25 @@ const main = async () => {
   const hash = crypto.createHash('sha256');
   const User = require('./models/User');
   const user = new User({
-    firstName: "Luigi",
-    lastName: "Mario",
-    username: "Prova",
-    email: "luigi@gmail.com",
+    firstName: "Alessando",
+    lastName: "ABC",
+    username: "ABC",
+    email: "alessandro@gmail.com",
     password: hash.update("psw", 'utf-8').digest('hex'),
     isTerms: true,
     isVerified: false,
-    verificationCode: "codiceACaso",
-    cart : [{id: mongoose.Types.ObjectId('637a73ebea5a12c372d5b701')}, {id: mongoose.Types.ObjectId('637a74857cb16d707c2c8988')}]
+    verificationCode: "randomCode",
+    cart : [{id: mongoose.Types.ObjectId('637fb651b2e3472cfdc7c447')}, 
+            {id: mongoose.Types.ObjectId('637fb65cfa72fc52c8f6533b')},
+            {id: mongoose.Types.ObjectId('637fb6633409ee1e54ca1347')},
+            {id: mongoose.Types.ObjectId('637fb6671417bdd1a6dbb6ef')},
+            {id: mongoose.Types.ObjectId('637fb66cf9ce9036a74aeb8f')},
+            {id: mongoose.Types.ObjectId('637fb6705afb2a80893e30f0')},
+            {id: mongoose.Types.ObjectId('637fb67416df8d66d25e7920')}]
   });
 
   user.save((err, data) => {
-    if(err) console.log("err");
+    if(err) console.log(err);
     else console.log("saved");
   });*/
 
