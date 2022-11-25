@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Article = require("../models/Article");
 
 /**
  * la funzione ritorna la lista degli articoli presenti nel carrello
@@ -8,8 +9,21 @@ const getItems = async(req, res) => {
     //get all items inserted in the cart
     const data = req.body; 
     const result = await User.findOne({email: data.email});
-    if(!result) return res.status(404).json({cart: null});
-    return res.status(200).json({cart: result.cart});
+    if(!result) return res.status(404).json({message: "user not found"});
+
+    //una volta trovati gli id, devo trovare i prodotti all'interno della collection articoli
+    let cart = result.cart;
+    let articoli = [];
+
+    for(let i=0; i<cart.length; i++){
+        let result = await Article.findOne({_id: cart[i].id});
+        if(result){
+            articoli.push(result);
+        }
+    }
+
+    //inserire nella risposta gli articoli
+    return res.status(200).json({cart: cart, articles: articoli});
 }
 
 /**
