@@ -26,6 +26,40 @@ const getItems = async(req, res) => {
  * con un valore passato da input
  */
 const updateQuantity = async(req, res) => {
+    let email = req.body.email;
+    let id = req.body.id;//id item
+    let quantity = req.body.quantity;
+
+    if(!email || !id || !quantity || quantity<=0){
+        return res.status(404).json({message: "invalid parameters"});
+        //campi non presenti o non validi, sessione probabilmente non valida
+    }
+
+    let result = await User.findOne({email: email});
+    if(!result) return res.status(404).json({message: "user not found"});
+
+    //modifica quantità articolo carrello
+    const items = result.cart;
+    let id_item;//questo è l'objectid dell'item
+    let notFound = true;
+
+    for(i=0; i<items.length && notFound; i++){
+        if(items[i].id == id){
+            //item trovato
+            notFound = false;
+            id_item = items[i]._id;
+        }
+    }
+
+    if(notFound) return res.status(404).json({message: "item not found"});
+
+    result = await User.updateOne({"$and": [{"email": email}, {'cart._id': id_item}]}, {
+        $set: {'cart.$.quantity': quantity}    
+    }); 
+
+    if(!result) return res.status(404).json({message: "error when updating quantity"});
+    return res.status(200).json({message: "quantity item updated"});  
+
 
 }
 
@@ -40,7 +74,7 @@ const deleteOneItem = async(req, res) => {
     let id = req.body.id;
 
     if(!email || !id){
-        return res.status(404).json({message: "invalid session"});
+        return res.status(404).json({message: "invalid parameters"});
         //campi non presenti, sessione probabilmente non valida
     }
 
@@ -55,10 +89,12 @@ const deleteOneItem = async(req, res) => {
     for(i=0; i<items.length && notFound; i++){
         if(items[i].id == id){
             //item trovato
-            notFound = true;
+            notFound = false;
             id_item = items[i]._id;
         }
     }
+
+    if(notFound) return res.status(404).json({message: "item not found"});
 
     result = await User.updateOne({"email": email}, {
         $pull: {
@@ -68,7 +104,7 @@ const deleteOneItem = async(req, res) => {
         }
     }); 
 
-    if(!result) return res.status(404).json({message: "error"});
+    if(!result) return res.status(404).json({message: "error when deleting"});
     return res.status(200).json({message: "item removed"});   
 };
 
