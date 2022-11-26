@@ -24,37 +24,48 @@ app.use('/product', product);
 app.use('/cart', cart);
 
 const mail = require('./utils/email');
+const Article = require('./models/Article');
 const PORT = process.env.PORT || 3000;
 
 const main = async () => {
   await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
 
   /*
-  prova inserimento utente con degli articoli già nel carrello
-  inserendo degli ObjectId casuali
+  prova inserimento schemi vari
   
-  const crypto = require('crypto');
-  const hash = crypto.createHash('sha256');
-  const User = require('./models/User');
-  const user = new User({
-    firstName: "Alessando",
-    lastName: "ABC",
-    username: "ABC",
-    email: "alessandro@gmail.com",
-    password: hash.update("psw", 'utf-8').digest('hex'),
-    isTerms: true,
-    isVerified: false,
+  const Article = require('./models/Article');
+  const articolo = new Article({
+    title: "Zaino eastpak",
+    state: "Usato come nuvo",
+    price: "40",
+    quantity: "1",
+    shipment: "a mano",
+    isPublished: true,
+    categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c100383c')}],
+    photos: [{path: "/pathImmagine"}],
     verificationCode: "randomCode",
-    cart : [{id: mongoose.Types.ObjectId('637fb651b2e3472cfdc7c447')}, 
-            {id: mongoose.Types.ObjectId('637fb65cfa72fc52c8f6533b')},
-            {id: mongoose.Types.ObjectId('637fb6633409ee1e54ca1347')},
-            {id: mongoose.Types.ObjectId('637fb6671417bdd1a6dbb6ef')},
-            {id: mongoose.Types.ObjectId('637fb66cf9ce9036a74aeb8f')},
-            {id: mongoose.Types.ObjectId('637fb6705afb2a80893e30f0')},
-            {id: mongoose.Types.ObjectId('637fb67416df8d66d25e7920')}]
   });
 
-  user.save((err, data) => {
+  articolo.save((err, data) => {
+    if(err) console.log(err);
+    else console.log("saved");
+  });
+*/
+
+/*
+  const crypto = require('crypto');
+  const hash = crypto.createHash('sha256');
+  const User = require("./models/User");
+  const user = new User({
+    firstName: "Alessandro",
+    lastName: "De Bona",
+    username: "Ale_DB",
+    email: "alessandro@gmail.com",
+    password: hash.update("psw", 'utf-8').digest('hex'),
+    verificationCode: "codiceDiVerifica"
+  });
+
+  user.save((err, data)=>{
     if(err) console.log(err);
     else console.log("saved");
   });*/

@@ -14,8 +14,8 @@ const UserSchema = new mongoose.Schema({
   creationDate: { type: Date, default: Date.now },
   verificationCode: { type: String, required: true, unique: true },
 
-  cart: [{id: {type: mongoose.Types.ObjectId, required: true}, quantity: {type: Number, default: 1}}],
-  wishlist: [{id: {type: mongoose.Types.ObjectId, required: true}}],
+  cart: [{id: {type: mongoose.Types.ObjectId, required: true, unique:true, dropsDups: true}, quantity: {type: Number, default: 1}}],
+  wishlist: [{id: {type: mongoose.Types.ObjectId, required: true, unique:true, dropsDups: true}}],
 
   articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
   chats: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
