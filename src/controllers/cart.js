@@ -32,6 +32,27 @@ const getItems = async(req, res) => {
  * di una unità
  */
  const insertItem = async(req, res) => {
+    const data = req.body;
+    let email = data.email;
+    let id_item = data.id;
+
+    if(!email || !id_item){
+        return res.status(404).json({message: "invalid parameters"});
+        //campi non presenti o non validi, sessione probabilmente non valida
+    }
+
+    //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
+    //quantità di quello già presente
+    const result = await User.find({"$and": [{email: data.email}, {cart: {"$elemMatch": {id: id_item}}}]});
+    if(!result) return res.status(404).json({message: "error"});
+    else {
+        if(Object.keys(result).length === 0){
+            //item non già presente nel carrello, inserimento id
+            const result = await User.updateOne({email: data.email},{$push: {cart: {id: id_item}}});
+            return res.status(200).json({message: "item added in cart"});
+        } else 
+            return res.status(200).json({message: "item not added in cart"});
+    }
 
 }
 
