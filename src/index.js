@@ -31,26 +31,25 @@ const main = async () => {
   await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
 
   /*
-  prova inserimento schemi vari
-  
   const Article = require('./models/Article');
   const articolo = new Article({
-    title: "Zaino eastpak",
-    state: "Usato come nuvo",
-    price: "40",
-    quantity: "1",
-    shipment: "a mano",
+    title: "Set squadre 30° e 45°",
+    description: "Vendo vari set da coppie di squadre da 30° e 45° per disegno tecnico",
+    state: "Come nuove",
+    price: "15",
+    quantity: "20",
+    shipment: "disponibile",
+    handDeliver: false,
     isPublished: true,
     categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c100383c')}],
     photos: [{path: "/pathImmagine"}],
-    verificationCode: "randomCode",
   });
 
   articolo.save((err, data) => {
     if(err) console.log(err);
     else console.log("saved");
-  });
-*/
+  });*/
+
 
 /*
   const crypto = require('crypto');

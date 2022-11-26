@@ -149,8 +149,32 @@ const deleteOneItem = async(req, res) => {
  * questa funzione verrà usata nel momento del checkout dal carrello
  */
 const deleteAll = async(req, res) => {
+    let email = req.body.email;
+
+    if(!email){
+        return res.status(404).json({message: "invalid parameters"});
+        //campi non presenti, sessione probabilmente non valida
+    }
+
+    //nota: oltre che agli elementi, viene rimosso anche il parametro cart
+    //ma questo non comporta errori dato che lo schema definisce che l'utente
+    //abbia come attributo anche il carrello
+    const result = await User.updateOne({email: email}, {$unset: {cart: []}});    
+    if(!result) return res.status(404).json({message: "error when deleting"});
+    return res.status(200).json({message: "cart cleared"});   
 
 }
+
+/**
+ * la funzione si occupa di eseguire il checkout
+ * e dello svuotamento del carrello
+ */
+const checkout = async(req, res) => {
+    //NB facendo il checkout è da verificare prima 
+    //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
+    //la quantità definita nel carrello
+
+};
 
 module.exports = {
     getItems,
@@ -158,4 +182,5 @@ module.exports = {
     updateQuantity,
     deleteOneItem,
     deleteAll,
+    checkout,
 }

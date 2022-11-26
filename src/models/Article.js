@@ -6,7 +6,7 @@ const ArticleSchema = new mongoose.Schema({
   state: { type: String, required: true },
   price: { type: mongoose.Types.Decimal128, required: true },
   quantity: { type: Number, required: true },
-  shipment: { type: String, required: true },
+  shipment: { type: String, required: false },
   shipmentPrice: { type: mongoose.Types.Decimal128, default: 0.0 },
   handDeliver: { type: Boolean, default: false },
   handDeliverZone: { type: String, default: null },
