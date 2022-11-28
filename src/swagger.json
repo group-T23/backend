@@ -1,0 +1,231 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Skupply", 
+        "description": "Piattaforma per la compravendita di articoli scolastici", 
+        "version": "1.0.0",
+        "license":{
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "contact":{
+            "name": "Andera Piccin    Dorijan Di Zepp    Simone Rossi",
+            "email": "andrea.piccin@studenti.unitn.it"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Cart",
+            "description": "API per il carrello"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths":{
+        "/cart": {
+            "post": {
+                "tags": ["Cart"],
+                "summary": "Ritorna una lista di articoli",
+                "description": "Viene ritornata la lista degli id dell'articolo presenti nel carrello",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/CartParams_Email"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornata una lista di id degli articoli"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Cart"],
+                "summary": "Viene aggiornata la quantità del prodotto",
+                "description": "L'utente seleziona una quantità per l'articolo",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/CartParams_EmailId"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["Cart"],
+                "summary": "Cancella un determinato articolo dal carrello",
+                "description": "L'utente richiede la rimozione di un articolo dal carrello",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/CartParams_EmailId"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'articolo viene rimosso correttamente dal carrello"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/add": {
+            "put": {
+                "tags": ["Cart"],
+                "summary": "Inserisce un determinato articolo dal carrello",
+                "description": "L'utente richiede l'inserimento di un articolo nel carrello",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/CartParams_EmailId"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'articolo viene inserito correttamente dal carrello"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/all": {
+            "delete": {
+                "tags": ["Cart"],
+                "summary": "Eliminazioen articoli",
+                "description": "Tutti i prodotti presenti all'interno del carrello vengono eliminati",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/CartParams_Email"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Il carrello viene svuotato correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Articles": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "String"
+                },
+                "description": {
+                    "type": "String"
+                },
+                "state": {
+                    "type": "String"
+                },
+                "price": {
+                    "type": "double"
+                },
+                "quantity": {
+                    "type": "int32"
+                },
+                "shipment": {
+                    "type": "String"
+                },
+                "shimpMentPrice": {
+                    "type": "double"
+                },
+                "handDeliver": {
+                    "type": "boolean"
+                },
+                "handDeliverZone": {
+                    "type": "String"
+                },
+                "isPublished": {
+                    "type": "boolean"
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["title", "state", "price", "quantity", "categories", "photos"]
+        },
+        "CartParams_EmailId": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": ["id", "email"]
+        },
+        "CartParams_Email": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": ["email"]
+        }
+
+    }
+    
+}

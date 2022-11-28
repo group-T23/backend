@@ -7,9 +7,13 @@ const Article = require("../models/Article");
  */
 const getItems = async(req, res) => {
     //get all items inserted in the cart
-    const data = req.body; 
-    const result = await User.findOne({email: data.email});
-    if(!result) return res.status(404).json({message: "user not found"});
+    const email = req.body.email; 
+
+    if(email == null)
+        return res.status(404).json({code: "402", message: "missing arguments"});
+
+    const result = await User.findOne({email: email});
+    if(!result) return res.status(404).json({code: "403", message: "user not found"});
 
     //una volta trovati gli id, devo trovare i prodotti all'interno della collection articoli
     let cart = result.cart;
@@ -23,7 +27,7 @@ const getItems = async(req, res) => {
     }
 
     //inserire nella risposta gli articoli
-    return res.status(200).json({cart: cart, articles: articoli});
+    return res.status(200).json({code: "400", message: "success", cart: cart, articles: articoli});
 }
 
 /**
@@ -36,22 +40,21 @@ const getItems = async(req, res) => {
     let email = data.email;
     let id_item = data.id;
 
-    if(!email || !id_item){
-        return res.status(404).json({message: "invalid parameters"});
-        //campi non presenti o non validi, sessione probabilmente non valida
-    }
+    if(!email || !id_item)
+        return res.status(404).json({code: "402", message: "missing arguments"});
+        //campi non presenti, sessione probabilmente non valida
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
     //quantità di quello già presente
     const result = await User.find({"$and": [{email: data.email}, {cart: {"$elemMatch": {id: id_item}}}]});
-    if(!result) return res.status(404).json({message: "error"});
+    if(!result) return res.status(404).json({code: "401", message: "user or item not found"});
     else {
         if(Object.keys(result).length === 0){
             //item non già presente nel carrello, inserimento id
             const result = await User.updateOne({email: data.email},{$push: {cart: {id: id_item}}});
-            return res.status(200).json({message: "item added in cart"});
+            return res.status(200).json({code: "400", message: "product added in cart"});
         } else 
-            return res.status(200).json({message: "item not added in cart"});
+            return res.status(200).json({code: "400", message: "product not added in cart"});
     }
 
 }
@@ -66,12 +69,12 @@ const updateQuantity = async(req, res) => {
     let quantity = req.body.quantity;
 
     if(!email || !id || !quantity || quantity<=0){
-        return res.status(404).json({message: "invalid parameters"});
+        return res.status(404).json({code: "402", message: "missing arguments"});
         //campi non presenti o non validi, sessione probabilmente non valida
     }
 
     let result = await User.findOne({email: email});
-    if(!result) return res.status(404).json({message: "user not found"});
+    if(!result) return res.status(404).json({code: "403", message: "user not found"});
 
     //modifica quantità articolo carrello
     const items = result.cart;
@@ -86,14 +89,14 @@ const updateQuantity = async(req, res) => {
         }
     }
 
-    if(notFound) return res.status(404).json({message: "item not found"});
+    if(notFound) return res.status(404).json({code: "404" ,message: "product not found"});
 
     result = await User.updateOne({"$and": [{"email": email}, {'cart._id': id_item}]}, {
         $set: {'cart.$.quantity': quantity}    
     }); 
 
-    if(!result) return res.status(404).json({message: "error when updating quantity"});
-    return res.status(200).json({message: "quantity item updated"});  
+    if(!result) return res.status(404).json({code: "401", message: "database error"});
+    return res.status(200).json({code: "400", message: "product's quantity updated"});  
 
 
 }
@@ -108,13 +111,12 @@ const deleteOneItem = async(req, res) => {
     let email = req.body.email;//email ricavata dal corpo della richiesta come in post
     let id = req.body.id;
 
-    if(!email || !id){
-        return res.status(404).json({message: "invalid parameters"});
+    if(!email || !id)
+        return res.status(404).json({code: "402", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
-    }
 
     let result = await User.findOne({email: email});
-    if(!result) return res.status(404).json({message: "user not found"});
+    if(!result) return res.status(404).json({code: "403", message: "user not found"});
 
     //modifica carrello del risultato ottenuto
     const items = result.cart;
@@ -129,7 +131,7 @@ const deleteOneItem = async(req, res) => {
         }
     }
 
-    if(notFound) return res.status(404).json({message: "item not found"});
+    if(notFound) return res.status(404).json({code: "404", message: "product not found"});
 
     result = await User.updateOne({"email": email}, {
         $pull: {
@@ -139,8 +141,8 @@ const deleteOneItem = async(req, res) => {
         }
     }); 
 
-    if(!result) return res.status(404).json({message: "error when deleting"});
-    return res.status(200).json({message: "item removed"});   
+    if(!result) return res.status(404).json({code: "401", message: "database error"});
+    return res.status(200).json({code: "400", message: "product removed"});   
 };
 
 /**
@@ -152,7 +154,7 @@ const deleteAll = async(req, res) => {
     let email = req.body.email;
 
     if(!email){
-        return res.status(404).json({message: "invalid parameters"});
+        return res.status(404).json({code: "402", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
     }
 
@@ -160,8 +162,8 @@ const deleteAll = async(req, res) => {
     //ma questo non comporta errori dato che lo schema definisce che l'utente
     //abbia come attributo anche il carrello
     const result = await User.updateOne({email: email}, {$unset: {cart: []}});    
-    if(!result) return res.status(404).json({message: "error when deleting"});
-    return res.status(200).json({message: "cart cleared"});   
+    if(!result) return res.status(404).json({code: "401", message: "database error"});
+    return res.status(200).json({code: "400", message: "cart cleared"});   
 
 }
 
