@@ -27,7 +27,7 @@ const getItems = async(req, res) => {
     }
 
     //inserire nella risposta gli articoli
-    return res.status(200).json({code: "400", message: "success", cart: cart, articles: articoli});
+    return res.status(200).json({code: "400", message: "success", cart: articoli, cart_ids: cart});
 }
 
 /**
@@ -46,12 +46,12 @@ const getItems = async(req, res) => {
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
     //quantità di quello già presente
-    const result = await User.find({"$and": [{email: data.email}, {cart: {"$elemMatch": {id: id_item}}}]});
+    const result = await User.find({"$and": [{email: email}, {cart: {"$elemMatch": {id: id_item}}}]});
     if(!result) return res.status(404).json({code: "401", message: "user or item not found"});
     else {
         if(Object.keys(result).length === 0){
             //item non già presente nel carrello, inserimento id
-            const result = await User.updateOne({email: data.email},{$push: {cart: {id: id_item}}});
+            const result = await User.updateOne({email: email},{$push: {cart: {id: id_item}}});
             return res.status(200).json({code: "400", message: "product added in cart"});
         } else 
             return res.status(200).json({code: "400", message: "product not added in cart"});
@@ -68,7 +68,7 @@ const updateQuantity = async(req, res) => {
     let id = req.body.id;//id item
     let quantity = req.body.quantity;
 
-    if(!email || !id || !quantity || quantity<=0){
+    if(!email || !id || quantity<0){
         return res.status(404).json({code: "402", message: "missing arguments"});
         //campi non presenti o non validi, sessione probabilmente non valida
     }

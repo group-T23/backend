@@ -17,6 +17,14 @@
     "basePath": "/",
     "tags": [
         {
+            "name": "User",
+            "description": "APi per la creazione e la ricerca di un utente"
+        },
+        {
+            "name": "Login",
+            "description": "API per la fase di login"
+        },
+        {
             "name": "Cart",
             "description": "API per il carrello"
         }
@@ -25,6 +33,108 @@
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths":{
+        "/user": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Creazione nuovo utente",
+                "description": "Viene effettuata la creazione di un nuovo utente conn seguente salvataggio in DB",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'oggetto user",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'utente viene creato"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["User"],
+                "summary": "Ricerca di un utente",
+                "description": "Viene effettuata la ricerca di un utente dato il suo username",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente lo username dello user",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/User_Username"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'utente viene trovato"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Login"],
+                "summary": "Autenticazione utente",
+                "description": "Vengono richieste le credenziali di accesso per effettuare l'autenticazione",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email e la password dell'utente",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/LoginParams_EmailId"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'utente viene autenticato"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/login/verify": {
+            "post": {
+                "tags": ["Login"],
+                "summary": "Imposta autenticazione utente",
+                "description": "Viene verificato l'utente ovvero per confermare l'account",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente il codice di attivazione dell'account",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/LoginParams_Code"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene confermata la verifica dell'account"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
         "/cart": {
             "post": {
                 "tags": ["Cart"],
@@ -91,7 +201,7 @@
                 }
             }
         },
-        "/add": {
+        "/cart/add": {
             "put": {
                 "tags": ["Cart"],
                 "summary": "Inserisce un determinato articolo dal carrello",
@@ -117,7 +227,7 @@
                 }
             }
         },
-        "/all": {
+        "/cart/all": {
             "delete": {
                 "tags": ["Cart"],
                 "summary": "Eliminazioen articoli",
@@ -152,13 +262,13 @@
                     "type": "string"
                 },
                 "title": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "description": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "state": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "price": {
                     "type": "double"
@@ -167,7 +277,7 @@
                     "type": "int32"
                 },
                 "shipment": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "shimpMentPrice": {
                     "type": "double"
@@ -176,7 +286,7 @@
                     "type": "boolean"
                 },
                 "handDeliverZone": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "isPublished": {
                     "type": "boolean"
@@ -206,13 +316,123 @@
             },
             "required": ["title", "state", "price", "quantity", "categories", "photos"]
         },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "email",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "isSeller": {
+                    "type": "boolean"
+                },
+                "isTerms": {
+                    "type": "boolean"
+                },
+                "isVerified": {
+                    "type": "boolean"
+                },
+                "creationDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "verificationCode": {
+                    "type": "string"
+                },
+                "cart": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "quantity": {
+                                "type": "int32"
+                            }
+                        }
+                    }
+                },
+                "wishlist": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "chats": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "rating":{
+                                "type": "int32"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["firstName", "lastName", "username", "email", "password", "verificationCode", "cart", "wishlist", "articles", "chats", "reviews"] 
+        },
         "CartParams_EmailId": {
             "properties": {
                 "id": {
                     "type": "string"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                 }
             },
             "required": ["id", "email"]
@@ -220,10 +440,39 @@
         "CartParams_Email": {
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                 }
             },
             "required": ["email"]
+        },
+        "LoginParams_EmailId": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password"
+                }
+            },
+            "required": ["email", "password"]
+        },
+        "LoginParams_Code": {
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            },
+            "required": ["code"]
+        },
+        "User_Username": {
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            }
         }
 
     }

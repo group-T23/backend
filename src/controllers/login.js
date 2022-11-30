@@ -15,6 +15,7 @@ const authenticateUser = (req, res, next) => {
   });
 }
 
+//TODO inserire codici di ritorno
 const loginUser = async (req, res) => {
   const data = req.body;
   const hash = crypto.createHash('sha256');
@@ -22,15 +23,18 @@ const loginUser = async (req, res) => {
   
   const result = await User.findOne({ email: data.email });
   const token = jwt.sign(data.email, process.env.ACCESS_TOKEN);
-  if (result && result.password == password) res.json({ ok: true, token: token, username: result.username });
-  else res.json({ ok: false });
+
+  if (result && result.password == password) res.status(200).json({code: "", message: "loged in", ok: true, firstname: result.firstName, 
+  lastname: result.lastName, username: result.username, email: result.email, token: token });
+  else res.status(404).json({code: "", message: "wrong credentials", ok: false});
 }
 
+//TODO inserire codici di ritorno
 const verifyUser = async (req, res) => {
   const code = req.body.code;
   User.findOneAndUpdate({ verificationCode: code }, { $set: { isVerified: true } }, (error, result) => {
-    if (error || !result) res.json({ ok: false })
-    else res.json({ ok: true });
+    if (error || !result) res.status(200).json({code: "", message: "token expired", ok: false })
+    else res.status(404).json({code: "", message: "account verified", ok: true });
   });
 }
 

@@ -52,12 +52,14 @@ const main = async () => {
   articolo.save((err, data) => {
     if(err) console.log(err);
     else console.log("saved");
-  });*/
+  });
 
-
-/*
   const crypto = require('crypto');
   const hash = crypto.createHash('sha256');
+  console.log(hash.update("Alessandro02!", 'utf-8').digest('hex'));
+  */
+  
+  /*
   const User = require("./models/User");
   const user = new User({
     firstName: "Alessandro",
