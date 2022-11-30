@@ -27,6 +27,10 @@
         {
             "name": "Cart",
             "description": "API per il carrello"
+        },
+        {
+            "name": "Wishlist",
+            "description": "APi per la wishlist"
         }
     ],
     "schemes": ["http"],
@@ -139,7 +143,7 @@
             "post": {
                 "tags": ["Cart"],
                 "summary": "Ritorna una lista di articoli",
-                "description": "Viene ritornata la lista degli id dell'articolo presenti nel carrello",
+                "description": "Viene ritornata la lista degli articoli presenti nel carrello e gli id",
                 "parameters": [
                     {
                         "name": "body",
@@ -153,7 +157,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Viene ritornata una lista di id degli articoli"
+                        "description": "Viengono ritornate due liste. Una contenente i soli id denominata e le quantità dell'articolo denominata 'cart_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'cart'"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -230,7 +234,7 @@
         "/cart/all": {
             "delete": {
                 "tags": ["Cart"],
-                "summary": "Eliminazioen articoli",
+                "summary": "Eliminazione articoli",
                 "description": "Tutti i prodotti presenti all'interno del carrello vengono eliminati",
                 "parameters": [
                     {
@@ -246,6 +250,82 @@
                 "responses": {
                     "200": {
                         "description": "Il carrello viene svuotato correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/wishlist": {
+            "delete": {
+                "tags": ["Wishlist"],
+                "summary": "Eliminazione articolo",
+                "description": "L'articolo presente nella wishlist viene rimosso",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/WishlistParams_EmailId"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'articolo viene rimosso correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Wishlist"],
+                "summary": "Elenco articoli wishlist",
+                "description": "Viene ritornato l'elenco degli articoli presenti all'interno della wishlist e un elenco degli id",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/WishlistParams_Email"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viengono ritornate due liste. Una contenente i soli id dell'articolo denominata 'whislist_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'wishlist'"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/wishlist/add": {
+            "post": {
+                "tags": ["Wishlist"],
+                "summary": "Inserimento articolo",
+                "description": "Viene inserito un nuovo articolo all'interno della wishlist",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/WishlistParams_EmailId"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'articolo viene inserito correttamente"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -473,8 +553,26 @@
                     "type": "string"
                 }
             }
+        },
+        "WishlistParams_Email": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                }
+            }
+        },
+        "WishlistParams_EmailId": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
         }
 
-    }
-    
+    }  
 }
