@@ -33,7 +33,8 @@ const getItems = async(req, res) => {
 /**
  * la funzione inserisce all'interno del carrello un nuovo articolo
  * e nel caso questo sia presente, ne modifica la quantità aumentandola
- * di una unità
+ * di una unità.
+ * Inoltre, imposta l'articolo corrispondente della wishlist come inserito nel carrello
  */
  const insertItem = async(req, res) => {
     const data = req.body;
@@ -97,7 +98,6 @@ const updateQuantity = async(req, res) => {
 
     if(!result) return res.status(404).json({code: "401", message: "database error"});
     return res.status(200).json({code: "400", message: "product's quantity updated"});  
-
 
 }
 

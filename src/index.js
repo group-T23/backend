@@ -20,12 +20,14 @@ const login = require('./routes/login');
 const search = require('./routes/search');
 const product = require('./routes/product');
 const cart = require('./routes/cart');
+const wishlist = require('./routes/wishlist');
 app.use('/email', email);
 app.use('/user', user);
 app.use('/login', login);
 app.use('/search', search);
 app.use('/product', product);
 app.use('/cart', cart);
+app.use('/wishlist', wishlist);
 
 const mail = require('./utils/email');
 const Article = require('./models/Article');
