@@ -195,7 +195,7 @@
                 }
             }
         },
-        "/product/?id={id}": {
+        "/product/id={id}": {
             "get": {
                 "tags": ["Product"],
                 "summary": "Ricerca di un prodotto",
