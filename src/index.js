@@ -29,6 +29,9 @@ app.use('/product', product);
 app.use('/cart', cart);
 app.use('/wishlist', wishlist);
 
+// Media endpoint
+app.use(express.static('media'))
+
 const mail = require('./utils/email');
 const Article = require('./models/Article');
 const PORT = process.env.PORT || 3000;

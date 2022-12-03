@@ -20,10 +20,8 @@ const getItems = async(req, res) => {
     let articoli = [];
 
     for(let i=0; i<cart.length; i++){
-        let result = await Article.findOne({_id: cart[i].id});
-        if(result){
-            articoli.push(result);
-        }
+        const result = await Article.findOne({_id: cart[i].id});
+        if(result) articoli.push(result);
     }
 
     //inserire nella risposta gli articoli
