@@ -1,6 +1,5 @@
 const User = require("../models/User");
 const Article = require("../models/Article");
-const Cart = require("../controllers/cart");
 
 /**
  * la funzione ritorna la lista degli articoli presenti nella wishlist
