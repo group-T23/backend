@@ -224,7 +224,7 @@
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "params",
+                        "in": "path",
                         "description": "Id che identifica il prodotto",
                         "required": "true"
                     }

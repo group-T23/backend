@@ -20,7 +20,7 @@ const deleteAllProduct = async (req, res) => {
  */
 const getProduct = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
+
   if(!id)
     return res.status(404).json({code: "603", message: "missing arguments"});
 
@@ -40,7 +40,20 @@ const newProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  res.json({ message: 'Test Delete Product' });
+  const id = req.params.id;
+
+  if(!id)
+    return res.status(404).json({code: "603", message: "missing arguments"});
+
+  let result;
+  //controllo se l'id inserito è valido o meno
+  if(mongoose.Types.ObjectId.isValid(id))  
+    result = await Article.deleteOne({"_id": mongoose.Types.ObjectId(id)});
+
+    if(!result)
+    return res.status(400).json({code: "603", message: "product not found"});
+  
+  return res.status(200).json({ article: result, code: "600", message: 'success' });    
 };
 
 module.exports = {
