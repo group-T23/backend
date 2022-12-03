@@ -44,10 +44,19 @@ const newUser = async (req, res) => {
   });
 };
 
-const findUser = async (req, res) => {
+const getUser = async (req, res) => {
   const username = req.query.username;
   const result = await User.findOne({ username: username });
   res.json({ available: ( result ? false : true ) });
 };
 
-module.exports = { newUser, findUser };
+const findUser = async (req, res) => {
+  const username = req.query.username
+  if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
+
+  const check = await User.findOne({ username: username })
+  if (check) res.status(403).json({ code: 107, message: 'Username found'})
+  else res.status(404).json({ code: 104, message: 'Username available'})
+};
+
+module.exports = { newUser, findUser, getUser };
