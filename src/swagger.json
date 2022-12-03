@@ -25,6 +25,10 @@
             "description": "API per la fase di login"
         },
         {
+            "name": "Product",
+            "description": "API per i prodotti"
+        },
+        {
             "name": "Cart",
             "description": "API per il carrello"
         },
@@ -132,6 +136,102 @@
                 "responses": {
                     "200": {
                         "description": "Viene confermata la verifica dell'account"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/product": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Ottenere la lista di tutti i prodotti",
+                "description": "Viene ritornata una lista contenente tutti i prodotti disponibili",
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornata una lista di articoli"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Product"],
+                "summary": "Inserimento nuovo prodotto",
+                "description": "Viene inserito un nuovo prodotto all'interno della piattaforma",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body contentente il nuovo articolo",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/Articles"
+                          }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene inserito il nuovo prodotto correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Product"],
+                "summary": "Vengono cancellati tutti i prodotti",
+                "description": "Vengono rimossi tutti i prodotti presenti nella piattaforma",
+                "responses": {
+                    "200": {
+                        "description": "Vengono rimossi tutti gli articoli correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/product/id={id}": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Ricerca di un prodotto",
+                "description": "Viene cercato, se presente, il prodotto relativo all'id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id che identifica il prodotto",
+                        "required": "true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornato correttamente il prodotto"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Product"],
+                "summary": "Eliminazione di un prodotto",
+                "description": "Viene eliminato, se presente, il prodotto relativo all'id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id che identifica il prodotto",
+                        "required": "true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene eliminato correttamente il prodotto"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -354,7 +454,7 @@
                     "type": "double"
                 },
                 "quantity": {
-                    "type": "int32"
+                    "type": "integer"
                 },
                 "shipment": {
                     "type": "string"
@@ -412,7 +512,7 @@
                     "type": "string"
                 },
                 "email": {
-                    "type": "email",
+                    "type": "string",
                     "format": "email"
                 },
                 "password": {
@@ -450,7 +550,7 @@
                                 "type": "string"
                             },
                             "quantity": {
-                                "type": "int32"
+                                "type": "integer"
                             }
                         }
                     }
@@ -494,7 +594,7 @@
                         "type": "object",
                         "properties": {
                             "rating":{
-                                "type": "int32"
+                                "type": "integer"
                             },
                             "text": {
                                 "type": "string"

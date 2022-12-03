@@ -5,8 +5,10 @@ const productController = require('../controllers/product');
 router.get('/', productController.getAllProduct);
 router.delete('/', productController.deleteAllProduct);
 
-router.get('/:id', productController.getProduct);
+//nota che per la richiesta non è neccessario idicare :id= ma direttamente il valore
 router.post('/', productController.newProduct);
-router.delete('/:id', productController.deleteProduct);
+router.get('/?id=:id', productController.getProduct);
+//in riferimento al componente ProductCard.vue del frontend per il passaggio dei parametri
+router.delete('/?id=:id', productController.deleteProduct);
 
 module.exports = router;
