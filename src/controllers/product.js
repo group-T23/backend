@@ -30,7 +30,7 @@ const getProduct = async (req, res) => {
     result = await Article.findById(id);
 
   if(!result)
-    return res.status(400).json({code: "603", message: "product not found"});
+    return res.status(404).json({code: "603", message: "product not found"});
   
   return res.status(200).json({ article: result, code: "600", message: 'success' });
 };
@@ -51,7 +51,7 @@ const deleteProduct = async (req, res) => {
     result = await Article.deleteOne({"_id": mongoose.Types.ObjectId(id)});
 
     if(!result)
-    return res.status(400).json({code: "603", message: "product not found"});
+    return res.status(404).json({code: "603", message: "product not found"});
   
   return res.status(200).json({ article: result, code: "600", message: 'success' });    
 };

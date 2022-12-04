@@ -44,18 +44,25 @@ const newUser = async (req, res) => {
   });
 };
 
+/**
+ * la funzione verifica la disponibilità dello username
+ */
 const getUser = async (req, res) => {
-  const username = req.query.username;
+  const username = req.params.username;
   const result = await User.findOne({ username: username });
   res.json({ available: ( result ? false : true ) });
 };
 
+/**
+ * la funzione ricerca l'esistenza di un profilo con un determinato username.
+ * se la riposta non da esito positivo, la risposta indicherà che tale username è disponibile 
+ */
 const findUser = async (req, res) => {
-  const username = req.query.username
-  if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
+  const username = req.params.username
+  if (!username) { res.status(404).json({ code: 102, message: 'Username argument is missing' }); return }
 
   const check = await User.findOne({ username: username })
-  if (check) res.status(403).json({ code: 107, message: 'Username found'})
+  if (check) res.status(200).json({ code: 107, message: 'Username found'})
   else res.status(404).json({ code: 104, message: 'Username available'})
 };
 

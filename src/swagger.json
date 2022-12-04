@@ -65,25 +65,47 @@
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
                 }
-            },
+            }
+        },
+        "/user/find/username={username}":{
             "get": {
                 "tags": ["User"],
                 "summary": "Ricerca di un utente",
                 "description": "Viene effettuata la ricerca di un utente dato il suo username",
                 "parameters": [
                     {
-                        "name": "body",
-                        "in": "body",
+                        "name": "username",
+                        "in": "path",
                         "description": "Body contentente lo username dello user",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/User_Username"
-                          }
+                        "required": "true"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "L'utente viene trovato"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/user/username={username}": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Ricerca di un utente",
+                "description": "Viene verificata la disponibiltà dello username",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "Body contentente lo username dello user",
+                        "required": "true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornato nella ripsosta un attributo che conferma o meno la disponibilità dello username"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
