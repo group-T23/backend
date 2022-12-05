@@ -40,7 +40,7 @@ const getItems = async(req, res) => {
     let id_item = data.id;
 
     if(!email || !id_item)
-        return res.status(404).json({code: "402", message: "missing arguments"});
+        return res.status(400).json({code: "402", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
@@ -68,7 +68,7 @@ const updateQuantity = async(req, res) => {
     let quantity = req.body.quantity;
 
     if(!email || !id || quantity<0){
-        return res.status(404).json({code: "402", message: "missing arguments"});
+        return res.status(400).json({code: "402", message: "missing arguments"});
         //campi non presenti o non validi, sessione probabilmente non valida
     }
 
@@ -94,7 +94,7 @@ const updateQuantity = async(req, res) => {
         $set: {'cart.$.quantity': quantity}    
     }); 
 
-    if(!result) return res.status(404).json({code: "401", message: "database error"});
+    if(!result) return res.status(500).json({code: "401", message: "database error"});
     return res.status(200).json({code: "400", message: "product's quantity updated"});  
 
 }
@@ -110,7 +110,7 @@ const deleteOneItem = async(req, res) => {
     let id = req.body.id;
 
     if(!email || !id)
-        return res.status(404).json({code: "402", message: "missing arguments"});
+        return res.status(400).json({code: "402", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
 
     let result = await User.findOne({email: email});

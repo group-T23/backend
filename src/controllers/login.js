@@ -26,16 +26,7 @@ const loginUser = async (req, res) => {
 
   if (result && result.password == password) res.status(200).json({code: "", message: "loged in", ok: true, firstname: result.firstName, 
   lastname: result.lastName, username: result.username, email: result.email, token: token });
-  else res.status(404).json({code: "", message: "wrong credentials", ok: false});
+  else res.status(401).json({code: "", message: "wrong credentials", ok: false});
 }
 
-//TODO inserire codici di ritorno
-const verifyUser = async (req, res) => {
-  const code = req.body.code;
-  User.findOneAndUpdate({ verificationCode: code }, { $set: { isVerified: true } }, (error, result) => {
-    if (error || !result) res.status(200).json({code: "", message: "token expired", ok: false })
-    else res.status(404).json({code: "", message: "account verified", ok: true });
-  });
-}
-
-module.exports = { loginUser, verifyUser };
+module.exports = { loginUser };

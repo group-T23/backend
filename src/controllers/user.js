@@ -59,7 +59,7 @@ const getUser = async (req, res) => {
  */
 const findUser = async (req, res) => {
   const username = req.params.username
-  if (!username) { res.status(404).json({ code: 102, message: 'Username argument is missing' }); return }
+  if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
 
   const check = await User.findOne({ username: username })
   if (check) res.status(200).json({ code: 107, message: 'Username found'})

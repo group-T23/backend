@@ -8,7 +8,7 @@ const getItems = async(req, res) => {
     const email = req.body.email; 
 
     if(email == null)
-        return res.status(404).json({code: "502", message: "missing arguments"});
+        return res.status(400).json({code: "502", message: "missing arguments"});
 
     const result = await User.findOne({email: email});
     if(!result) return res.status(404).json({code: "503", message: "user not found"});
@@ -38,7 +38,7 @@ const getItems = async(req, res) => {
     let id_item = data.id;
 
     if(!email || !id_item)
-        return res.status(404).json({code: "502", message: "missing arguments"});
+        return res.status(400).json({code: "502", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
 
     //se l'elemento è un duplicato, questo non viene inserito
@@ -65,7 +65,7 @@ const getItems = async(req, res) => {
     let id = req.body.id;
 
     if(!email || !id)
-        return res.status(404).json({code: "502", message: "missing arguments"});
+        return res.status(400).json({code: "502", message: "missing arguments"});
         //campi non presenti, sessione probabilmente non valida
 
     let result = await User.findOne({email: email});
@@ -94,7 +94,7 @@ const getItems = async(req, res) => {
         }
     }); 
 
-    if(!result) return res.status(404).json({code: "501", message: "database error"});
+    if(!result) return res.status(500).json({code: "501", message: "database error"});
     return res.status(200).json({code: "500", message: "product removed"});   
 }
 

@@ -37,7 +37,7 @@
             "description": "APi per la wishlist"
         }
     ],
-    "schemes": ["http"],
+    "schemes": ["http", "https"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths":{
@@ -139,21 +139,55 @@
                 }
             }
         },
-        "/login/verify": {
+        "/email": {
+            "get": {
+                "tags": ["Email"],
+                "summary": "Controlla email",
+                "description": "Controlla se l'email è raggiungibile",
+                "parameters": [
+                  {
+                    "name": "email",
+                    "in": "path",
+                    "description": "Email da controllare",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/EmailParams_Email"
+                    }
+                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "L'email è raggiungibile correttamente"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            },
             "post": {
-                "tags": ["Login"],
-                "summary": "Imposta autenticazione utente",
-                "description": "Viene verificato l'utente ovvero per confermare l'account",
+                "tags": ["Email"],
+                "summary": "Verifica email",
+                "description": "Viene verificata l'email di un utente per confermare l'account",
                 "parameters": [
                     {
-                        "name": "body",
+                        "name": "code",
                         "in": "body",
-                        "description": "Body contentente il codice di attivazione dell'account",
+                        "description": "Parametro contentente il codice di attivazione dell'account",
                         "required": "true",
                         "schema": {
-                            "$ref": "#/definitions/LoginParams_Code"
+                            "$ref": "#/definitions/EmailParams_Code"
                           }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Email da verificare",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/EmailParams_Email"
+                        }
                     }
+
                 ],
                 "responses": {
                     "200": {
@@ -661,7 +695,15 @@
             },
             "required": ["email", "password"]
         },
-        "LoginParams_Code": {
+        "EmailParams_Email": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": ["email"]
+        },
+        "EmailParams_Code": {
             "properties": {
                 "code": {
                     "type": "string"

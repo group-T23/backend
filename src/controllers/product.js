@@ -22,7 +22,7 @@ const getProduct = async (req, res) => {
   const id = req.params.id;
 
   if(!id)
-    return res.status(404).json({code: "603", message: "missing arguments"});
+    return res.status(400).json({code: "603", message: "missing arguments"});
 
   let result;
   //controllo se l'id inserito è valido o meno
@@ -43,7 +43,7 @@ const deleteProduct = async (req, res) => {
   const id = req.params.id;
 
   if(!id)
-    return res.status(404).json({code: "603", message: "missing arguments"});
+    return res.status(400).json({code: "603", message: "missing arguments"});
 
   let result;
   //controllo se l'id inserito è valido o meno
