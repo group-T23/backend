@@ -37,7 +37,7 @@ const newUser = async (req, res) => {
       mail.send(data.email, 'Creazione Account Skupply',
         `Grazie per aver scelto skupply.\n
         Per verificare l'account apra la seguente pagina:\n
-        ${url}/verify/?code=${code}`
+        ${url}/verify/?email=${data.email}&code=${code}`
       );
       res.json({ ok: true })
     }
