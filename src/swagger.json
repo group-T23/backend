@@ -29,6 +29,10 @@
             "description": "API per i prodotti"
         },
         {
+            "name": "Search",
+            "description": "APi per la fase di ricerca dei prodotti"
+        },
+        {
             "name": "Cart",
             "description": "API per il carrello"
         },
@@ -61,6 +65,9 @@
                     "200": {
                         "description": "L'utente viene creato"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -84,6 +91,9 @@
                     "200": {
                         "description": "L'utente viene trovato"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -106,6 +116,9 @@
                 "responses": {
                     "200": {
                         "description": "Viene ritornato nella ripsosta un attributo che conferma o meno la disponibilità dello username"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -133,6 +146,9 @@
                     "200": {
                         "description": "L'utente viene autenticato"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -158,6 +174,9 @@
                 "responses": {
                     "200": {
                         "description": "L'email è raggiungibile correttamente"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -193,6 +212,9 @@
                     "200": {
                         "description": "Viene confermata la verifica dell'account"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -207,6 +229,9 @@
                 "responses": {
                     "200": {
                         "description": "Viene ritornata una lista di articoli"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -232,6 +257,9 @@
                     "200": {
                         "description": "Viene inserito il nuovo prodotto correttamente"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -244,6 +272,9 @@
                 "responses": {
                     "200": {
                         "description": "Vengono rimossi tutti gli articoli correttamente"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -268,6 +299,9 @@
                     "200": {
                         "description": "Viene ritornato correttamente il prodotto"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -288,6 +322,35 @@
                 "responses": {
                     "200": {
                         "description": "Viene eliminato correttamente il prodotto"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
+        "/search/key={key}": {
+            "get": {
+                "tags": ["Search"],
+                "summary": "Ricerca dei prodotti con una parola chiave",
+                "description": "Vengono cercati tutti i prodotti che hanno nel titolo una parola chiave",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Key identifica la parola chiave per la ricerca",
+                        "required": "true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornata una lista di uno o più elementi corrispondenti"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -314,6 +377,9 @@
                 "responses": {
                     "200": {
                         "description": "Viengono ritornate due liste. Una contenente i soli id denominata e le quantità dell'articolo denominata 'cart_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'cart'"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -355,6 +421,9 @@
                     "200": {
                         "description": "L'articolo viene rimosso correttamente dal carrello"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -380,6 +449,9 @@
                 "responses": {
                     "200": {
                         "description": "L'articolo viene inserito correttamente dal carrello"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -407,6 +479,9 @@
                     "200": {
                         "description": "Il carrello viene svuotato correttamente"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -433,6 +508,9 @@
                     "200": {
                         "description": "L'articolo viene rimosso correttamente"
                     },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
@@ -456,6 +534,9 @@
                 "responses": {
                     "200": {
                         "description": "Viengono ritornate due liste. Una contenente i soli id dell'articolo denominata 'whislist_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'wishlist'"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
@@ -482,6 +563,9 @@
                 "responses": {
                     "200": {
                         "description": "L'articolo viene inserito correttamente"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
                     },
                     "404": {
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
