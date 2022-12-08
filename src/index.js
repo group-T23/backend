@@ -42,15 +42,15 @@ const main = async () => {
   /*
   const Article = require('./models/Article');
   const articolo = new Article({
-    title: "Set squadre 30° e 45°",
-    description: "Vendo vari set da coppie di squadre da 30° e 45° per disegno tecnico",
-    state: "Come nuove",
-    price: "15",
-    quantity: "20",
+    title: "Testo introduttivo alla programmazione dinamica",
+    description: "Testo per il corso di algoritmi e strutture dati",
+    state: "Usato",
+    price: "30",
+    quantity: "1",
     shipment: "disponibile",
     handDeliver: false,
     isPublished: true,
-    categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c100383c')}],
+    categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c122383c')}],
     photos: [{path: "/pathImmagine"}],
   });
 

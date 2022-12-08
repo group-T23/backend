@@ -39,6 +39,10 @@
         {
             "name": "Wishlist",
             "description": "APi per la wishlist"
+        },
+        {
+            "name": "Email",
+            "description": "API per utilizzare il servizio email"
         }
     ],
     "schemes": ["http", "https"],
@@ -332,55 +336,26 @@
                 }
             }
         },
-        "/search/key={key}&category={category}&location={location}": {
+        "/search": {
             "get": {
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti con una serie di valori",
-                "description": "Vengono cercati tutti i prodotti che hanno nel titolo una parola chiave e, in aggiunta, la loro appartenenza ad una caterogoria e/o la loro località",
+                "description": "Vengono cercati tutti i prodotti che rispettano una serie di parametri, tra cui:\nParola chiave\nCateogira\nLocalità\nRange prezzo\nSpedizione\nValutazione\nOrdinamento",
                 "parameters": [
                     {
                         "name": "key",
-                        "in": "path",
-                        "description": "Key identifica la parola chiave per la ricerca",
-                        "required": "true"
+                        "in": "query",
+                        "description": "Key identifica la parola chiave per la ricerca"
                     },
                     {
                         "name": "category",
-                        "in": "path",
-                        "description": "Category indica la categoria di appartenenza del prodotto",
-                        "default": "\"\"" 
+                        "in": "query",
+                        "description": "Category indica la categoria di appartenenza del prodotto"
                     },
                     {
                         "name": "location",
-                        "in": "path",
-                        "description": "Location indica la provenienza dell'articolo",
-                        "default": "\"\""
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Viene ritornata una lista di uno o più elementi corrispondenti"
-                    },
-                    "400": {
-                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
-                    },
-                    "404": {
-                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
-                    }
-                }
-            }
-        },
-        "/search/category={category}": {
-            "get": {
-                "tags": ["Search"],
-                "summary": "Ricerca dei prodotti in base alla categoria",
-                "description": "Vengono cercati tutti i prodotti che appartengano ad una determinata cateogria",
-                "parameters": [
-                    {
-                        "name": "category",
-                        "in": "path",
-                        "description": "Category indica la categoria di appartenenza del prodotto",
-                        "required": "true"
+                        "in": "query",
+                        "description": "Location indica la provenienza dell'articolo"
                     }
                 ],
                 "responses": {
