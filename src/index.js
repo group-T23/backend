@@ -20,6 +20,7 @@ const login = require('./routes/login');
 const search = require('./routes/search');
 const product = require('./routes/product');
 const cart = require('./routes/cart');
+const chat = require('./routes/chat');
 const wishlist = require('./routes/wishlist');
 app.use('/email', email);
 app.use('/user', user);
@@ -27,6 +28,7 @@ app.use('/login', login);
 app.use('/search', search);
 app.use('/product', product);
 app.use('/cart', cart);
+app.use('/chat', chat);
 app.use('/wishlist', wishlist);
 
 // Media endpoint

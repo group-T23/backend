@@ -2,19 +2,6 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// To use between requests that need authentication priviligies
-const authenticateUser = (req, res, next) => {
-  const authorization = req.headers['authorization'];
-  const token = authorization && authorization.split(' ')[1];
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.ACCESS_TOKEN, (error, email) => {
-    if (error) return res.sendStatus(403);
-    req.email = email;
-    next();
-  });
-}
-
 //TODO inserire codici di ritorno
 const loginUser = async (req, res) => {
   const data = req.body;

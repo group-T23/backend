@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema({
   wishlist: [{id: {type: mongoose.Types.ObjectId, required: true, unique:true, dropsDups: true}}],
 
   articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
-  chats: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
   reviews: [{ rating: { type: Number, required: true }, text: { type: String, default: null }}],
 });
 
