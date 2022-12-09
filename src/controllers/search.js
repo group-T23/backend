@@ -1,5 +1,6 @@
 const Article = require("../models/Article");
 const Category = require("../models/Category");
+const User = require("../models/User");
 
 /**
  * la fuzione effettua una ricerca degli articoli in base 
@@ -83,12 +84,92 @@ const search = async(req, res) => {
     if(!result)
         return res.status(404).json({code: "701", message: "database error"});
 
-/**
- * la funzione restituisce tutti i prodotti che rispettano i criteri di ricerca
- * (prezzo min-max, spedizione disponibile, valutazione , order by)
- */
- //db.collection.find("condizioni varie").sort( { age: -1 } )
-    //questo ordine per age in ordine decrescente
+    /**
+     * parametri diposnibili per i filrti:
+     * min_price - double
+     * max_price - double
+     * shipment - boolean
+     * rating - int
+     * orderBy - String
+     */
+    let minPrice = req.query.min_price;
+    let maxPrice = req.query.max_price;
+    let isShipment = req.query.shipment;
+    let rating = req.query.rating;
+    let orderBy = req.query.orderBy;
+
+    //applicazione filtri
+    if(minPrice || maxPrice || isShipment){
+        result = result.filter(function (elem) {
+            let flag = true;
+
+            if(minPrice || maxPrice){
+                //filtro per prezzo
+                if(minPrice)
+                    flag = (elem.price >= minPrice)
+                
+                if(maxPrice)
+                    flag = (elem.price<=maxPrice)
+            }
+            if(isShipment != undefined){
+                //filtro per spedizione disponibile
+                //se il campo è false questo prende in cosiderazione tutti gli articoli
+                //che hanno anche la spedizione disponibile in modo contrario, 
+                //se il campo è true prende in considerazione solo quelli con spedizione disponibile
+                (isShipment === "true") ? flag = !Object.is(elem.shipment, null) : flag = true;
+            }
+
+            return flag;
+        });
+    }
+
+    //controllo recensione
+    if(rating){
+        //filtro per valutazione venditore
+        //il venditore deve avere ALMENO una valutazione pari o maggiore a 
+        //quella indicata nella query
+        
+        //ricerca user che ha pubblicato l'articolo
+        for(let i=0; i<result.length; i++){
+            let elem = result[i];
+            let res = await User.find({"$and": [{"articles.id": {"$in": [elem._id]}}, {"reviews.rating": {"$gt": rating}}]});
+        
+            //se il risultato della query ottiene una lista vuota vuol dire che non
+            //ho un articolo con una recensione maggiore o uguale a quella indicata
+            if(res.length == 0){
+                //non ho una recensione valida, l'articolo non viene preso in considerazione
+                delete result[i];
+            }
+        }
+    }
+    
+    //ordinamento articoli se indicato nella query
+    if(orderBy){
+        if(orderBy === "asc_price"){
+            //prezzo crescente
+            result.sort(function(a, b){
+                return a.price - b.price
+            });
+        }
+        else if(orderBy === "desc_price"){
+            //prezzo decrescente
+            result.sort(function(a, b){
+                return b.price - a.price
+            });
+        }
+        else if(orderBy === "date"){
+            //ordinamento per data recente
+            result.sort(function(a, b){
+                return b.date - a.date
+            });
+        }
+    }
+
+    //filtro finale, prendere i soli articoli che sonno stati pubblicati ovvero,
+    //gli articoli che presentano il campo isPublished = true
+    result = result.filter(function(elem){
+        return elem.isPublished;
+    });
 
     return res.status(200).json({articles: result, code: "700", message: "success"});
 }

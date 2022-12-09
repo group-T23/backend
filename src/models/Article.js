@@ -4,6 +4,7 @@ const ArticleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, default: null },
   location: {type: String, required: true},
+  date: { type: Date, default: Date.now() },
   state: { type: String, required: true },
   price: { type: mongoose.Types.Decimal128, required: true },
   quantity: { type: Number, required: true },

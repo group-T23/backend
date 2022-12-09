@@ -18,7 +18,7 @@
     "tags": [
         {
             "name": "User",
-            "description": "APi per la creazione e la ricerca di un utente"
+            "description": "API per la creazione e la ricerca di un utente"
         },
         {
             "name": "Login",
@@ -30,7 +30,7 @@
         },
         {
             "name": "Search",
-            "description": "APi per la fase di ricerca dei prodotti"
+            "description": "API per la fase di ricerca dei prodotti"
         },
         {
             "name": "Cart",
@@ -38,7 +38,7 @@
         },
         {
             "name": "Wishlist",
-            "description": "APi per la wishlist"
+            "description": "API per la wishlist"
         },
         {
             "name": "Email",
@@ -328,7 +328,7 @@
             "get": {
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti con una serie di valori",
-                "description": "Vengono cercati tutti i prodotti che rispettano una serie di parametri, tra cui:\nParola chiave\nCateogira\nLocalità\nRange prezzo\nSpedizione\nValutazione\nOrdinamento",
+                "description": "Vengono cercati tutti i prodotti che rispettano una serie di parametri, tra cui:\nParola chiave\nCategoria\nLocalità\nRange prezzo (prezzo minimo e massimo)\nSpedizione disponibile (true o false)\nValutazione (da 1 a 5)\nTipo ordinamento (per data più recente, prezzo crescente o decrescente)",
                 "parameters": [
                     {
                         "name": "key",
@@ -344,6 +344,31 @@
                         "name": "location",
                         "in": "query",
                         "description": "Location indica la provenienza dell'articolo"
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Indica il prezzo minimo dell'articolo"
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Indica il prezzo massimo dell'articolo"
+                    },
+                    {
+                        "name": "shipment",
+                        "in": "query",
+                        "description": "Indica se l'articolo deve presentare la spedizione o no"
+                    },
+                    {
+                        "name": "rating",
+                        "in": "query",
+                        "description": "Indica la valutazione dell'utente, questo si basa su tutte le recensioni ricevute e non solo quelle relative ad un singolo articolo"
+                    },
+                    {
+                        "name": "orderby",
+                        "in": "query",
+                        "description": "Indica in che modo devono essere ordinati gli articoli trovati"
                     }
                 ],
                 "responses": {
