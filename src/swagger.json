@@ -38,13 +38,6 @@
         {
             "name": "Wishlist",
             "description": "API per la wishlist"
-<<<<<<< HEAD
-=======
-        },
-        {
-            "name": "Proposal",
-            "description": "API per le proposte"
->>>>>>> 9aa62da806f17b0cfedae62401ec137a577c7852
         },
         {
             "name" : "Email",
