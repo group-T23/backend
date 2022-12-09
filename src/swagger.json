@@ -367,7 +367,7 @@
                 "parameters": [
                   {
                     "name": "username",
-                    "in": "path",
+                    "in": "query",
                     "description": "Username da cui selezionare le chat",
                     "required": "true",
                     "schema": {
@@ -389,7 +389,7 @@
                 "parameters": [
                   {
                     "name": "username",
-                    "in": "path",
+                    "in": "query",
                     "description": "Utente partecipe nella nuova chat",
                     "required": "true",
                     "schema": {
@@ -420,7 +420,7 @@
                 "parameters": [
                   {
                     "name": "username",
-                    "in": "path",
+                    "in": "query",
                     "description": "Utente partecipe nella chat da eliminare",
                     "required": "true",
                     "schema": {
@@ -453,7 +453,7 @@
                 "parameters": [
                   {
                     "name": "username",
-                    "in": "path",
+                    "in": "query",
                     "description": "Utente partecipe nella chat",
                     "required": "true",
                     "schema": {
@@ -462,7 +462,7 @@
                   },
                   {
                     "name": "contact",
-                    "in": "path",
+                    "in": "query",
                     "description": "Contatto partecipe nella chat",
                     "required": "true",
                     "schema": {
@@ -484,7 +484,7 @@
                 "parameters": [
                   {
                     "name": "username",
-                    "in": "path",
+                    "in": "query",
                     "description": "Mittente del messaggio",
                     "required": "true",
                     "schema": {
@@ -492,23 +492,13 @@
                     }
                   },
                   {
-                    "name": "contact",
+                    "name": "data",
                     "in": "body",
-                    "description": "Destinatario del messaggio",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Contact"
-                    }
-                  },
-                  {
-                    "name": "message",
-                    "in": "body",
-                    "description": "Contanuto del messaggio",
+                    "description": "Destinatario e contenuto del messaggio",
                     "required": "true",
                     "schema": {
                         "$ref": "#/definitions/ChatParams_Message"
                     }
-
                   }
                 ],
                 "responses": {
@@ -949,12 +939,11 @@
             "required": ["contact"]
         },
         "ChatParams_Message": {
+            "type": "object",
             "properties": {
-                "message": {
-                    "type": "string"
-                }
-            },
-            "required": ["message"]
+              "contact": { "type": "string" },
+              "message": { "type": "string" }
+            }
         },
         "EmailParams_Email": {
             "properties": {
