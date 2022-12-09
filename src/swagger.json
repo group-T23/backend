@@ -42,7 +42,12 @@
         {
             "name": "Proposal",
             "description": "API per le proposte"
+        },
+        {
+            "name" : "Email",
+            "description": "API per utilizzare il servizio email"
         }
+        
     ],
     "schemes": ["http", "https"],
     "consumes": ["application/json"],
@@ -165,15 +170,9 @@
                     }
                 }],
                 "responses": {
-                    "200": {
-                        "description": "L'email è raggiungibile correttamente"
-                    },
-                    "400": {
-                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
-                    },
-                    "404": {
-                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
-                    }
+                    "200": { "description": "Email raggiungibile correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "404": { "description": "Email non raggiungibile" }
                 }
             },
             "post": {
@@ -201,15 +200,9 @@
 
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Viene confermata la verifica dell'account"
-                    },
-                    "400": {
-                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
-                    },
-                    "404": {
-                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
-                    }
+                    "200": { "description": "Email verificata correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "404": { "description": "Email non associata a nessun account" }
                 }
             }
         },
@@ -318,28 +311,26 @@
                 }
             }
         },
-        "/search/key={key}&category={category}&location={location}": {
+        "/search": {
             "get": {
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti con una serie di valori",
-                "description": "Vengono cercati tutti i prodotti che hanno nel titolo una parola chiave e, in aggiunta, la loro appartenenza ad una caterogoria e/o la loro località",
-                "parameters": [{
+                "description": "Vengono cercati tutti i prodotti che rispettano una serie di parametri, tra cui:\nParola chiave\nCateogira\nLocalità\nRange prezzo\nSpedizione\nValutazione\nOrdinamento",
+                "parameters": [
+                    {
                         "name": "key",
-                        "in": "path",
-                        "description": "Key identifica la parola chiave per la ricerca",
-                        "required": "true"
+                        "in": "query",
+                        "description": "Key identifica la parola chiave per la ricerca"
                     },
                     {
                         "name": "category",
-                        "in": "path",
-                        "description": "Category indica la categoria di appartenenza del prodotto",
-                        "default": "\"\""
+                        "in": "query",
+                        "description": "Category indica la categoria di appartenenza del prodotto"
                     },
                     {
                         "name": "location",
-                        "in": "path",
-                        "description": "Location indica la provenienza dell'articolo",
-                        "default": "\"\""
+                        "in": "query",
+                        "description": "Location indica la provenienza dell'articolo"
                     }
                 ],
                 "responses": {
@@ -355,27 +346,153 @@
                 }
             }
         },
-        "/search/category={category}": {
+        "/chat": {
             "get": {
-                "tags": ["Search"],
-                "summary": "Ricerca dei prodotti in base alla categoria",
-                "description": "Vengono cercati tutti i prodotti che appartengano ad una determinata cateogria",
-                "parameters": [{
-                    "name": "category",
-                    "in": "path",
-                    "description": "Category indica la categoria di appartenenza del prodotto",
-                    "required": "true"
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Viene ritornata una lista di uno o più elementi corrispondenti"
-                    },
-                    "400": {
-                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
-                    },
-                    "404": {
-                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                "tags": ["Chat"],
+                "summary": "Ritorna chat",
+                "description": "Restituisce le chat di un utente",
+                "parameters": [
+                  {
+                    "name": "username",
+                    "in": "query",
+                    "description": "Username da cui selezionare le chat",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Username"
                     }
+                  }
+                ],
+                "responses": {
+                    "200": { "description": "Chat restituite correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "401": { "description": "Richiesta non autorizzata" },
+                    "404": { "description": "Utente non trovato" }
+                }
+            },
+            "post": {
+                "tags": ["Chat"],
+                "summary": "Crea chat",
+                "description": "Crea una nuova chat con il contatto specificato",
+                "parameters": [
+                  {
+                    "name": "username",
+                    "in": "query",
+                    "description": "Utente partecipe nella nuova chat",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Username"
+                    }
+                  },
+                  {
+                    "name": "contact",
+                    "in": "body",
+                    "description": "Contatto partecipe nella nuova chat",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Contact"
+                    }
+                  }
+                ],
+                "responses": {
+                    "200": { "description": "Chat creata correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "401": { "description": "Richiesta non autorizzata" },
+                    "404": { "description": "Utente/Contatto non trovato" }
+                }
+            },
+            "delete": {
+                "tags": ["Chat"],
+                "summary": "Elimina chat",
+                "description": "Elimina una chat esistente con il contatto specificato",
+                "parameters": [
+                  {
+                    "name": "username",
+                    "in": "query",
+                    "description": "Utente partecipe nella chat da eliminare",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Username"
+                    }
+                  },
+                  {
+                    "name": "contact",
+                    "in": "body",
+                    "description": "Contatto partecipe nella chat da eliminare",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Contact"
+                    }
+                  }
+                ],
+                "responses": {
+                    "200": { "description": "Chat creata correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "401": { "description": "Richiesta non autorizzata" },
+                    "404": { "description": "Utente/Contatto/Chat non trovato/a" }
+                }
+            }
+        },
+        "/chat/message": {
+            "get": {
+                "tags": ["Messagge"],
+                "summary": "Ritorna messaggi",
+                "description": "Restituisce i messaggi di una chat",
+                "parameters": [
+                  {
+                    "name": "username",
+                    "in": "query",
+                    "description": "Utente partecipe nella chat",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Username"
+                    }
+                  },
+                  {
+                    "name": "contact",
+                    "in": "query",
+                    "description": "Contatto partecipe nella chat",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Contact"
+                    }
+                  }
+                ],
+                "responses": {
+                    "200": { "description": "Messaggi restituiti correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "401": { "description": "Richiesta non autorizzata" },
+                    "404": { "description": "Utente/Contatto/Chat non trovato/a" }
+                }
+            },
+            "post": {
+                "tags": ["Messagge"],
+                "summary": "Invia messaggio",
+                "description": "Invia il messaggio in una chat",
+                "parameters": [
+                  {
+                    "name": "username",
+                    "in": "query",
+                    "description": "Mittente del messaggio",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Username"
+                    }
+                  },
+                  {
+                    "name": "data",
+                    "in": "body",
+                    "description": "Destinatario e contenuto del messaggio",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/ChatParams_Message"
+                    }
+                  }
+                ],
+                "responses": {
+                    "200": { "description": "Messaggi restituiti correttamente" },
+                    "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
+                    "401": { "description": "Richiesta non autorizzata" },
+                    "404": { "description": "Utente/Contatto/Chat non trovato/a" }
                 }
             }
         },
@@ -802,6 +919,29 @@
                 }
             },
             "required": ["email", "password"]
+        },
+        "ChatParams_Username": {
+            "properties": {
+                "username": {
+                    "type": "string"
+                }
+            },
+            "required": ["username"]
+        },
+        "ChatParams_Contact": {
+            "properties": {
+                "contact": {
+                    "type": "string"
+                }
+            },
+            "required": ["contact"]
+        },
+        "ChatParams_Message": {
+            "type": "object",
+            "properties": {
+              "contact": { "type": "string" },
+              "message": { "type": "string" }
+            }
         },
         "EmailParams_Email": {
             "properties": {

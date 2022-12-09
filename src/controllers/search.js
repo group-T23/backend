@@ -1,93 +1,98 @@
-const mongoose = require('mongoose');
 const Article = require("../models/Article");
 const Category = require("../models/Category");
 
 /**
- * funzione che restituisce tutti i prodotti che presentano nel titolo
- * la parola chiave indicata nella url
+ * la fuzione effettua una ricerca degli articoli in base 
+ * al numero e al tipo di parametri inseriti
  */
-const newSearch = async (req, res) => { 
-    //NB per effettuare la richiesta senza inserire tutti i campi,
-    //usare la forma: param=""&...
-    const keyWord = req.params.key;
-    const category = req.params.category;
-    const location = req.params.location;
-    const compareText = '""';//pattern per quando il campo non è stato definito
-
-    if(!keyWord || keyWord === compareText)
-        return res.status(400).json({code: "702", message: "missing arguments"});
-
-    //in base al numero di parametri ottenuti effettuo la ricerca
+const search = async(req, res) => {
+    const keyWord = req.query.key;
+    const category = req.query.category;
+    const location = req.query.location;
+    let category_id;
     let result;
-    let id_cat;//contiene l'object id della categoria indicata nell'url
 
-    if(category !== compareText){
-        //ricerca objectId della categoria
-        let result = await Category.findOne({title: {'$regex': category}});
-        
-        if(!result)
-            return res.status(404).json({code: "704", message: "category not found"});
-        id_cat = result._id;
+    if(keyWord){
+        //ricerca con almeno parametro keyWord
+
+        if(!category && !location){
+            //ricerca solo per parola chiave
+            result = await Article.find({title: {'$regex': keyWord, '$options': 'i'}});
+        } 
+        else if(category && !location){
+            //ricerca per keyWord e category
+
+            //ricerca id della categoria indicata
+            result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+            category_id = result;
+            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});    
+
+            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
+            
+            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
+            {"categories.id": {'$in': [category_id]}}]});
+        } 
+        else if(location && !category) {
+            //ricerca per keyWord e location
+            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
+                                    {location: {'$regex': location, '$options': 'i'}}]});                     
+        } 
+        else {
+            //ricerca completa 
+            result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+            category_id = result;
+            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});    
+
+            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
+            
+            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}},
+                                    {"categories.id": {'$in': [category_id]}}]});
+        }
     }
+    else if(category){
+        //ricerca con almeno parametro category
+        result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+        category_id = result;
+        if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
 
-    if(id_cat == undefined && location === compareText)//solo parametro keyword
-        result = await Article.find({title: {'$regex': keyWord, '$options': 'i'}});   
-
-    else if(id_cat != undefined && location !== compareText){//tutti i parametri sono presenti
-        result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}},
-                                    {"categories.id": {'$in': [id_cat]}}]});
-
-    } else if(location !== compareText){//in aggiunta solo location
-        result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}}]});
-
-    } else if(id_cat != undefined){//in aggiunta solo categorie
-        result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {"categories.id": {'$in': [id_cat]}}]});
-    }
-
-    if(!result)
-        return res.status(404).json({code: "703", message: "articles not found"});
-
-    return res.status(200).json({articles: result, code: "700", message: "success"});
-};
-
-/**
- * la funzione restituisce tutti i prodotti relativi ad una categoria
- */
-const newSearchCateogries = async (req, res) => {
-    const category = req.params.category;
-
-    if(!category){
+        if(!keyWord && !location){
+            //ricerca solo per categoria
+            //ricerca id della categoria indicata
+            result = await Article.find({"categories.id": {'$in': [category_id]}});
+        } 
+        else if(keyWord && !location){
+            //ricerca per keyWord e category
+            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
+            {"categories.id": {'$in': [category_id]}}]});
+        } 
+        else if(location && !keyWord) {
+            //ricerca per category e location
+            result = await Article.find({$and: [{location: {'$regex': location, '$options': 'i'}}, {"categories.id": {'$in': [category_id]}}]});
+        } 
+        else {
+            //ricerca completa 
+            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}},
+                                    {"categories.id": {'$in': [category_id]}}]});
+        }    
+    } 
+    else {
+        //mancanza parametri base per la ricerca
         return res.status(400).json({code: "702", message: "missing arguments"});
-    }
-
-    let result;
-    let id_cat;//contiene l'object id della categoria indicata nell'url
-
-    //ricerca objectId della categoria
-    result = await Category.findOne({title: {'$regex': category}});
-    
-    if(!result)
-        return res.status(404).json({code: "704", message: "category not found"});
-    id_cat = result._id;
-
-    result = await Article.find({"categories.id": {'$in': [id_cat]}});
+    }    
 
     if(!result)
-    return res.status(404).json({code: "703", message: "articles not found"});
-
-    return res.status(200).json({articles: result, code: "700", message: "success"});
-};
+        return res.status(404).json({code: "701", message: "database error"});
 
 /**
  * la funzione restituisce tutti i prodotti che rispettano i criteri di ricerca
  * (prezzo min-max, spedizione disponibile, valutazione , order by)
  */
-const newSearchFilters = async (req, res) => {
+ //db.collection.find("condizioni varie").sort( { age: -1 } )
+    //questo ordine per age in ordine decrescente
 
-};
+    return res.status(200).json({articles: result, code: "700", message: "success"});
+}
 
 module.exports = { 
-    newSearch,
-    newSearchCateogries,
-    newSearchFilters,
+    search
  };

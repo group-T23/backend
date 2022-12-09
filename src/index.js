@@ -20,6 +20,7 @@ const login = require('./routes/login');
 const search = require('./routes/search');
 const product = require('./routes/product');
 const cart = require('./routes/cart');
+const chat = require('./routes/chat');
 const wishlist = require('./routes/wishlist');
 const proposal = require('./routes/proposal');
 app.use('/email', email);
@@ -28,6 +29,7 @@ app.use('/login', login);
 app.use('/search', search);
 app.use('/product', product);
 app.use('/cart', cart);
+app.use('/chat', chat);
 app.use('/wishlist', wishlist);
 app.use('/proposal', proposal);
 
@@ -41,20 +43,20 @@ const PORT = process.env.PORT || 3000;
 const main = async() => {
     await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
 
-    /*
-    const Article = require('./models/Article');
-    const articolo = new Article({
-      title: "Set squadre 30° e 45°",
-      description: "Vendo vari set da coppie di squadre da 30° e 45° per disegno tecnico",
-      state: "Come nuove",
-      price: "15",
-      quantity: "20",
-      shipment: "disponibile",
-      handDeliver: false,
-      isPublished: true,
-      categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c100383c')}],
-      photos: [{path: "/pathImmagine"}],
-    });
+  /*
+  const Article = require('./models/Article');
+  const articolo = new Article({
+    title: "Testo introduttivo alla programmazione dinamica",
+    description: "Testo per il corso di algoritmi e strutture dati",
+    state: "Usato",
+    price: "30",
+    quantity: "1",
+    shipment: "disponibile",
+    handDeliver: false,
+    isPublished: true,
+    categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c122383c')}],
+    photos: [{path: "/pathImmagine"}],
+  });
 
     articolo.save((err, data) => {
       if(err) console.log(err);
