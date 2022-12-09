@@ -1,22 +1,21 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Skupply", 
-        "description": "Piattaforma per la compravendita di articoli scolastici", 
+        "title": "Skupply",
+        "description": "Piattaforma per la compravendita di articoli scolastici",
         "version": "1.0.0",
-        "license":{
+        "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
         },
-        "contact":{
-            "name": "Andera Piccin    Dorijan Di Zepp    Simone Rossi",
+        "contact": {
+            "name": "Andrea Piccin    Dorijan Di Zepp    Simone Rossi",
             "email": "andrea.piccin@studenti.unitn.it"
         }
     },
     "host": "localhost:3000",
     "basePath": "/",
-    "tags": [
-        {
+    "tags": [{
             "name": "User",
             "description": "APi per la creazione e la ricerca di un utente"
         },
@@ -38,29 +37,31 @@
         },
         {
             "name": "Wishlist",
-            "description": "APi per la wishlist"
+            "description": "API per la wishlist"
+        },
+        {
+            "name": "Proposal",
+            "description": "API per le proposte"
         }
     ],
     "schemes": ["http", "https"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
-    "paths":{
+    "paths": {
         "/user": {
             "post": {
                 "tags": ["User"],
                 "summary": "Creazione nuovo utente",
                 "description": "Viene effettuata la creazione di un nuovo utente conn seguente salvataggio in DB",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'oggetto user",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'oggetto user",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/User"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'utente viene creato"
@@ -74,19 +75,17 @@
                 }
             }
         },
-        "/user/find/username={username}":{
+        "/user/find/username={username}": {
             "get": {
                 "tags": ["User"],
                 "summary": "Ricerca di un utente",
                 "description": "Viene effettuata la ricerca di un utente dato il suo username",
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "path",
-                        "description": "Body contentente lo username dello user",
-                        "required": "true"
-                    }
-                ],
+                "parameters": [{
+                    "name": "username",
+                    "in": "path",
+                    "description": "Body contentente lo username dello user",
+                    "required": "true"
+                }],
                 "responses": {
                     "200": {
                         "description": "L'utente viene trovato"
@@ -105,14 +104,12 @@
                 "tags": ["User"],
                 "summary": "Ricerca di un utente",
                 "description": "Viene verificata la disponibiltà dello username",
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "path",
-                        "description": "Body contentente lo username dello user",
-                        "required": "true"
-                    }
-                ],
+                "parameters": [{
+                    "name": "username",
+                    "in": "path",
+                    "description": "Body contentente lo username dello user",
+                    "required": "true"
+                }],
                 "responses": {
                     "200": {
                         "description": "Viene ritornato nella ripsosta un attributo che conferma o meno la disponibilità dello username"
@@ -131,17 +128,15 @@
                 "tags": ["Login"],
                 "summary": "Autenticazione utente",
                 "description": "Vengono richieste le credenziali di accesso per effettuare l'autenticazione",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email e la password dell'utente",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/LoginParams_EmailId"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email e la password dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/LoginParams_EmailId"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'utente viene autenticato"
@@ -160,8 +155,7 @@
                 "tags": ["Email"],
                 "summary": "Controlla email",
                 "description": "Controlla se l'email è raggiungibile",
-                "parameters": [
-                  {
+                "parameters": [{
                     "name": "email",
                     "in": "path",
                     "description": "Email da controllare",
@@ -169,8 +163,7 @@
                     "schema": {
                         "$ref": "#/definitions/EmailParams_Email"
                     }
-                  }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'email è raggiungibile correttamente"
@@ -187,15 +180,14 @@
                 "tags": ["Email"],
                 "summary": "Verifica email",
                 "description": "Viene verificata l'email di un utente per confermare l'account",
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "code",
                         "in": "body",
                         "description": "Parametro contentente il codice di attivazione dell'account",
                         "required": "true",
                         "schema": {
                             "$ref": "#/definitions/EmailParams_Code"
-                          }
+                        }
                     },
                     {
                         "name": "email",
@@ -242,17 +234,15 @@
                 "tags": ["Product"],
                 "summary": "Inserimento nuovo prodotto",
                 "description": "Viene inserito un nuovo prodotto all'interno della piattaforma",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente il nuovo articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/Articles"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente il nuovo articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/Articles"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Viene inserito il nuovo prodotto correttamente"
@@ -287,14 +277,12 @@
                 "tags": ["Product"],
                 "summary": "Ricerca di un prodotto",
                 "description": "Viene cercato, se presente, il prodotto relativo all'id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Id che identifica il prodotto",
-                        "required": "true"
-                    }
-                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Id che identifica il prodotto",
+                    "required": "true"
+                }],
                 "responses": {
                     "200": {
                         "description": "Viene ritornato correttamente il prodotto"
@@ -311,14 +299,12 @@
                 "tags": ["Product"],
                 "summary": "Eliminazione di un prodotto",
                 "description": "Viene eliminato, se presente, il prodotto relativo all'id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Id che identifica il prodotto",
-                        "required": "true"
-                    }
-                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Id che identifica il prodotto",
+                    "required": "true"
+                }],
                 "responses": {
                     "200": {
                         "description": "Viene eliminato correttamente il prodotto"
@@ -337,8 +323,7 @@
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti con una serie di valori",
                 "description": "Vengono cercati tutti i prodotti che hanno nel titolo una parola chiave e, in aggiunta, la loro appartenenza ad una caterogoria e/o la loro località",
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "key",
                         "in": "path",
                         "description": "Key identifica la parola chiave per la ricerca",
@@ -348,7 +333,7 @@
                         "name": "category",
                         "in": "path",
                         "description": "Category indica la categoria di appartenenza del prodotto",
-                        "default": "\"\"" 
+                        "default": "\"\""
                     },
                     {
                         "name": "location",
@@ -375,14 +360,12 @@
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti in base alla categoria",
                 "description": "Vengono cercati tutti i prodotti che appartengano ad una determinata cateogria",
-                "parameters": [
-                    {
-                        "name": "category",
-                        "in": "path",
-                        "description": "Category indica la categoria di appartenenza del prodotto",
-                        "required": "true"
-                    }
-                ],
+                "parameters": [{
+                    "name": "category",
+                    "in": "path",
+                    "description": "Category indica la categoria di appartenenza del prodotto",
+                    "required": "true"
+                }],
                 "responses": {
                     "200": {
                         "description": "Viene ritornata una lista di uno o più elementi corrispondenti"
@@ -401,17 +384,15 @@
                 "tags": ["Cart"],
                 "summary": "Ritorna una lista di articoli",
                 "description": "Viene ritornata la lista degli articoli presenti nel carrello e gli id",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/CartParams_Email"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/CartParams_Email"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Viengono ritornate due liste. Una contenente i soli id denominata e le quantità dell'articolo denominata 'cart_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'cart'"
@@ -428,33 +409,29 @@
                 "tags": ["Cart"],
                 "summary": "Viene aggiornata la quantità del prodotto",
                 "description": "L'utente seleziona una quantità per l'articolo",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/CartParams_EmailId"
-                        }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/CartParams_EmailId"
                     }
-                ]
+                }]
             },
             "delete": {
                 "tags": ["Cart"],
                 "summary": "Cancella un determinato articolo dal carrello",
                 "description": "L'utente richiede la rimozione di un articolo dal carrello",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/CartParams_EmailId"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/CartParams_EmailId"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'articolo viene rimosso correttamente dal carrello"
@@ -473,17 +450,15 @@
                 "tags": ["Cart"],
                 "summary": "Inserisce un determinato articolo dal carrello",
                 "description": "L'utente richiede l'inserimento di un articolo nel carrello",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/CartParams_EmailId"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/CartParams_EmailId"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'articolo viene inserito correttamente dal carrello"
@@ -502,17 +477,15 @@
                 "tags": ["Cart"],
                 "summary": "Eliminazione articoli",
                 "description": "Tutti i prodotti presenti all'interno del carrello vengono eliminati",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/CartParams_Email"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/CartParams_Email"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Il carrello viene svuotato correttamente"
@@ -531,17 +504,15 @@
                 "tags": ["Wishlist"],
                 "summary": "Eliminazione articolo",
                 "description": "L'articolo presente nella wishlist viene rimosso",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/WishlistParams_EmailId"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/WishlistParams_EmailId"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'articolo viene rimosso correttamente"
@@ -558,17 +529,15 @@
                 "tags": ["Wishlist"],
                 "summary": "Elenco articoli wishlist",
                 "description": "Viene ritornato l'elenco degli articoli presenti all'interno della wishlist e un elenco degli id",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/WishlistParams_Email"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/WishlistParams_Email"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Viengono ritornate due liste. Una contenente i soli id dell'articolo denominata 'whislist_ids' e un'altra contenente tutto lo schema di ciascun articolo denominata 'wishlist'"
@@ -587,17 +556,15 @@
                 "tags": ["Wishlist"],
                 "summary": "Inserimento articolo",
                 "description": "Viene inserito un nuovo articolo all'interno della wishlist",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "Body contentente l'email dell'utente e l'id dell'articolo",
-                        "required": "true",
-                        "schema": {
-                            "$ref": "#/definitions/WishlistParams_EmailId"
-                          }
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'email dell'utente e l'id dell'articolo",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/WishlistParams_EmailId"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "L'articolo viene inserito correttamente"
@@ -609,6 +576,22 @@
                         "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
                     }
                 }
+            }
+        },
+        "/proposal/create": {
+            "post": {
+                "tags": ["Proposal"],
+                "summary": "Creazione proposta",
+                "description": "",
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'ID dell'articolo, il prezzo della proposta e l'autore ",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/Proposal_IdPriceAuthor"
+                    }
+                }]
             }
         }
     },
@@ -657,7 +640,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id":{
+                            "id": {
                                 "type": "string"
                             }
                         }
@@ -668,7 +651,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id":{
+                            "id": {
                                 "type": "string"
                             }
                         }
@@ -741,7 +724,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id":{
+                            "id": {
                                 "type": "string"
                             }
                         }
@@ -752,7 +735,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id":{
+                            "id": {
                                 "type": "string"
                             }
                         }
@@ -763,7 +746,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id":{
+                            "id": {
                                 "type": "string"
                             }
                         }
@@ -774,7 +757,7 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "rating":{
+                            "rating": {
                                 "type": "integer"
                             },
                             "text": {
@@ -784,7 +767,7 @@
                     }
                 }
             },
-            "required": ["firstName", "lastName", "username", "email", "password", "verificationCode", "cart", "wishlist", "articles", "chats", "reviews"] 
+            "required": ["firstName", "lastName", "username", "email", "password", "verificationCode", "cart", "wishlist", "articles", "chats", "reviews"]
         },
         "CartParams_EmailId": {
             "properties": {
@@ -861,7 +844,14 @@
                     "type": "string"
                 }
             }
+        },
+        "Proposal_IdPriceAuthor": {
+            "properties": {
+                "id": { "type": "string" },
+                "price": { "type": "double" },
+                "author": { "type": "string" }
+            },
+            "required": ["id", "price"]
         }
-
-    }  
+    }
 }
