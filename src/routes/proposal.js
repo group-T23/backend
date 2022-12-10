@@ -6,14 +6,15 @@ const proposalController = require('../controllers/proposal');
 router.post('/create', proposalController.create);
 
 // R - read
-//router.post('/', proposalController.getAll);
+router.post('/incoming', proposalController.getAllIn);
+router.post('/outgoing', proposalController.getAllOut);
 
 // U - update
-//router.put('/accept/?id=:id', proposalController.accept);
-//router.put('/reject/?id=:id', proposalController.reject);
+router.put('/accept/?id=:id', proposalController.accept);
+router.put('/reject/?id=:id', proposalController.reject);
 
 // D - delete
-//router.delete('/delete/?id=:id', proposalController.delete);
+router.delete('/delete/?id=:id', proposalController.remove);
 
 
 module.exports = router;

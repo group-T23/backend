@@ -44,10 +44,10 @@
             "description": "API per le proposte"
         },
         {
-            "name" : "Email",
+            "name": "Email",
             "description": "API per utilizzare il servizio email"
         }
-        
+
     ],
     "schemes": ["http", "https"],
     "consumes": ["application/json"],
@@ -316,8 +316,7 @@
                 "tags": ["Search"],
                 "summary": "Ricerca dei prodotti con una serie di valori",
                 "description": "Vengono cercati tutti i prodotti che rispettano una serie di parametri, tra cui:\nParola chiave\nCateogira\nLocalità\nRange prezzo\nSpedizione\nValutazione\nOrdinamento",
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "key",
                         "in": "query",
                         "description": "Key identifica la parola chiave per la ricerca"
@@ -351,8 +350,7 @@
                 "tags": ["Chat"],
                 "summary": "Ritorna chat",
                 "description": "Restituisce le chat di un utente",
-                "parameters": [
-                  {
+                "parameters": [{
                     "name": "username",
                     "in": "query",
                     "description": "Username da cui selezionare le chat",
@@ -360,8 +358,7 @@
                     "schema": {
                         "$ref": "#/definitions/ChatParams_Username"
                     }
-                  }
-                ],
+                }],
                 "responses": {
                     "200": { "description": "Chat restituite correttamente" },
                     "400": { "description": "Richiesta mal formattata. Mancano dei parametri all'interno della richiesta" },
@@ -373,25 +370,24 @@
                 "tags": ["Chat"],
                 "summary": "Crea chat",
                 "description": "Crea una nuova chat con il contatto specificato",
-                "parameters": [
-                  {
-                    "name": "username",
-                    "in": "query",
-                    "description": "Utente partecipe nella nuova chat",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Username"
+                "parameters": [{
+                        "name": "username",
+                        "in": "query",
+                        "description": "Utente partecipe nella nuova chat",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Username"
+                        }
+                    },
+                    {
+                        "name": "contact",
+                        "in": "body",
+                        "description": "Contatto partecipe nella nuova chat",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Contact"
+                        }
                     }
-                  },
-                  {
-                    "name": "contact",
-                    "in": "body",
-                    "description": "Contatto partecipe nella nuova chat",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Contact"
-                    }
-                  }
                 ],
                 "responses": {
                     "200": { "description": "Chat creata correttamente" },
@@ -404,25 +400,24 @@
                 "tags": ["Chat"],
                 "summary": "Elimina chat",
                 "description": "Elimina una chat esistente con il contatto specificato",
-                "parameters": [
-                  {
-                    "name": "username",
-                    "in": "query",
-                    "description": "Utente partecipe nella chat da eliminare",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Username"
+                "parameters": [{
+                        "name": "username",
+                        "in": "query",
+                        "description": "Utente partecipe nella chat da eliminare",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Username"
+                        }
+                    },
+                    {
+                        "name": "contact",
+                        "in": "body",
+                        "description": "Contatto partecipe nella chat da eliminare",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Contact"
+                        }
                     }
-                  },
-                  {
-                    "name": "contact",
-                    "in": "body",
-                    "description": "Contatto partecipe nella chat da eliminare",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Contact"
-                    }
-                  }
                 ],
                 "responses": {
                     "200": { "description": "Chat creata correttamente" },
@@ -437,25 +432,24 @@
                 "tags": ["Messagge"],
                 "summary": "Ritorna messaggi",
                 "description": "Restituisce i messaggi di una chat",
-                "parameters": [
-                  {
-                    "name": "username",
-                    "in": "query",
-                    "description": "Utente partecipe nella chat",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Username"
+                "parameters": [{
+                        "name": "username",
+                        "in": "query",
+                        "description": "Utente partecipe nella chat",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Username"
+                        }
+                    },
+                    {
+                        "name": "contact",
+                        "in": "query",
+                        "description": "Contatto partecipe nella chat",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Contact"
+                        }
                     }
-                  },
-                  {
-                    "name": "contact",
-                    "in": "query",
-                    "description": "Contatto partecipe nella chat",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Contact"
-                    }
-                  }
                 ],
                 "responses": {
                     "200": { "description": "Messaggi restituiti correttamente" },
@@ -468,25 +462,24 @@
                 "tags": ["Messagge"],
                 "summary": "Invia messaggio",
                 "description": "Invia il messaggio in una chat",
-                "parameters": [
-                  {
-                    "name": "username",
-                    "in": "query",
-                    "description": "Mittente del messaggio",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Username"
+                "parameters": [{
+                        "name": "username",
+                        "in": "query",
+                        "description": "Mittente del messaggio",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Username"
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "description": "Destinatario e contenuto del messaggio",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/ChatParams_Message"
+                        }
                     }
-                  },
-                  {
-                    "name": "data",
-                    "in": "body",
-                    "description": "Destinatario e contenuto del messaggio",
-                    "required": "true",
-                    "schema": {
-                        "$ref": "#/definitions/ChatParams_Message"
-                    }
-                  }
                 ],
                 "responses": {
                     "200": { "description": "Messaggi restituiti correttamente" },
@@ -708,6 +701,77 @@
                     "schema": {
                         "$ref": "#/definitions/Proposal_IdPriceAuthor"
                     }
+                }]
+            }
+        },
+        "/proposal/incoming": {
+            "post": {
+                "tags": ["Proposal"],
+                "summary": "Elenco proposte in entrata",
+                "description": "",
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'ID dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/Proposal_User"
+                    }
+                }]
+            }
+        },
+        "/proposal/outgoing": {
+            "post": {
+                "tags": ["Proposal"],
+                "summary": "Elenco proposte in uscita",
+                "description": "",
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "Body contentente l'ID dell'utente",
+                    "required": "true",
+                    "schema": {
+                        "$ref": "#/definitions/Proposal_User"
+                    }
+                }]
+            }
+        },
+        "/proposal/accept": {
+            "put": {
+                "tags": ["Proposal"],
+                "summary": "Accetta una proposta",
+                "description": "",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Id della proposta nella QS",
+                    "required": "true"
+                }]
+            }
+        },
+        "/proposal/reject": {
+            "put": {
+                "tags": ["Proposal"],
+                "summary": "Rifiuta una proposta",
+                "description": "",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Id della proposta nella QS",
+                    "required": "true"
+                }]
+            }
+        },
+        "/proposal/remove": {
+            "delete": {
+                "tags": ["Proposal"],
+                "summary": "Elimina una proposta",
+                "description": "",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Id della proposta nella QS",
+                    "required": "true"
                 }]
             }
         }
@@ -939,8 +1003,8 @@
         "ChatParams_Message": {
             "type": "object",
             "properties": {
-              "contact": { "type": "string" },
-              "message": { "type": "string" }
+                "contact": { "type": "string" },
+                "message": { "type": "string" }
             }
         },
         "EmailParams_Email": {
@@ -992,6 +1056,12 @@
                 "author": { "type": "string" }
             },
             "required": ["id", "price"]
+        },
+        "Proposal_User": {
+            "properties": {
+                "user": { "type": "string" }
+            },
+            "required": ["user"]
         }
     }
 }
