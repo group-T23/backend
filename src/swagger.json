@@ -44,6 +44,14 @@
             "description": "API per le proposte"
         },
         {
+            "name": "Chat",
+            "description": "API per la chat"
+        },
+        {
+            "name": "Message",
+            "description": "API per l'invio e la ricezione di messaggi"
+        },
+        {
             "name": "Email",
             "description": "API per utilizzare il servizio email"
         }
@@ -370,6 +378,32 @@
                 }
             }
         },
+        "/search/category/{category}": {
+            "get": {
+                "tags": ["Search"],
+                "summary": "Ricerca dei prodotti per categoria",
+                "description": "Vengono cercati tutti i prodotti che appartengono alla cateogria indicata",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "required": "true",
+                        "description": "Category indica la categoria di appartenenza del prodotto"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viene ritornata una lista di uno o più elementi corrispondenti"
+                    },
+                    "400": {
+                        "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
+                    },
+                    "404": {
+                        "description": "Viene ritorntato un codice di errore con rispettivo messaggio"
+                    }
+                }
+            }
+        },
         "/chat": {
             "get": {
                 "tags": ["Chat"],
@@ -454,7 +488,7 @@
         },
         "/chat/message": {
             "get": {
-                "tags": ["Messagge"],
+                "tags": ["Message"],
                 "summary": "Ritorna messaggi",
                 "description": "Restituisce i messaggi di una chat",
                 "parameters": [{
@@ -484,7 +518,7 @@
                 }
             },
             "post": {
-                "tags": ["Messagge"],
+                "tags": ["Message"],
                 "summary": "Invia messaggio",
                 "description": "Invia il messaggio in una chat",
                 "parameters": [{

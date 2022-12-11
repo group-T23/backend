@@ -174,6 +174,32 @@ const search = async(req, res) => {
     return res.status(200).json({articles: result, code: "700", message: "success"});
 }
 
+/**
+ * ricerca effettuata solo per categoria
+ */
+const searchCategory = async (req, res) => {
+    const category = req.params.category;
+
+    if(!category)
+        res.status(400).json({code: "702", message: "missing parameters"});
+
+
+    //ricerca id catetgory indicata nella url
+    let result;
+    result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+    let category_id = result;
+    if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
+
+    //ricerca tutti gli articoli aventi come categoria quella indicata nella url
+    result = await Article.find({"categories.id": {'$in': [category_id]}});
+
+    if(!result)
+        res.status(404).json({code: "701", message: "database error"});
+
+    res.status(200).json({articles: result, code: "700", message: "success"});
+};
+
 module.exports = { 
-    search
- };
+    search,
+    searchCategory,
+};
