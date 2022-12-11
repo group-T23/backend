@@ -170,7 +170,7 @@
                 "description": "Controlla se l'email è raggiungibile",
                 "parameters": [{
                     "name": "email",
-                    "in": "path",
+                    "in": "query",
                     "description": "Email da controllare",
                     "required": "true",
                     "schema": {
@@ -198,7 +198,7 @@
                     },
                     {
                         "name": "email",
-                        "in": "path",
+                        "in": "query",
                         "description": "Email da verificare",
                         "required": "true",
                         "schema": {
