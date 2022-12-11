@@ -277,7 +277,7 @@
             "get": {
                 "tags": ["Product"],
                 "summary": "Ricerca di un prodotto",
-                "description": "Viene cercato, se presente, il prodotto relativo all'id",
+                "description": "Viene cercato, se presente, il prodotto relativo all'id e il suo venditore",
                 "parameters": [{
                     "name": "id",
                     "in": "path",
@@ -286,7 +286,7 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Viene ritornato correttamente il prodotto"
+                        "description": "Viene ritornato correttamente il prodotto e il venditore"
                     },
                     "400": {
                         "description": "Richiesta mal formata. Mancano dei parametri all'interno della richiesta"
@@ -551,7 +551,7 @@
         "/cart": {
             "post": {
                 "tags": ["Cart"],
-                "summary": "Ritorna una lista di articoli",
+                "summary": "Ritorna la lista degli articoli presenti nel carrello",
                 "description": "Viene ritornata la lista degli articoli presenti nel carrello e gli id",
                 "parameters": [{
                     "name": "body",
@@ -576,7 +576,7 @@
             },
             "put": {
                 "tags": ["Cart"],
-                "summary": "Viene aggiornata la quantità del prodotto",
+                "summary": "Viene aggiornata la quantità del prodotto presente nel carrello",
                 "description": "L'utente seleziona una quantità per l'articolo",
                 "parameters": [{
                     "name": "body",
@@ -644,7 +644,7 @@
         "/cart/all": {
             "delete": {
                 "tags": ["Cart"],
-                "summary": "Eliminazione articoli",
+                "summary": "Eliminazione di tutti gli articoli dal carrello",
                 "description": "Tutti i prodotti presenti all'interno del carrello vengono eliminati",
                 "parameters": [{
                     "name": "body",

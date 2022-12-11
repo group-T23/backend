@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Article = require("../models/Article");
+const User = require("../models/User");
 
 const getAllProduct = async (req, res) => {
   const result = await Article.find({});//per ottenere tutte le righe
@@ -16,7 +17,9 @@ const deleteAllProduct = async (req, res) => {
 
 /**
  * la funzione legge da url il parametro id e ricerca nella collection articles 
- * l'articolo corrispondente se presente.
+ * l'articolo corrispondente se presente e il rispettivo venditore.
+ * da notare che basti che non venga trovato l'articolo o il venditore
+ * per ottenre un codice di errore 404 
  */
 const getProduct = async (req, res) => {
   const id = req.params.id;
@@ -29,10 +32,21 @@ const getProduct = async (req, res) => {
   if(mongoose.Types.ObjectId.isValid(id))  
     result = await Article.findById(id);
 
+    console.log(id);
+    console.log(result);
+
   if(!result)
     return res.status(404).json({code: "603", message: "product not found"});
   
-  return res.status(200).json({ article: result, code: "600", message: 'success' });
+  let item = result;
+
+  //ricerca venditore del prodotto
+  result = await User.findOne({"articles.id": id});
+
+  if(!result)
+  return res.status(404).json({code: "603", message: "user not found"});
+
+  return res.status(200).json({ article: item, seller: result, code: "600", message: 'success' });
 };
 
 const newProduct = async (req, res) => {
