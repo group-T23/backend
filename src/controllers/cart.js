@@ -173,7 +173,8 @@ const checkout = async(req, res) => {
     //NB facendo il checkout è da verificare prima 
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
-
+    res.json({message: "checkout"})
+    return res;
 };
 
 module.exports = {

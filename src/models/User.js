@@ -17,8 +17,8 @@ const UserSchema = new mongoose.Schema({
     cart: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true }, quantity: { type: Number, default: 1 } }],
     wishlist: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true } }],
 
-  articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
-  reviews: [{ rating: { type: Number, required: true }, text: { type: String, default: null }}],
+    articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
+    reviews: [{ rating: { type: Number, required: true }, text: { type: String, default: null }}],
     proposals: [{ id: { type: mongoose.Types.ObjectId, required: true } }],
     chats: [{ id: { type: mongoose.Types.ObjectId, required: true } }],
 });
