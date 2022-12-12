@@ -5,7 +5,7 @@ const Item = require('../models/Item');
 const Mail = require('../utils/email');
 
 const getInfo = async(req, res) => {
-    const buyer = getAuthenticatedBuyer;
+    const buyer = await getAuthenticatedBuyer;
     return res.status(200).json({ buyer: buyer, code: "", message: "success" });
 }
 
@@ -39,22 +39,21 @@ const create = async(req, res) => {
     });
 
     buyer.save(error => {
-        if (error) {
-            console.log(error);
-            res.status(500).json({ code: "", message: "unable to create" });
-        } else {
-            Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
-            res.status(200).json({ code: "", message: "success" });
-        }
+        if (error)
+            return res.status(500).json({ code: "", message: "unable to create" });
+
+        Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
     });
+
+    return res.status(200).json({ code: "", message: "success" });
 }
 
 const edit = async(req, res) => {
     const url = require('../utils/address');
-    let buyer = getAuthenticatedBuyer;
+    let buyer = await getAuthenticatedBuyer;
 
     if (req.body.email) {
-        Mail.send(
+        await Mail.send(
             req.body.email,
             'Aggiornamento credenziali Skupply',
             `Per confermare il nuovo indirizzo email clicca sul seguente link:\n
@@ -68,32 +67,33 @@ const edit = async(req, res) => {
     if (req.body.lastname)
         buyer.lastname = req.body.lastname;
 
-    buyer.save(err => {
+    await buyer.save(err => {
         if (err)
             return res.status(500).json({ code: "", message: "unable to save changes" });
-        return res.status(200).json({ code: "", message: "success" });
     });
+
+    return res.status(200).json({ code: "", message: "success" });
 }
 
 const remove = async(req, res) => {
-    let buyer = getAuthenticatedBuyer;
+    let buyer = await getAuthenticatedBuyer;
 
     //TODO: remove chats
 
     //remove seller
     if (buyer.isSeller) {
-        let seller = Seller.find({ _id: buyer.sellerId });
+        let seller = await Seller.find({ _id: buyer.sellerId });
 
-        seller.items.forEach(itemId => {
-            let item = Item.find({ _id: itemId });
+        seller.items.forEach(async itemId => {
+            let item = await Item.find({ _id: itemId });
             item.state = 'DELETED';
-            item.save(err => {
+            await item.save(err => {
                 if (err)
                     return res.status(500).json({ code: "", message: "unable to save changes" });
             });
         });
 
-        seller.remove(err => {
+        await Seller.deleteOne({ id: seller.id }, err => {
             if (err)
                 return res.status(500).json({ code: "", message: "unable to remove" });
         })
@@ -101,11 +101,12 @@ const remove = async(req, res) => {
         return res.status(200).json({ code: "", message: "success" });
     }
 
-    buyer.remove(err => {
+    await Buyer.deleteOne({ id: buyer.id }, err => {
         if (err)
             return res.status(500).json({ code: "", message: "unable to remove" });
-        return res.status(200).json({ code: "", message: "success" });
     });
+
+    return res.status(200).json({ code: "", message: "success" });
 }
 
 
