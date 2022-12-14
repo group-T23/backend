@@ -1,8 +1,7 @@
 describe('Email requests', () => {
   const fetch = require('node-fetch');
   const url = `http://localhost:${process.env.PORT}`;
-
-  const TIMEOUT = 10000;
+  const TIMEOUT = 20000;
   beforeAll(async () => {
     jest.setTimeout(TIMEOUT);
   });
