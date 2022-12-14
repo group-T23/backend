@@ -80,7 +80,7 @@ const getAllIn = async(req, res) => {
         return res.state(400).json({ code: "", message: "invalid user type" });
 
     const seller = await Seller.find({ id: buyer.sellerId });
-    const proposals = (await Proposal.find({})).filter(i => seller.items.includes(i));
+    const proposals = (await Proposal.find({ "id": { '$in': [seller.proposals] } }));
 
     return res.status(200).json({ proposals: proposals, code: "", message: "success" });
 }

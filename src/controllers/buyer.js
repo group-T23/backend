@@ -109,7 +109,6 @@ const remove = async(req, res) => {
     return res.status(200).json({ code: "", message: "success" });
 }
 
-
 module.exports = {
     getInfo,
     create,

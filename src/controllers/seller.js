@@ -36,23 +36,6 @@ const getPublicInfo = async(req, res) => {
     return res.status(200).json({ seller: pub, code: "", message: "success" });
 }
 
-const getItems = async(req, res) => {
-    if (!req.query.username)
-        return res.status(400).json({ code: "", message: "missing arguments" });
-
-    if (!(await Buyer.exists({ username: req.query.username })))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
-    const buyer = await Buyer.find({ username: req.query.username });
-
-    if (!buyer.isSeller)
-        return res.status(400).json({ code: "", message: "invalid user type" });
-
-    const seller = await Seller.find({ _id: buyer.sellerId });
-    const items = await Item.find({ ownerId: seller.id, state: 'PUBLISHED' });
-
-    return res.status(200).json({ items: items, code: "", message: "success" });
-}
-
 const create = async(req, res) => {
     let buyer = await getAuthenticatedBuyer;
 
@@ -94,11 +77,9 @@ const remove = async(req, res) => {
 };
 
 
-
 module.exports = {
     getInfo,
     getPublicInfo,
-    getItems,
     create,
     addItem,
     remove

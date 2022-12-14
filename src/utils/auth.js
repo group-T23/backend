@@ -19,4 +19,7 @@ async function getAuthenticatedBuyer() {
     return await find({ email: email });
 }
 
-export default { verifyAuthentication, getAuthenticatedBuyer };
+module.exports = {
+    verifyAuthentication,
+    getAuthenticatedBuyer
+};
