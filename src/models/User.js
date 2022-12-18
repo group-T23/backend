@@ -14,8 +14,8 @@ const UserSchema = new mongoose.Schema({
     creationDate: { type: Date, default: Date.now },
     verificationCode: { type: String, required: true, unique: true },
 
-    cart: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true }, quantity: { type: Number, default: 1 } }],
-    wishlist: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true } }],
+    cart: [{ id: { type: mongoose.Types.ObjectId}, quantity: { type: Number, default: 1 } }],
+    wishlist: [{ id: { type: mongoose.Types.ObjectId} }],
 
     articles: [{ id: { type: mongoose.Types.ObjectId, required: true }}],
     reviews: [{ rating: { type: Number, required: true }, text: { type: String, default: null }}],

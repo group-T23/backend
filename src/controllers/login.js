@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 //TODO inserire codici di ritorno
+
 const loginUser = async (req, res) => {
   const data = req.body;
   const hash = crypto.createHash('sha256');

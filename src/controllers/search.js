@@ -199,7 +199,20 @@ const searchCategory = async (req, res) => {
     res.status(200).json({articles: result, code: "700", message: "success"});
 };
 
+/**
+ * la funzione ritorna tutte le categorie disponibili 
+ */
+const getCategories = async (req, res) => {
+    const result = await Category.find({});
+
+    if(!result)
+    res.status(404).json({code: "701", message: "database error"});
+
+    res.status(200).json({categories: result, code: "700", message: "success"});
+};
+
 module.exports = { 
     search,
     searchCategory,
+    getCategories,
 };
