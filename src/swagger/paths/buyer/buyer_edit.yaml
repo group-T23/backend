@@ -1,0 +1,28 @@
+summary: Modifica dell'utente autenticato
+description: ''
+tags:
+  - Buyer
+
+requestBody:
+  description: Nuovi dati dell'utente
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/buyer/BuyerEdit.yaml
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

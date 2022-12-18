@@ -27,3 +27,6 @@ jest
 *.sln
 *.sw?
 *.env
+
+# custom scripts
+/build/*

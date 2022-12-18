@@ -1,0 +1,23 @@
+summary: Ritorna le informazioni pubbliche di un venditore
+description: contiene l'username e la valutazione di un utente
+tags:
+  - Seller
+
+parameters:
+  - in: path
+    name: username
+    schema:
+      type: string
+    required: true
+
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      $ref: ../../components/schemas/seller/Seller.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
