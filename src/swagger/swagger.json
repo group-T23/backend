@@ -285,7 +285,7 @@
         }
       }
     },
-    "/seller/public/{username}": {
+    "/seller/public/?username={username}": {
       "get": {
         "summary": "Ritorna le informazioni pubbliche di un venditore",
         "description": "contiene l'username e la valutazione di un utente",
@@ -311,6 +311,93 @@
           },
           "400": {
             "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/email/?email={email}": {
+      "get": {
+        "summary": "Controllo di una email",
+        "description": "si verifica che un indirizzo email sia raggiungibile",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reachable: email raggiungibile correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email già in utilizzo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Verifica di una email",
+        "description": "si esegue la verifica di un indirizzo email associato ad un utente",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Codice di verifica",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verified: email verificata con successo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email non assocciata ad alcun utente",
             "schema": {
               "$ref": "#/paths/~1buyer/get/responses/403/schema"
             }
@@ -495,6 +582,14 @@
           "rating": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
           }
         }
       },

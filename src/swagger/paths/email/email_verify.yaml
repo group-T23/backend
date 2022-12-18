@@ -16,7 +16,7 @@ requestBody:
   content:
     application/json:
       schema:
-        type: ../../components/schemas/email/Email.yaml
+        $ref: ../../components/schemas/email/Email.yaml
 
 responses:
   '200':

@@ -18,12 +18,12 @@
   delete:
     $ref: ./seller/seller_remove.yaml
 
-/seller/public/{username}:
+/seller/public/?username={username}:
   get:
     $ref: ./seller/seller_public.yaml
   
 # Email's API
-/email:
+/email/?email={email}:
   get:
     $ref: ./email/email_check.yaml
   post:
