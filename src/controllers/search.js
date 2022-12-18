@@ -1,6 +1,6 @@
 const Item = require("../models/Item");
 const Category = require("../models/Category");
-const User = require("../models/User");
+const Buyer = require("../models/Buyer");
 
 /**
  * la fuzione effettua una ricerca degli articoli in base 
@@ -139,7 +139,7 @@ const search = async(req, res) => {
         //ricerca user che ha pubblicato l'articolo
         for(let i=0; i<result.length; i++){
             let elem = result[i];
-            let res = await User.find({"$and": [{"articles.id": {"$in": [elem._id]}}, {"reviews.rating": {"$gt": rating}}]});
+            let res = await Buyer.find({"$and": [{"articles.id": {"$in": [elem._id]}}, {"reviews.rating": {"$gt": rating}}]});
         
             //se il risultato della query ottiene una lista vuota vuol dire che non
             //ho un articolo con una recensione maggiore o uguale a quella indicata

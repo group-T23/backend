@@ -15,6 +15,10 @@ Seller:
 SellerPublic:
   $ref: ./seller/SellerPublic.yaml
 
+# Email's schemas
+Email:
+  $ref: ./email/Email.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml
