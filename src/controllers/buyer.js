@@ -1,13 +1,30 @@
 const { getAuthenticatedBuyer } = require('../utils/auth');
+const crypto = require('crypto');
 const Buyer = require('../models/Buyer');
 const Seller = require('../models/Seller');
 const Item = require('../models/Item');
 const Mail = require('../utils/email');
 
 const getInfo = async(req, res) => {
-    const buyer = await getAuthenticatedBuyer;
-    return res.status(200).json({ buyer: buyer, code: "", message: "success" });
+    const buyer = await getAuthenticatedBuyer(req, res);
+    const ret = {
+        id: buyer.id,
+        firstname: buyer.firstname,
+        lastname: buyer.lastname,
+        username: buyer.username,
+        email: buyer.email,
+        addresses: buyer.addresses,
+        phone: buyer.phone,
+        cart: buyer.cart,
+        wishlist: buyer.wishlist,
+        proposals: buyer.proposals,
+        isVerified: buyer.isVerified,
+        isSeller: buyer.isSeller,
+        sellerId: buyer.sellerId
+    }
+    return res.status(200).json({ buyer: ret, code: "", message: "success" });
 }
+
 
 const create = async(req, res) => {
     const url = require('../utils/address');
@@ -18,13 +35,16 @@ const create = async(req, res) => {
     let code, result;
     do {
         code = crypto.randomBytes(32).toString('hex');
-        result = await User.exists({ verificationCode: code });
+        result = await Buyer.exists({ verificationCode: code });
     } while (result);
 
-    //FIXME: optional params
+    if (await Buyer.exists({ username: data.username }))
+        return res.status(422).json({ code: "", message: "unable to create, username not available" });
+
+
     const buyer = new Buyer({
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstname: data.firstname,
+        lastname: data.lastname,
         username: data.username,
         email: data.email,
         passwordHash: password,
@@ -34,32 +54,31 @@ const create = async(req, res) => {
 
         isVerified: false,
         verificationCode: code,
-
-        isSeller: data.seller,
     });
 
-    buyer.save(error => {
-        if (error)
-            return res.status(500).json({ code: "", message: "unable to create" });
+    let seller;
+    if (data.address && data.prefix && data.number) {
+        buyer.isSeller = true;
+        seller = new Seller({
+            userId: buyer
+        });
+        buyer.sellerId = seller.id;
+    }
 
-        Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
-    });
+    try {
+        await buyer.save();
+        if (seller)
+            await seller.save();
 
-    return res.status(200).json({ code: "", message: "success" });
+        await Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
+        return res.status(201).json({ code: "", message: "success" });
+    } catch (error) {
+        return res.status(500).json({ code: "", message: "unable to create" });
+    }
 }
 
 const edit = async(req, res) => {
-    const url = require('../utils/address');
-    let buyer = await getAuthenticatedBuyer;
-
-    if (req.body.email) {
-        await Mail.send(
-            req.body.email,
-            'Aggiornamento credenziali Skupply',
-            `Per confermare il nuovo indirizzo email clicca sul seguente link:\n
-            ${url}/users/email/?old=${buyer.email}&new=${req.body.email}`
-        );
-    }
+    let buyer = await getAuthenticatedBuyer(req, res);
 
     if (req.body.firstname)
         buyer.firstname = req.body.firstname;
@@ -67,16 +86,29 @@ const edit = async(req, res) => {
     if (req.body.lastname)
         buyer.lastname = req.body.lastname;
 
-    await buyer.save(err => {
-        if (err)
-            return res.status(500).json({ code: "", message: "unable to save changes" });
-    });
+    if (req.body.password) {
+        const hash = crypto.createHash('sha256');
+        const password = hash.update(req.body.password, 'utf-8').digest('hex');
+        buyer.passwordHash = password;
+    }
 
-    return res.status(200).json({ code: "", message: "success" });
+    if (req.body.prefix)
+        buyer.prefix = req.body.prefix;
+
+    if (req.body.number)
+        buyer.number = req.body.number;
+
+    buyer.save()
+        .then(ok => {
+            return res.status(200).json({ code: "", message: "success" })
+        })
+        .catch(err => {
+            return res.status(500).json({ code: "", message: "unable to save changes" });
+        });
 }
 
 const remove = async(req, res) => {
-    let buyer = await getAuthenticatedBuyer;
+    let buyer = await getAuthenticatedBuyer(req, res);
 
     //TODO: remove chats
 
@@ -84,24 +116,22 @@ const remove = async(req, res) => {
     if (buyer.isSeller) {
         let seller = await Seller.find({ _id: buyer.sellerId });
 
-        seller.items.forEach(async itemId => {
-            let item = await Item.find({ _id: itemId });
-            item.state = 'DELETED';
-            await item.save(err => {
-                if (err)
+        if (seller.items)
+            seller.items.forEach(async itemId => {
+                let item = await Item.find({ _id: itemId });
+                item.state = 'DELETED';
+                item.save().then(ok => {}).catch(err => {
                     return res.status(500).json({ code: "", message: "unable to save changes" });
+                });
             });
-        });
 
-        await Seller.deleteOne({ id: seller.id }, err => {
+        Seller.deleteOne({ id: seller.id }, err => {
             if (err)
                 return res.status(500).json({ code: "", message: "unable to remove" });
         })
-
-        return res.status(200).json({ code: "", message: "success" });
     }
 
-    await Buyer.deleteOne({ id: buyer.id }, err => {
+    Buyer.deleteOne({ id: buyer.id }, err => {
         if (err)
             return res.status(500).json({ code: "", message: "unable to remove" });
     });

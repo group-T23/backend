@@ -7,7 +7,7 @@ const BuyerSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true, dropDups: true },
     passwordHash: { type: String, required: true },
     addresses: [{
-        address: { type: String, default: null, unique: true, dropDups: true, required: true },
+        address: { type: String, default: null },
         isVerified: { type: Boolean, default: false },
         isDefault: { type: Boolean, default: false }
     }],
@@ -21,12 +21,12 @@ const BuyerSchema = new mongoose.Schema({
     creationDate: { type: Date, default: Date.now },
     verificationCode: { type: String, required: true, unique: true },
 
-    cart: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true }, quantity: { type: Number, default: 1 } }],
-    wishlist: [{ id: { type: mongoose.Types.ObjectId, required: true, unique: true, dropsDups: true } }],
+    cart: [{ id: { type: mongoose.Types.ObjectId, required: true }, quantity: { type: Number, default: 1 } }],
+    wishlist: [{ id: { type: mongoose.Types.ObjectId, required: true } }],
     proposals: { type: [mongoose.Types.ObjectId], required: true },
 
     isSeller: { type: Boolean, default: false },
-    sellerId: { type: mongoose.Types.ObjectId },
+    sellerId: { type: mongoose.Types.ObjectId, default: null },
 });
 
 const Buyer = mongoose.model('Buyer', BuyerSchema);
