@@ -1,0 +1,9 @@
+type: object
+
+properties:
+  username:
+    type: string
+  
+  rating:
+    type: integer
+    format: int32

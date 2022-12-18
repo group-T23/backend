@@ -1,0 +1,20 @@
+# Buyer's schemas
+Buyer:
+  $ref: ./buyer/Buyer.yaml
+
+BuyerForm:
+  $ref: ./buyer/BuyerForm.yaml
+
+BuyerEdit:
+  $ref: ./buyer/BuyerEdit.yaml
+
+# Seller's schemas
+Seller:
+  $ref: ./seller/Seller.yaml
+
+SellerPublic:
+  $ref: ./seller/SellerPublic.yaml
+
+# Common schemas
+Response:
+  $ref: ./common/Response.yaml

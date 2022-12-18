@@ -1,0 +1,517 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Skupply",
+    "description": "Piattaforma per la compravendita di articoli scolastici",
+    "contact": {
+      "name": "Piccin Andrea - Di Zepp Dorijan - Rossi Simone",
+      "email": "andrea.piccin@studenti.unitn.it"
+    },
+    "licence": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Internal Testing Server"
+    }
+  ],
+  "paths": {
+    "/buyer": {
+      "post": {
+        "summary": "Creazione di un nuovo utente",
+        "description": "",
+        "tags": [
+          "Buyer"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyerForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created: utente creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ritorna il profilo dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Buyer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "buyer": {
+                  "type": "object",
+                  "schema": {
+                    "$ref": "#/components/schemas/Buyer"
+                  }
+                },
+                "code": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 734
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Modifica dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Buyer"
+        ],
+        "requestBody": {
+          "description": "Nuovi dati dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyerEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminazione dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Buyer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/seller": {
+      "post": {
+        "summary": "Creazione di un venditore",
+        "description": "si abilita l' utente autenticato (buyer) ad operare come venditore",
+        "tags": [
+          "Seller"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created: venditore creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ritorna il profilo del venditore autenticato",
+        "description": "",
+        "tags": [
+          "Seller"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Seller"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminazione del venditore autenticato",
+        "description": "",
+        "tags": [
+          "Seller"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/seller/public/{username}": {
+      "get": {
+        "summary": "Ritorna le informazioni pubbliche di un venditore",
+        "description": "contiene l'username e la valutazione di un utente",
+        "tags": [
+          "Seller"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Seller"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Buyer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "isVerified": {
+                  "type": "boolean"
+                },
+                "isDefault": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "phone": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              }
+            }
+          },
+          "cart": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "wishlist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "proposals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "isSeller": {
+            "type": "boolean"
+          },
+          "sellerId": {
+            "type": "string"
+          }
+        }
+      },
+      "BuyerForm": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "address": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "username",
+          "email",
+          "password"
+        ]
+      },
+      "BuyerEdit": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          }
+        }
+      },
+      "Seller": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userid": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "proposals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SellerPublic": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "example": 734
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      }
+    }
+  }
+}

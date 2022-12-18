@@ -1,0 +1,23 @@
+type: object
+
+properties:
+  id:
+    type: string
+  
+  userid:
+    type: string
+
+  items:
+    type: array
+    items:
+      type: string
+  
+  reviews:
+    type: array
+    items:
+      type: string
+  
+  proposals:
+    type: array
+    items:
+      type: string
