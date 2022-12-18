@@ -1,0 +1,63 @@
+type: object
+properties:
+
+  id:
+    type: string
+  
+  firstname:
+    type: string
+
+  lastname:
+    type: string
+
+  username:
+    type: string
+
+  email:
+    type: string
+
+  addresses:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        isVerified:
+          type: boolean
+        isDefault:
+          type: boolean
+
+  phone:
+    type: object
+    properties:
+      prefix:
+        type: string
+      number:
+        type: string
+
+  cart:
+    type: array
+    items:
+      type: string
+
+  wishlist:
+    type: array
+    items:
+      type: string
+
+  proposals:
+    type: array
+    items:
+      type: string
+
+  isVerified:
+    type: boolean
+
+  isSeller:
+    type: boolean
+  
+  sellerId:
+    type: string

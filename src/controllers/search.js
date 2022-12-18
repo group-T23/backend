@@ -1,4 +1,4 @@
-const Article = require("../models/Article");
+const Item = require("../models/Item");
 const Category = require("../models/Category");
 const User = require("../models/User");
 
@@ -13,76 +13,83 @@ const search = async(req, res) => {
     let category_id;
     let result;
 
-    if(keyWord){
+    if (keyWord) {
         //ricerca con almeno parametro keyWord
 
-        if(!category && !location){
+        if (!category && !location) {
             //ricerca solo per parola chiave
-            result = await Article.find({title: {'$regex': keyWord, '$options': 'i'}});
-        } 
-        else if(category && !location){
+            result = await Item.find({ title: { '$regex': keyWord, '$options': 'i' } });
+        } else if (category && !location) {
             //ricerca per keyWord e category
 
             //ricerca id della categoria indicata
-            result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+            result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
             category_id = result;
-            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});    
+            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
 
-            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
-            
-            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
-            {"categories.id": {'$in': [category_id]}}]});
-        } 
-        else if(location && !category) {
+            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
+
+            result = await Item.find({
+                $and: [{ title: { '$regex': keyWord, '$options': 'i' } },
+                    { "categories.id": { '$in': [category_id] } }
+                ]
+            });
+        } else if (location && !category) {
             //ricerca per keyWord e location
-            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
-                                    {location: {'$regex': location, '$options': 'i'}}]});                     
-        } 
-        else {
+            result = await Item.find({
+                $and: [{ title: { '$regex': keyWord, '$options': 'i' } },
+                    { location: { '$regex': location, '$options': 'i' } }
+                ]
+            });
+        } else {
             //ricerca completa 
-            result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+            result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
             category_id = result;
-            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});    
+            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
 
-            if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
-            
-            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}},
-                                    {"categories.id": {'$in': [category_id]}}]});
+            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
+
+            result = await Item.find({
+                $and: [{ title: { '$regex': keyWord, '$options': 'i' } }, { location: { '$regex': location, '$options': 'i' } },
+                    { "categories.id": { '$in': [category_id] } }
+                ]
+            });
         }
-    }
-    else if(category){
+    } else if (category) {
         //ricerca con almeno parametro category
-        result = await Category.findOne({title: {'$regex': category, '$options': 'i'}});
+        result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
         category_id = result;
-        if(!category_id) return res.status(404).json({code: "704", message: "category not found"});
+        if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
 
-        if(!keyWord && !location){
+        if (!keyWord && !location) {
             //ricerca solo per categoria
             //ricerca id della categoria indicata
-            result = await Article.find({"categories.id": {'$in': [category_id]}});
-        } 
-        else if(keyWord && !location){
+            result = await Item.find({ "categories.id": { '$in': [category_id] } });
+        } else if (keyWord && !location) {
             //ricerca per keyWord e category
-            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, 
-            {"categories.id": {'$in': [category_id]}}]});
-        } 
-        else if(location && !keyWord) {
+            result = await Item.find({
+                $and: [{ title: { '$regex': keyWord, '$options': 'i' } },
+                    { "categories.id": { '$in': [category_id] } }
+                ]
+            });
+        } else if (location && !keyWord) {
             //ricerca per category e location
-            result = await Article.find({$and: [{location: {'$regex': location, '$options': 'i'}}, {"categories.id": {'$in': [category_id]}}]});
-        } 
-        else {
+            result = await Item.find({ $and: [{ location: { '$regex': location, '$options': 'i' } }, { "categories.id": { '$in': [category_id] } }] });
+        } else {
             //ricerca completa 
-            result = await Article.find({$and: [{title: {'$regex': keyWord, '$options': 'i'}}, {location: {'$regex': location, '$options': 'i'}},
-                                    {"categories.id": {'$in': [category_id]}}]});
-        }    
-    } 
-    else {
+            result = await Item.find({
+                $and: [{ title: { '$regex': keyWord, '$options': 'i' } }, { location: { '$regex': location, '$options': 'i' } },
+                    { "categories.id": { '$in': [category_id] } }
+                ]
+            });
+        }
+    } else {
         //mancanza parametri base per la ricerca
-        return res.status(400).json({code: "702", message: "missing arguments"});
-    }    
+        return res.status(400).json({ code: "702", message: "missing arguments" });
+    }
 
-    if(!result)
-        return res.status(404).json({code: "701", message: "database error"});
+    if (!result)
+        return res.status(404).json({ code: "701", message: "database error" });
 
     /**
      * parametri diposnibili per i filrti:

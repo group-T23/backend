@@ -1,0 +1,25 @@
+summary: Creazione di un venditore
+description: si abilita l' utente autenticato (buyer) ad operare come venditore
+tags:
+  - Seller
+
+responses:
+  '201':
+    description: "Created: venditore creato con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '422':
+    description: "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

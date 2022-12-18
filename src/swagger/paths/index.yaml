@@ -1,0 +1,24 @@
+# Buyer's API
+/buyer:
+  post:
+    $ref: ./buyer/buyer_create.yaml
+  get:
+    $ref: ./buyer/buyer_get.yaml
+  put:
+    $ref: ./buyer/buyer_edit.yaml
+  delete:
+    $ref: ./buyer/buyer_remove.yaml
+
+# Seller's API
+/seller:
+  post:
+    $ref: ./seller/seller_create.yaml
+  get:
+    $ref: ./seller/seller_get.yaml
+  delete:
+    $ref: ./seller/seller_remove.yaml
+
+/seller/public/{username}:
+  get:
+    $ref: ./seller/seller_public.yaml
+  
