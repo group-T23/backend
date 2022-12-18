@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const ItemSchema = new mongoose.Schema({
-    title: { type: string, required: true },
-    description: { type: string, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
     ownerId: { type: mongoose.Types.ObjectId, required: true },
     quantity: { type: Number, required: true, default: 1 },
     categories: { type: [mongoose.Types.ObjectId], required: true },

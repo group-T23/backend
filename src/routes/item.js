@@ -19,3 +19,5 @@ router.put('/buy', verifyAuthentication, itemController.buy);
 
 // D - delete
 router.delete('/', verifyAuthentication, itemController.remove);
+
+module.exports = router;

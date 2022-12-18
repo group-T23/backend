@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const proposalController = require('../controllers/proposal');
-const { verifyAuthentication } = require('../utils/auth').default;
+const { verifyAuthentication } = require('../utils/auth');
 
 // C - create
 router.post('/', verifyAuthentication, proposalController.create);
