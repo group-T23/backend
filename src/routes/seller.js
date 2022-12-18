@@ -4,14 +4,13 @@ const sellerController = require('../controllers/seller');
 const { verifyAuthentication } = require('../utils/auth');
 
 // C - create
-router.post('/seller', verifyAuthentication, sellerController.create);
+router.post('/', verifyAuthentication, sellerController.create);
 
 // R - read
-router.get('/seller', verifyAuthentication, sellerController.getInfo)
-router.get('/seller/public/username=:username', sellerController.getPublicInfo)
-
-// U - update
-router.patch('/seller', verifyAuthentication, sellerController.addItem);
+router.get('/', verifyAuthentication, sellerController.getInfo)
+router.get('/public/username=:username', sellerController.getPublicInfo)
 
 // D - delete
-router.delete('/seller', verifyAuthentication, sellerController.remove);
+router.delete('/', verifyAuthentication, sellerController.remove);
+
+module.exports = router;
