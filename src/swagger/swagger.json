@@ -324,7 +324,7 @@
         }
       }
     },
-    "/email/?email={email}": {
+    "/email": {
       "get": {
         "summary": "Controllo di una email",
         "description": "si verifica che un indirizzo email sia raggiungibile",
@@ -333,7 +333,7 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "email",
             "schema": {
               "type": "string"
@@ -370,7 +370,7 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "email",
             "schema": {
               "type": "string"

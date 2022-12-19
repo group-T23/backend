@@ -4,7 +4,7 @@ tags:
   - Email
 
 parameters:
-  - in: path
+  - in: query
     name: email
     schema:
       type: string
