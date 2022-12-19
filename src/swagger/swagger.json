@@ -317,6 +317,122 @@
           }
         }
       }
+    },
+    "/search": {
+      "get": {
+        "summary": "Ritorna una lista di articoli",
+        "description": "Dati una serie di parametri, vengono trovati i soli articoli che rispettano i criteri di ricerca",
+        "tags": [
+          "Search"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "min_price",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_price",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "shipment",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rating",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "orderBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Richiesta mal formata, parametri mancanti",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "404": {
+            "description": "Categoria non trovata",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/search/categories": {
+      "get": {
+        "summary": "Ritorna tutte le categorie presenti",
+        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
     }
   },
   "components": {

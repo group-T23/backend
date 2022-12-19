@@ -22,3 +22,12 @@
   get:
     $ref: ./seller/seller_public.yaml
   
+# Search's API
+/search:
+  get:
+    $ref: ./search/search_get.yaml
+
+/search/categories:
+  get:
+    $ref: ./search/search_get_categories.yaml
+

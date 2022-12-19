@@ -40,7 +40,7 @@ const create = async(req, res) => {
 
 const getInfo = async(req, res) => {
     //required params
-    if (!req.query.id)
+    if (!req.params.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // invalid params

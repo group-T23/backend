@@ -48,31 +48,52 @@ const main = async() => {
     await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
 
     /*
-    const Article = require('./models/Article');
+  const Review = require('./models/Review');
+  const review = new Review({
+    authorId: mongoose.Types.ObjectId('639f6b399b38c1bfc963335e'),
+    sellerId: mongoose.Types.ObjectId('639f3ed128d35b18679024d7'),
+    title: "Recensione ASD",
+    description: "Appunti disorganizati e ad un prezzo troppo alto",
+    rating: 2,
+  });
+  review.save();
+*/
+    /*
+    const Category = require('./models/Category');
+    const categoria = new Category({
+        title: "superiori",
+        description: "Articoli scolastici per le superiori",
+    });
+    
+    categoria.save();
+*/
+/*
+    const Article = require('./models/Item');
     const articolo = new Article({
-      title: "Testo introduttivo alla programmazione dinamica",
-      description: "Testo per il corso di algoritmi e strutture dati",
-      state: "Usato",
-      price: "30",
-      quantity: "1",
-      shipment: "disponibile",
-      handDeliver: false,
-      isPublished: true,
-      categories: [{id: mongoose.Types.ObjectId('6380a78ee40a0ae7c122383c')}],
-      photos: [{path: "/pathImmagine"}],
+      title: "Testo introduzione alla chimica",
+      description: "testo introduttivo alla chimica",
+      ownerId: mongoose.Types.ObjectId('639f6b399b38c1bfc9633360'),
+      quantity: 1,
+      categories: [mongoose.Types.ObjectId('63a034204e998e6183cf2b04')],
+      photos: ["/pathImmagine"],
+      conditions: "USED",
+      price: 15.7,
+      city: "Belluno",
+      state: "PUBLISHED",
     });
 
       articolo.save((err, data) => {
         if(err) console.log(err);
         else console.log("saved");
-      });
+      });*/
 
+      /*
       const crypto = require('crypto');
       const hash = crypto.createHash('sha256');
       console.log(hash.update("Alessandro02!", 'utf-8').digest('hex'));
-      */
+      
 
-    /*
+    
     const User = require("./models/User");
     const user = new User({
       firstName: "Alessandro",

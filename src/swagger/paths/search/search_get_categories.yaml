@@ -1,0 +1,15 @@
+summary: Ritorna tutte le categorie presenti
+description: ''
+tags:
+  - Search
+
+responses:
+  '200':
+    description: "OK"
+    schema: 
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml   
