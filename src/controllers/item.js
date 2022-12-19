@@ -44,27 +44,27 @@ const getInfo = async(req, res) => {
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.body.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Item.exists({ id: req.body.id })))
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
-    const item = await Item.findById(req.query.id);
+    const item = await Item.findById(req.params.id);
     return res.status(200).json({ item: item, code: "", message: "success" });
 }
 
 const getByUser = async(req, res) => {
     //required params
-    if (!req.query.username)
+    if (!req.params.username)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // invalid params
-    if (!(await Buyer.exists({ username: req.query.username })))
+    if (!(await Buyer.exists({ username: req.params.username })))
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
-    let buyer = await Buyer.findOne({ username: req.query.username });
+    let buyer = await Buyer.findOne({ username: req.params.username });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "", message: "invalid user type" });
 
-    const items = await Item.find({ ownerId: buyer.sellerId })
+    const items = await Item.find({ ownerId: params.sellerId })
     return res.status(200).json({ items: items, code: "", message: "success" });
 }
 

@@ -31,3 +31,9 @@
   get:
     $ref: ./search/search_get_categories.yaml
 
+# Email's API
+/email:
+  get:
+    $ref: ./email/email_check.yaml
+  post:
+    $ref: ./email/email_verify.yaml

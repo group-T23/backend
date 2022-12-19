@@ -16,6 +16,11 @@ responses:
     description: "OK"
     schema:
       $ref: ../../components/schemas/seller/Seller.yaml
+
+  '422':
+    description: "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
   
   '400':
     description: "Bad Request: parametri mancanti o non validi"

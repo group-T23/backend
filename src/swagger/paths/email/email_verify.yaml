@@ -1,0 +1,35 @@
+summary: Verifica di una email
+description: si esegue la verifica di un indirizzo email associato ad un utente
+tags:
+  - Email
+
+parameters:
+  - in: query
+    name: email
+    schema:
+      type: string
+    required: true
+
+requestBody:
+  description: Codice di verifica
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/email/Email.yaml
+
+responses:
+  '200':
+    description: "Verified: email verificata con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: richiesta non formattata correttamente"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '403':
+    description: "Forbidden: email non assocciata ad alcun utente"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

@@ -2,6 +2,7 @@ const Item = require("../models/Item");
 const Category = require("../models/Category");
 const User = require("../models/Seller");
 const Review = require("../models/Review");
+const Buyer = require("../models/Buyer");
 
 /**
  * la fuzione effettua una ricerca degli articoli in base 
