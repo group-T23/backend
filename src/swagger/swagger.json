@@ -285,7 +285,7 @@
         }
       }
     },
-    "/seller/public/?username={username}": {
+    "/seller/public/{username}": {
       "get": {
         "summary": "Ritorna le informazioni pubbliche di un venditore",
         "description": "contiene l'username e la valutazione di un utente",
@@ -311,6 +311,12 @@
           },
           "400": {
             "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
             "schema": {
               "$ref": "#/paths/~1buyer/get/responses/403/schema"
             }
