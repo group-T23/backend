@@ -76,7 +76,7 @@ describe('Search test', () => {
             expect(element).toHaveProperty("categories")
         })
 
-        //verifica che sotto l'attributo cateogries vi sia un array di oggetti contenente _id ed id
+        //verifica che sotto l'attributo categories vi sia un array di oggetti contenente _id ed id
         response.body.articles.forEach(element => {
             expect(element.categories).toStrictEqual(expect.arrayContaining([{"_id": expect.any(String), "id": expect.any(String)}]))
         })
