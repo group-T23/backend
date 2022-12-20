@@ -90,25 +90,25 @@ const main = async() => {
       /*
       const crypto = require('crypto');
       const hash = crypto.createHash('sha256');
-      console.log(hash.update("Alessandro02!", 'utf-8').digest('hex'));
+      console.log(hash.update("mettipsw#", 'utf-8').digest('hex'));
       
 
     
-    const User = require("./models/User");
+    const User = require("./models/Buyer");
     const user = new User({
-      firstName: "Alessandro",
-      lastName: "De Bona",
-      username: "Ale_DB",
-      email: "alessandro@gmail.com",
-      password: hash.update("psw", 'utf-8').digest('hex'),
-      verificationCode: "codiceDiVerifica"
+      firstname: "Dorijan",
+      lastname: "Di Zepp",
+      username: "najirod",
+      email: "dorijan.dizepp@gmail.com",
+      passwordHash: hash.update("mettipsw#", 'utf-8').digest('hex'),
+      verificationCode: "01qd543489e06ebe85302a6a8dba1ef448a16972d15fweb71560e8gc1a4d9f12"
     });
 
     user.save((err, data)=>{
       if(err) console.log(err);
       else console.log("saved");
-    });*/
-
+    });
+*/
     app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
 }
 
