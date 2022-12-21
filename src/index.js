@@ -37,78 +37,20 @@ app.use('/buyer', buyer);
 app.use('/seller', seller);
 app.use('/item', item);
 
-
 // Media endpoint
-app.use(express.static('media'))
+const path = require('path');
+app.get('/', (req, res) => {
+  const filePath = path.join(__dirname, '../dist/index.html');
+  res.sendFile(filePath);
+});
 
-const mail = require('./utils/email');
+app.use(express.static('media'));
+app.use(express.static('dist'));
+
 const PORT = process.env.PORT || 3000;
 
 const main = async() => {
     await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
-
-    /*
-  const Review = require('./models/Review');
-  const review = new Review({
-    authorId: mongoose.Types.ObjectId('639f6b399b38c1bfc963335e'),
-    sellerId: mongoose.Types.ObjectId('639f3ed128d35b18679024d7'),
-    title: "Recensione ASD",
-    description: "Appunti disorganizati e ad un prezzo troppo alto",
-    rating: 2,
-  });
-  review.save();
-*/
-    /*
-    const Category = require('./models/Category');
-    const categoria = new Category({
-        title: "superiori",
-        description: "Articoli scolastici per le superiori",
-    });
-    
-    categoria.save();
-*/
-/*
-    const Article = require('./models/Item');
-    const articolo = new Article({
-      title: "Testo introduzione alla chimica",
-      description: "testo introduttivo alla chimica",
-      ownerId: mongoose.Types.ObjectId('639f6b399b38c1bfc9633360'),
-      quantity: 1,
-      categories: [mongoose.Types.ObjectId('63a034204e998e6183cf2b04')],
-      photos: ["/pathImmagine"],
-      conditions: "USED",
-      price: 15.7,
-      city: "Belluno",
-      state: "PUBLISHED",
-    });
-
-      articolo.save((err, data) => {
-        if(err) console.log(err);
-        else console.log("saved");
-      });*/
-
-      /*
-      const crypto = require('crypto');
-      const hash = crypto.createHash('sha256');
-      console.log(hash.update("mettipsw#", 'utf-8').digest('hex'));
-      
-
-    
-    const User = require("./models/Buyer");
-    const user = new User({
-      firstname: "Dorijan",
-      lastname: "Di Zepp",
-      username: "najirod",
-      email: "dorijan.dizepp@gmail.com",
-      passwordHash: hash.update("mettipsw#", 'utf-8').digest('hex'),
-      verificationCode: "01qd543489e06ebe85302a6a8dba1ef448a16972d15fweb71560e8gc1a4d9f12"
-    });
-
-    user.save((err, data)=>{
-      if(err) console.log(err);
-      else console.log("saved");
-    });
-*/
     app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
 }
 
