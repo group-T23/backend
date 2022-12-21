@@ -1,0 +1,33 @@
+summary: Ritorna la proposta specificata nella query string
+tags:
+  - Proposal
+
+parameters:
+
+  - in: query
+    name: id
+    schema:
+      type: string
+    required: true
+
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      $ref: ../../components/schemas/proposal/Proposal.yaml
+
+  '422':
+    description: "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+      
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
