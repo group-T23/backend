@@ -782,6 +782,148 @@
         }
       }
     },
+    "/wishlist": {
+      "post": {
+        "summary": "Articoli wishlist",
+        "description": "Lista di tutti gli articoli della wishlist dell'utente",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: lista articoli della wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email non corrisponde a nessun utente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Rimozione articolo",
+        "description": "Rimozione di un articolo dalla wishlist",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo rimosso dalla wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/wishlist/add": {
+      "put": {
+        "summary": "Inserimento nuovo articolo",
+        "description": "Inserimento di un nuovo articolo all'interno della wishlist dell'utente",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo inserito nella wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id_item non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id_item non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
     "/proposals": {
       "post": {
         "summary": "Creazione di una proposta",

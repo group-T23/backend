@@ -59,6 +59,17 @@
   post:
     $ref: ./cart/cart_post_checkout.yaml
 
+# Wishlist's API
+/wishlist:
+  post:
+    $ref: ./wishlist/wishlist_post.yaml
+  delete:
+    $ref: ./wishlist/wishlist_delete.yaml
+
+/wishlist/add:
+  put:
+    $ref: ./wishlist/wishlist_put.yaml
+
 # Proposal's API
 /proposals:
   post:
