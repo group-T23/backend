@@ -63,3 +63,9 @@
   put:
     $ref: ./proposal/proposal_reject.yaml
 
+
+# Auth
+/login:
+  post:
+    $ref: ./auth/login.yaml
+
