@@ -1,0 +1,15 @@
+type: object
+
+properties:
+  
+  itemId:
+    type: string
+  
+  price:
+    type: number
+    format: float
+
+
+required:
+  - itemId
+  - price
