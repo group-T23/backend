@@ -16,11 +16,13 @@ const loginUser = async(req, res) => {
             code: "",
             message: "loged in",
             ok: true,
-            firstname: result.firstname,
-            lastname: result.lastname,
-            username: result.username,
-            email: result.email,
-            token: token
+            user: {
+                firstname: result.firstname,
+                lastname: result.lastname,
+                username: result.username,
+                email: result.email,
+                token: token
+            }
         });
     else
         res.status(401).json({ code: "", message: "wrong credentials", ok: false });

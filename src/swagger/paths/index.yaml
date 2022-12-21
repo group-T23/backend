@@ -37,3 +37,35 @@
     $ref: ./email/email_check.yaml
   post:
     $ref: ./email/email_verify.yaml
+
+# Proposal's API
+/proposals:
+  post:
+    $ref: ./proposal/proposal_create.yaml
+  get:
+    $ref: ./proposal/proposal_get.yaml
+  delete:
+    $ref: ./proposal/proposal_remove.yaml
+
+/proposals/in:
+  get:
+    $ref: ./proposal/proposal_in.yaml
+
+/proposals/out:
+  get:
+    $ref: ./proposal/proposal_out.yaml
+
+/proposals/accept/{id}:
+  put:
+    $ref: ./proposal/proposal_accept.yaml
+
+/proposals/reject/{id}:
+  put:
+    $ref: ./proposal/proposal_reject.yaml
+
+
+# Auth
+/login:
+  post:
+    $ref: ./auth/login.yaml
+

@@ -1,0 +1,16 @@
+type: object
+
+properties:
+
+  itemId:
+    type: string
+  
+  authorId:
+    type: string
+  
+  state:
+    type: string
+  
+  price:
+    type: number
+    format: float

@@ -324,93 +324,6 @@
         }
       }
     },
-    "/email": {
-      "get": {
-        "summary": "Controllo di una email",
-        "description": "si verifica che un indirizzo email sia raggiungibile",
-        "tags": [
-          "Email"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Reachable: email raggiungibile correttamente",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          },
-          "400": {
-            "description": "Bad Request: richiesta non formattata correttamente",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          },
-          "403": {
-            "description": "Forbidden: email già in utilizzo",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Verifica di una email",
-        "description": "si esegue la verifica di un indirizzo email associato ad un utente",
-        "tags": [
-          "Email"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "description": "Codice di verifica",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Email"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Verified: email verificata con successo",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          },
-          "400": {
-            "description": "Bad Request: richiesta non formattata correttamente",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          },
-          "403": {
-            "description": "Forbidden: email non assocciata ad alcun utente",
-            "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
-            }
-          }
-        }
-      }
-    },
     "/search": {
       "get": {
         "summary": "Ritorna una lista di articoli",
@@ -520,6 +433,476 @@
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/email": {
+      "get": {
+        "summary": "Controllo di una email",
+        "description": "si verifica che un indirizzo email sia raggiungibile",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reachable: email raggiungibile correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email già in utilizzo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Verifica di una email",
+        "description": "si esegue la verifica di un indirizzo email associato ad un utente",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Codice di verifica",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verified: email verificata con successo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email non assocciata ad alcun utente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals": {
+      "post": {
+        "summary": "Creazione di una proposta",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "requestBody": {
+          "description": "Dati della proposta da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created: utente creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ritorna la proposta specificata nella query string",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Proposal"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina la proposta specificata nella query string",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/in": {
+      "get": {
+        "summary": "Ritorna tutte le proposte in entrata dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/out": {
+      "get": {
+        "summary": "Ritorna tutte le proposte in uscita dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/accept/{id}": {
+      "put": {
+        "summary": "Accetta la proposta specificata nel path",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/reject/{id}": {
+      "put": {
+        "summary": "Rifiuta la proposta specificata nel path",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "Dati di login dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: venditore creato con successo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "firstname": {
+                      "type": "string"
+                    },
+                    "lastname": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: credenziali mancanti",
             "schema": {
               "$ref": "#/paths/~1buyer/get/responses/403/schema"
             }
@@ -714,6 +1097,40 @@
             "type": "string"
           }
         }
+      },
+      "Proposal": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "ProposalForm": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "required": [
+          "itemId",
+          "price"
+        ]
       },
       "Response": {
         "type": "object",

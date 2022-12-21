@@ -19,6 +19,13 @@ SellerPublic:
 Email:
   $ref: ./email/Email.yaml
 
+# Proposal's schemas
+Proposal:
+  $ref: ./proposal/Proposal.yaml
+
+ProposalForm:
+  $ref: ./proposal/ProposalForm.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml
