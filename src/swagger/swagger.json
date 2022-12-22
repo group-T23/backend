@@ -190,6 +190,45 @@
         }
       }
     },
+    "/buyer/find/": {
+      "get": {
+        "summary": "Cerca username",
+        "description": "Cerca se l'username fornito è già associato ad un account",
+        "tags": [
+          "Buyer"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found: l'username è già utilizzato da un account",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'username è disponibile",
+            "schema": {
+              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+            }
+          }
+        }
+      }
+    },
     "/seller": {
       "post": {
         "summary": "Creazione di un venditore",

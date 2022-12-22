@@ -8,6 +8,10 @@
     $ref: ./buyer/buyer_edit.yaml
   delete:
     $ref: ./buyer/buyer_remove.yaml
+  
+/buyer/find/:
+  get:
+    $ref: ./buyer/buyer_find.yaml
 
 # Seller's API
 /seller:
