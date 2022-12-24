@@ -63,8 +63,8 @@ const getByUser = async(req, res) => {
     let buyer = await Buyer.findOne({ username: req.params.username });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "", message: "invalid user type" });
-
-    const items = await Item.find({ ownerId: params.sellerId })
+   
+    const items = await Item.find({ ownerId: buyer._id })
     return res.status(200).json({ items: items, code: "", message: "success" });
 }
 
@@ -170,7 +170,21 @@ const getInfoSeller = async(req, res) => {
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // invalid params
-    if (!(await Seller.exists({ userId: req.params.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Seller.exists({ userId: req.params.id })))
+        return res.status(400).json({ code: "", message: "invalid arguments" });
+
+    let buyer = await Buyer.findOne({ _id: req.params.id });
+
+    return res.status(200).json({ user: buyer, code: "", message: "success" });    
+}
+
+const getInfoBuyer = async(req, res) => {
+    // required params
+    if(!req.params.id)
+        return res.status(400).json({ code: "", message: "missing arguments" });
+
+    // invalid params
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Buyer.exists({ userId: req.params.id })))
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
     let buyer = await Buyer.findOne({ _id: req.params.id });
@@ -342,6 +356,7 @@ module.exports = {
     getByUser,
     search,
     getInfoSeller,
+    getInfoBuyer,
     edit,
     publish,
     retire,

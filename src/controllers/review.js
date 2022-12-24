@@ -43,23 +43,48 @@ const create = async(req, res) => {
     return res.status(200).json({ code: "", message: "success" });
 }
 
+/**
+ * la funzione ritorna la lista delle recensioni che hanno come seller_id 
+ * quello definito del parametro dell'url
+ */
+const getSellerReviews = async(req, res) => {
+    // required params
+    if (!req.params.id)
+        return res.status(400).json({ code: "", message: "missing arguments" });
+
+    const id = req.params.id;
+    
+    // params validity
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).json({ code: "", message: "invalid arguments" });
+ 
+   //ricerca delle recensioni
+   var ObjectId = require('mongodb').ObjectId;
+   const result = await Review.find({sellerId: ObjectId(id)});
+
+   return res.status(200).json({ reviews: result, code: "", message: "success" });
+}
+
 const getInfo = async(req, res) => {
     // required params
-    if (!req.query.id)
+    if (!req.params.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // params validity
-    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Review.exists({ id: req.query.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Review.exists({ id: req.params.id })))
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
-    const review = await Review.findById(req.query.id);
+    const review = await Review.findById(req.params.id);
 
-    const pub = {
-        username: await Buyer.findById(review.authorId).username,
-        title: review.title,
-        description: review.description,
-        rating: review.rating
-    };
+    let pub = null;
+    if(review){
+        pub = {
+            username: await Buyer.findById(review.authorId).username,
+            title: review.title,
+            description: review.description,
+            rating: review.rating
+        };
+    }
 
     return res.status(200).json({ review: pub, code: "", message: "success" });
 }
@@ -92,7 +117,7 @@ const remove = async(req, res) => {
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
     const review = Review.findById(req.body.id);
-    let seller = Seller.findById(review.sellerId);
+    let seller = Seller.findById(review.userId);
 
     //remove from seller
     seller.reviews = seller.reviews.filter(rid => { return rid != review.id });
@@ -113,6 +138,7 @@ const remove = async(req, res) => {
 
 module.exports = {
     create,
+    getSellerReviews,
     getInfo,
     getAllIn,
     getAllOut,
