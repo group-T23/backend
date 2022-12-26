@@ -64,22 +64,6 @@ const getPublicInfo = async(req, res) => {
     return res.status(200).json({ seller: pub, code: "", message: "success" });
 }
 
-const sumRating = async (reviews) => {
-    let rating = 0;
-    reviews.forEach(async reviewId => {
-        const review = await Review.findById(reviewId);
-        rating += review.rating;
-    });
-
-    return rating;
-}
-
-const avgRating = async (rating, totalReviews) => {
-    if(totalReviews > 0)
-        return (rating * 1.0) / totalReviews;
-    else return null;
-}
-
 const create = async(req, res) => {
     let buyer = await getAuthenticatedBuyer(req, res);
 

@@ -2,7 +2,6 @@ const Item = require("../models/Item");
 const Category = require("../models/Category");
 const User = require("../models/Seller");
 const Review = require("../models/Review");
-const Buyer = require("../models/Buyer");
 
 /**
  * la fuzione effettua una ricerca degli articoli in base 
@@ -109,20 +108,24 @@ const search = async(req, res) => {
     let orderBy = req.query.orderBy;
 
     //applicazione filtri
+
+    //filtri fascia prezzo e spedizione
     if(minPrice || maxPrice || isShipment){
         result = result.filter(function (elem) {
             let flagMin = true;
             let flagMax = true;
             let flag = true;
+     
             if(minPrice || maxPrice){
                 //filtro per prezzo
                 if(minPrice)
-                    flagMin = (elem.price >= minPrice)
+                    flagMin = (parseFloat(elem.price) >= minPrice)
                 
                 if(maxPrice)
-                    flagMax = (elem.price<=maxPrice)
-            }
+                    flagMax = (parseFloat(elem.price) <= maxPrice)
 
+            }
+ 
             flag = flagMin && flagMax;
 
             if(isShipment != undefined){
@@ -130,7 +133,7 @@ const search = async(req, res) => {
                 //se il campo è false questo prende in cosiderazione tutti gli articoli
                 //che hanno anche la spedizione disponibile in modo contrario, 
                 //se il campo è true prende in considerazione solo quelli con spedizione disponibile
-                (isShipment === "true") ? flag = !Object.is(elem.shipmentAvail, null) : flag = true;
+                (isShipment === "true") ? flag = flag && !Object.is(elem.shipmentAvail, null) : flag = flag && true;
             }
 
             return flag;
@@ -146,27 +149,38 @@ const search = async(req, res) => {
         //ricerca user che ha pubblicato l'articolo
         for(let i=0; i<result.length; i++){
             let elem = result[i];
-            let res = await User.findOne({"items": {"$in": [elem._id]}});
+            const seller = await User.findOne({"items": {"$in": [elem._id]}});
+
+            var valutazione = null;
             
-            //se il risultato della query ottiene una lista vuota vuol dire che non
-            //ho un articolo con una recensione maggiore o uguale a quella indicata
-            if(!res || res.length == 0){
-                //non ho una recensione valida, l'articolo non viene preso in considerazione
-                delete result[i];
+            //calcolo media recensioni di ogni utente
+            if(seller.reviews) {
+                const rt = await Review.aggregate(
+                    [
+                        {
+                            "$group":
+                            {
+                                _id: "$sellerId",
+                                requests: {$sum: 1},
+                                avgRating: { $avg: "$rating"}
+                            }
+                        }
+                    ]
+                );
+
+                //ricerco all'interno dei gruppi quello del venditore ricercato usando seller.userId
+                let found = false;
+                for(let i=0; i<rt.length && !found; i++){
+                    if((rt[i]._id).equals(seller.userId)){
+                        found = true;
+                        valutazione = rt[i].avgRating;
+                    }
+                }
+
+                if(valutazione < rating) delete result[i];
+
             } else {
-                //verifico che almeno una delle recensioni contenga un rating >= al rating indicato
-                let reviews = res.reviews;
-                let flag = false;
-
-                for(let j=0; j<reviews.length && !flag; j++){
-                    res = await Review.findOne({_id: reviews[i]});
-                    if(res.rating >= rating) flag = true;
-                }
-
-                if(!flag){
-                    //non è stata trovata una recensione valida
-                    delete result[i];
-                }
+                delete result[i];
             }
 
         }
@@ -189,7 +203,7 @@ const search = async(req, res) => {
     }
 
     //filtro finale, prendere i soli articoli che sonno stati pubblicati ovvero,
-    //gli articoli che presentano il campo isPublished = true
+    //gli articoli che presentano il campo state = PUBLISHED
     result = result.filter(function(elem){
         return ((elem.state == "PUBLISHED" ? true : false));
     });
