@@ -9,7 +9,15 @@ const getChat = async(req, res) => {
 
     const result = await Buyer.findOne({ username: username });
     if (!result) res.status(404).json({ code: 803, message: 'User not found' });
-    else res.status(200).json({ code: 800, message: 'Success', chats: result.chats });
+
+    let idUser = result._id;
+
+    //ricerca all'interno della collection Chat 
+    const result2 = await Chat.find({ "$or": [
+        {"user1.id": idUser}, {"user2.id": idUser}
+    ]});
+
+    res.status(200).json({ code: 800, message: 'Success', chats: result2 });
 }
 
 const createChat = async(req, res) => {

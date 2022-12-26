@@ -9,14 +9,14 @@ const create = async(req, res) => {
 
     //required params
     if (!req.body.title || !req.body.rating || !req.body.sellerId)
-        return res.status(400).json({ code: "", message: "missing arguments" });
+        return res.status(400).json({ code: "802", message: "missing arguments" });
 
     // params validity
     if (!Number.isInteger(req.body.rating) || (0 <= req.body.rating && req.body.rating <= 5) || !String.toString(req.body.title).length > 0)
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+        return res.status(400).json({ code: "803", message: "invalid arguments" });
 
     if (!mongoose.Types.ObjectId.isValid(req.body.sellerId) || !(await Seller.exists({ id: req.body.sellerId })))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+        return res.status(400).json({ code: "803", message: "invalid arguments" });
 
 
     let authorId = await getAuthenticatedBuyer.id;
@@ -31,16 +31,16 @@ const create = async(req, res) => {
 
     await review.save(err => {
         if (err)
-            return res.status(500).json({ code: "", message: "unable to create" });
+            return res.status(500).json({ code: "801", message: "unable to create" });
     });
 
     seller.reviews.push(review.id);
     await seller.save(err => {
         if (err)
-            return res.status(500).json({ code: "", message: "unable to save changes" });
+            return res.status(500).json({ code: "801", message: "unable to save changes" });
     });
 
-    return res.status(200).json({ code: "", message: "success" });
+    return res.status(200).json({ code: "800", message: "success" });
 }
 
 /**
@@ -50,29 +50,29 @@ const create = async(req, res) => {
 const getSellerReviews = async(req, res) => {
     // required params
     if (!req.params.id)
-        return res.status(400).json({ code: "", message: "missing arguments" });
+        return res.status(400).json({ code: "802", message: "missing arguments" });
 
     const id = req.params.id;
     
     // params validity
     if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+        return res.status(400).json({ code: "803", message: "invalid arguments" });
  
    //ricerca delle recensioni
    var ObjectId = require('mongodb').ObjectId;
    const result = await Review.find({sellerId: ObjectId(id)});
 
-   return res.status(200).json({ reviews: result, code: "", message: "success" });
+   return res.status(200).json({ reviews: result, code: "800", message: "success" });
 }
 
 const getInfo = async(req, res) => {
     // required params
     if (!req.params.id)
-        return res.status(400).json({ code: "", message: "missing arguments" });
+        return res.status(400).json({ code: "802", message: "missing arguments" });
 
     // params validity
     if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Review.exists({ id: req.params.id })))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+        return res.status(400).json({ code: "803", message: "invalid arguments" });
 
     const review = await Review.findById(req.params.id);
 
@@ -86,35 +86,35 @@ const getInfo = async(req, res) => {
         };
     }
 
-    return res.status(200).json({ review: pub, code: "", message: "success" });
+    return res.status(200).json({ review: pub, code: "800", message: "success" });
 }
 
 const getAllIn = async(req, res) => {
     const buyer = await getAuthenticatedBuyer;
 
     if (!buyer.isSeller)
-        return res.state(400).json({ code: "", message: "invalid user type" });
+        return res.status(400).json({ code: "807", message: "invalid user type" });
 
     const seller = await Seller.find({ id: buyer.sellerId });
     const reviews = (await Review.find({ "id": { '$in': [seller.reviews] } }));
 
-    return res.status(200).json({ reviews: reviews, code: "", message: "success" });
+    return res.status(200).json({ reviews: reviews, code: "800", message: "success" });
 }
 
 const getAllOut = async(req, res) => {
     const buyer = await getAuthenticatedBuyer;
     const reviews = await Review.find({ authorId: buyer.id });
-    return res.status(200).json({ reviews: reviews, code: "", message: "success" });
+    return res.status(200).json({ reviews: reviews, code: "800", message: "success" });
 }
 
 const remove = async(req, res) => {
     //required params
     if (!req.body.id)
-        return res.status(400).json({ code: "", message: "missing arguments" });
+        return res.status(400).json({ code: "802", message: "missing arguments" });
 
     // params validity
     if (!mongoose.Types.ObjectId.isValid(req.body.id) || !(await Review.exists({ id: req.body.id })))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+        return res.status(400).json({ code: "803", message: "invalid arguments" });
 
     const review = Review.findById(req.body.id);
     let seller = Seller.findById(review.userId);
@@ -123,16 +123,16 @@ const remove = async(req, res) => {
     seller.reviews = seller.reviews.filter(rid => { return rid != review.id });
     seller.save(err => {
         if (err)
-            return res.status(500).json({ code: "", message: "unable to save changes" });
+            return res.status(500).json({ code: "801", message: "unable to save changes" });
     })
 
     //remove from DB
     await Review.deleteOne({ id: review.id }, err => {
         if (err)
-            return res.status(500).json({ code: "", message: "unable to delete" });
+            return res.status(500).json({ code: "801", message: "unable to delete" });
     })
 
-    return res.status(200).json({ code: "", message: "success" });
+    return res.status(200).json({ code: "800", message: "success" });
 }
 
 
