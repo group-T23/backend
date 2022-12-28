@@ -8,6 +8,7 @@ router.post('/', buyerController.create);
 
 // R - read
 router.get('/', verifyAuthentication, buyerController.getInfo);
+router.get('/id=:id', buyerController.getInfoBuyer);
 
 // U - update
 router.put('/', verifyAuthentication, buyerController.edit);

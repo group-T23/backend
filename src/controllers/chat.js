@@ -120,6 +120,18 @@ const getMessage = async(req, res) => {
     res.status(200).json({ code: 800, message: 'Success', messages: result });
 }
 
+const getMessageById = async(req, res) => {
+    const id = req.query.id;
+
+    if(!id) { res.status(400).json({ code: 802, message: 'Id argument is missing' }); return }
+
+    const message = await Message.findById(id);
+
+    if(!message) { res.status(404).json({ code: 807, message: 'Message not found' }); return }
+
+    res.status(200).json({ code: 800, message: 'Succes', message: message});
+}
+
 // Supports only text messages at the moment
 const sendMessage = async(req, res) => {
     const username = req.query.username;
@@ -161,4 +173,4 @@ const sendMessage = async(req, res) => {
     res.status(200).json({ code: 800, message: 'Message sent successfully' });
 }
 
-module.exports = { getChat, createChat, deleteChat, getMessage, sendMessage };
+module.exports = { getChat, createChat, deleteChat, getMessage, getMessageById, sendMessage };

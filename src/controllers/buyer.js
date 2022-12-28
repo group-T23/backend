@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { getAuthenticatedBuyer } = require('../utils/auth');
 const crypto = require('crypto');
 const Buyer = require('../models/Buyer');
@@ -25,6 +26,19 @@ const getInfo = async(req, res) => {
     return res.status(200).json({ buyer: ret, code: "", message: "success" });
 }
 
+const getInfoBuyer = async(req, res) => {
+    // required params
+    if(!req.params.id)
+        return res.status(400).json({ code: "", message: "missing arguments" });
+
+    // invalid params
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Buyer.exists({ userId: req.params.id })))
+        return res.status(400).json({ code: "", message: "invalid arguments" });
+
+    let buyer = await Buyer.findOne({ _id: req.params.id });
+   
+    return res.status(200).json({ user: buyer, code: "", message: "success" });    
+}
 
 const create = async(req, res) => {
     const url = require('../utils/address');
@@ -150,6 +164,7 @@ const find = async (req, res) => {
 
 module.exports = {
     getInfo,
+    getInfoBuyer,
     create,
     find,
     edit,
