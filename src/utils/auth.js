@@ -4,6 +4,7 @@ const Buyer = require('../models/Buyer');
 // To use between requests that need authentication priviligies
 const verifyAuthentication = async(req, res, next) => {
     const authorization = req.headers['x-access-token'];
+
     if (!authorization)
         return res.status(403).json({ code: "", message: 'Access token property is missing' });
 

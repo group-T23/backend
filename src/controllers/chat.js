@@ -140,6 +140,7 @@ const sendMessage = async(req, res) => {
     const contactUsername = req.body.contact;
     if (!contactUsername) { res.status(400).json({ code: 802, message: 'Contact property is missing' }); return }
     const messageText = req.body.message;
+    
     if (!messageText) { res.status(400).json({ code: 802, message: 'Message property is missing' }); return }
     if (username == contactUsername) { res.status(400).json({ code: 806, message: 'Contact can not coincide with the username' }); return }
 
@@ -150,6 +151,7 @@ const sendMessage = async(req, res) => {
     if (!user) { res.status(404).json({ code: 805, message: 'The provided user does not exist' }); return }
 
     const Id = mongoose.Types.ObjectId;
+
     const chat = await Chat.findOne({
         $or: [
             { $and: [{ user1: { id: new Id(user.id) } }, { user2: { id: new Id(contact.id) } }] },
@@ -167,9 +169,14 @@ const sendMessage = async(req, res) => {
         if (err) { res.status(500).json({ code: 801, message: 'Database error' }); return }
     });
 
-    chat.messages.push({ id: new Id(message._id) });
-    chat.save();
-
+    //update chat con inserimento nuovo messaggio   
+    const result = await Chat.updateOne({
+        $or: [
+            { $and: [{ user1: { id: new Id(user.id) } }, { user2: { id: new Id(contact.id) } }] },
+            { $and: [{ user1: { id: new Id(contact.id) } }, { user2: { id: new Id(user.id) } }] }
+        ]
+    }, { $push: { "messages": {id: new Id(message._id)}}})
+   
     res.status(200).json({ code: 800, message: 'Message sent successfully' });
 }
 

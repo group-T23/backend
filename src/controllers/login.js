@@ -9,7 +9,7 @@ const loginUser = async(req, res) => {
 
     const result = await Buyer.findOne({ email: data.email });
     const token = jwt.sign(data.email, process.env.ACCESS_TOKEN);
-
+    
     if (result && result.passwordHash == password)
         res.status(200).json({
             code: "300",
