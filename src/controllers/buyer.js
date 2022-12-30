@@ -124,8 +124,6 @@ const edit = async(req, res) => {
 const remove = async(req, res) => {
     let buyer = await getAuthenticatedBuyer(req, res);
 
-    //TODO: remove chats
-
     //remove seller
     if (buyer.isSeller) {
         let seller = await Seller.find({ _id: buyer.sellerId });
