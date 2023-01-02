@@ -43,6 +43,10 @@ const getInfoBuyer = async(req, res) => {
 const create = async(req, res) => {
     const url = require('../utils/address');
     const data = req.body;
+
+    if (!(data.firstname && data.lastname && data.username && data.email && data.password && data.terms))
+      return res.status(403).json({ code: 102, message: 'Missing arguments' });
+
     const hash = crypto.createHash('sha256');
     const password = hash.update(data.password, 'utf-8').digest('hex');
 
@@ -53,8 +57,7 @@ const create = async(req, res) => {
     } while (result);
 
     if (await Buyer.exists({ username: data.username }))
-        return res.status(422).json({ code: "", message: "unable to create, username not available" });
-
+        return res.status(422).json({ code: 103, message: "Username not available" });
 
     const buyer = new Buyer({
         firstname: data.firstname,
@@ -85,9 +88,9 @@ const create = async(req, res) => {
             await seller.save();
 
         await Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
-        return res.status(201).json({ code: "", message: "success" });
+        return res.status(201).json({ code: "100", message: "success" });
     } catch (error) {
-        return res.status(500).json({ code: "", message: "unable to create" });
+        return res.status(500).json({ code: "101", message: "unable to create" });
     }
 }
 
