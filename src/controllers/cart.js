@@ -166,7 +166,6 @@ const deleteAll = async(req, res) => {
     //lettura id articoli
     for(let i=0; i<cart.length; i++){
         ids.push(cart[i]._id);
-        console.log(ids);
     }
 
     //pull valori array per rimozione articoli dal carrello
