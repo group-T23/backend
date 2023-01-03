@@ -73,8 +73,9 @@ const create = async(req, res) => {
         verificationCode: code,
     });
 
+    console.log(data, data.isSeller)
     let seller;
-    if (data.address && data.prefix && data.number) {
+    if (data.isSeller && data.address && data.prefix && data.number) {
         buyer.isSeller = true;
         seller = new Seller({
             userId: buyer

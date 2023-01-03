@@ -14,6 +14,9 @@ const cors = require("cors");
 const corsOptions = { origin: '*', credentials: true, optionSuccessStatus: 200 };
 app.use(cors(corsOptions));
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const email = require('./routes/email');
 const login = require('./routes/login');
 const search = require('./routes/search');

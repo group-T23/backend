@@ -16,10 +16,19 @@ const loginUser = async(req, res) => {
             message: "loged in",
             ok: true,
             user: {
+                id: result.id,
                 firstname: result.firstname,
                 lastname: result.lastname,
                 username: result.username,
                 email: result.email,
+                addresses: result.addresses,
+                phone: result.phone,
+                cart: result.cart,
+                wishlist: result.wishlist,
+                proposals: result.proposals,
+                isVerified: result.isVerified,
+                isSeller: result.isSeller,
+                sellerId: result.sellerId,
                 token: token
             }
         });

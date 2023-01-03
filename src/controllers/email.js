@@ -24,6 +24,7 @@ const verifyEmail = async(req, res) => {
 
     if (check.verificationCode == code) {
       check.isVerified = true;
+      await check.save();
       res.status(200).json({ code: 200, message: "Email verified successfully" });
     } else res.status(200).json({ code: 206, message: "Invalid verification code" })
 }

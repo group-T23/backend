@@ -4,17 +4,26 @@ const Seller = require('../models/Seller');
 const Item = require('../models/Item');
 const Category = require('../models/Category');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const create = async(req, res) => {
-    let seller = await Seller.findById((await getAuthenticatedBuyer).sellerId);
+    const token = req.headers['x-access-token'];
+    if (!token) return res.status(400).json({ code: "902", message: "missing arguments" });
 
+    const email = jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => data);
+    const buyer = await Buyer.findOne({ email });
+
+    let seller = await Seller.findById(buyer.sellerId);
+
+    const itemCategories = await Category.find({ title: { $in: req.body.categories } });
+    const categories = itemCategories.map(category => category._id)
     let item = new Item({
         title: req.body.title,
         description: req.body.description,
         ownerId: req.body.ownerId,
         quantity: req.body.quantity,
-        categories: req.body.categories,
-        photos: req.body.photos,
+        categories: categories,
+        photos: [`${buyer.sellerId}_${seller.items.length}.${req.body.ext}`],
         conditions: req.body.conditions,
         price: req.body.price,
         city: req.body.city,
@@ -24,18 +33,23 @@ const create = async(req, res) => {
         shipmentCost: req.body.shipmentCost,
     });
 
+    let error = false;
     item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to create" });
-    })
-
-    seller.items.push(item.id);
-    seller.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
+        if (err) { console.log(err); error = true; }
     });
 
-    return res.status(200).json({ code: "900", message: "success" });
+    if (error) return res.status(500).json({ code: "901", message: "unable to create" });
+
+    if (!seller.items) seller.items = [];
+    seller.items.push(item.id);
+
+    seller.save(err => {
+        if (err) { console.log(err); error = true; }
+    });
+
+    if (error) return res.status(500).json({ code: "901", message: "unable to save changes" });
+
+    return res.status(200).json({ code: "900", message: "success", item: item.id });
 }
 
 const getInfo = async(req, res) => {
@@ -137,13 +151,16 @@ const edit = async(req, res) => {
 
 const publish = async(req, res) => {
     // required params
-    if (!req.body.itemId)
+    const token = req.headers['x-access-token'];
+    if (!req.body.itemId || !token)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
     if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer;
+
+    const email = jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => data);
+    const buyer = await Buyer.findOne({ email });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 

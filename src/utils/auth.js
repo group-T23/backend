@@ -21,7 +21,7 @@ const verifyAuthentication = async(req, res, next) => {
 }
 
 async function getAuthenticatedBuyer(req, res) {
-    const token = req.headers['x-access-token'].split(' ')[0];
+    const token = req.headers['x-access-token'];
     let email;
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => {
         if (err)
