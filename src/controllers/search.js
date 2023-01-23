@@ -204,9 +204,10 @@ const search = async(req, res) => {
 
     //filtro finale, prendere i soli articoli che sonno stati pubblicati ovvero,
     //gli articoli che presentano il campo state = PUBLISHED
+    /*
     result = result.filter(function(elem){
         return ((elem.state == "PUBLISHED" ? true : false));
-    });
+    });*/
 
     return res.status(200).json({articles: result, code: "700", message: "success"});
 }

@@ -1,5 +1,6 @@
 const Buyer = require("../models/Buyer")
 const Item = require("../models/Item");
+const mongoose = require('mongoose');
 
 /**
  * la funzione ritorna la lista degli articoli presenti nel carrello
@@ -188,9 +189,70 @@ const checkout = async(req, res) => {
     //NB facendo il checkout è da verificare prima 
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
-    res.status(200).json({message: "checkout"})
-    return res;
+    
+    let result = await checkQuantity(req.body.items);
+
+    if(result)
+        return res.status(200).json({code: 400, message: "success"});
+    else
+        return res.status(400).json({code: 406, message: "checkout failed"});
 };
+
+/**
+ * la funzioen verifica la quantità dei singoli prodotti
+ * ovvero, se sono disponibili 
+ */
+const checkQuantity = async(items) => {
+    let success = true;
+    let newItems = [];
+    let j = 0;
+
+    for(let i=0; i<items.length && success; i++){
+        //viene preso in considerazione l'articolo se ha una quantità maggiore di 0
+        console.log(items[i]);
+        if(items[i].quantity > 0) {
+            if (!mongoose.Types.ObjectId.isValid(items[i].id) || !(await Item.exists({ id: items[i].id }))) {
+                success = false;
+            }
+
+            let item = await Item.findById(items[i].id);
+            console.log(item);
+            if (item.state != 'PUBLISHED'){
+                success = false;
+            }
+
+            if (item.quantity < items[i].quantity) {
+                success = false;
+            }
+
+            item.quantity -= items[i].quantity;
+            if (item.quantity <= 0) {
+                item.state = 'SOLD';
+                item.quantity = 0;
+            }
+
+            //salvataggio del "nuovo" articolo in array
+            newItems[j] = item;
+            j++;
+        }
+    }
+
+    //se il checkout è possibile, vado a salvare gli articoli 
+    //modificati così da aggiornare le loro quantità
+    console.log(success);
+    console.log(newItems);
+    if(success) {
+        for(let i=0; i<newItems.length && success; i++){
+            newItems[i].save(err => {
+                if (err) {
+                    success = false;
+                }
+            });
+        }
+    }
+
+    return success;
+}
 
 module.exports = {
     getItems,

@@ -35,6 +35,7 @@ router.put('/', verifyAuthentication, itemController.edit);
 router.put('/publish', verifyAuthentication, itemController.publish);
 router.put('/retire', verifyAuthentication, itemController.retire);
 router.put('/buy', verifyAuthentication, itemController.buy);
+router.put('/buyMultiple', verifyAuthentication, itemController.buy);
 
 // D - delete
 router.delete('/', verifyAuthentication, itemController.remove);

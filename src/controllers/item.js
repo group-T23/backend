@@ -232,8 +232,10 @@ const buy = async(req, res) => {
         return res.status().json({ code: "906", message: "max quantity exceeded" })
 
     item.quantity -= req.body.quantity;
-    if (item.quantity == 0)
+    if (item.quantity <= 0) {
         item.state = 'SOLD';
+        item.quantity = 0;
+    }
 
     item.save(err => {
         if (err)
