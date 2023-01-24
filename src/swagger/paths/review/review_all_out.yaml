@@ -1,0 +1,15 @@
+summary: Recupero recensioni spedite
+description: ''
+tags:
+  - Review
+
+responses:
+  '200':
+    description: "Created: recensioni recuperate con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

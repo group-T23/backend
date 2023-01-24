@@ -99,6 +99,25 @@
   put:
     $ref: ./proposal/proposal_reject.yaml
 
+# Review
+/review:
+  get:
+    $ref: ./review/review_info.yaml
+  post:
+    $ref: ./review/review_create.yaml
+
+/review/seller:
+  get:
+    $ref: ./review/review_seller.yaml
+
+/review/in:
+  get:
+    $ref: ./review/review_all_in.yaml
+
+/review/out:
+  get:
+    $ref: ./review/review_all_out.yaml
+
 # Auth
 /login:
   post:

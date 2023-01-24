@@ -200,19 +200,19 @@
           "200": {
             "description": "Found: l'username è già utilizzato da un account",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "400": {
             "description": "Bad Request: richiesta non formattata correttamente",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "404": {
             "description": "Not found: l'username è disponibile",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -1263,6 +1263,175 @@
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review": {
+      "get": {
+        "summary": "Recupero info recensioni",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creazione di una nuova recensione",
+        "description": "Crea una nuova recensione",
+        "tags": [
+          "Review"
+        ],
+        "requestBody": {
+          "description": "Dati della recensione da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "number"
+                  },
+                  "sellerId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "rating",
+                  "sellerId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: recensione creata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/seller": {
+      "get": {
+        "summary": "Recupero recensioni di un venditore",
+        "description": "Recupera la recensioni assegnate ad un specifico venditore",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/in": {
+      "get": {
+        "summary": "Recupero recensioni ricevute",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/out": {
+      "get": {
+        "summary": "Recupero recensioni spedite",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
             "schema": {
               "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
