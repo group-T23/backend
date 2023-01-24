@@ -190,8 +190,8 @@ const checkout = async(req, res) => {
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
     
-    let result = await checkQuantity(req.body.items);
-
+    let result = await checkQuantity(req.body.items, req.body.modify);
+    console.log(result);
     if(result)
         return res.status(200).json({code: 400, message: "success"});
     else
@@ -200,35 +200,38 @@ const checkout = async(req, res) => {
 
 /**
  * la funzioen verifica la quantità dei singoli prodotti
- * ovvero, se sono disponibili 
+ * ovvero, se sono disponibili.
+ * se indicato diversamente, la funzione aggiorna nel db la quantità dei prodotti acquistati
  */
-const checkQuantity = async(items) => {
+const checkQuantity = async(items, modify) => {
     let success = true;
     let newItems = [];
     let j = 0;
-
     for(let i=0; i<items.length && success; i++){
         //viene preso in considerazione l'articolo se ha una quantità maggiore di 0
-        console.log(items[i]);
+       
         if(items[i].quantity > 0) {
             if (!mongoose.Types.ObjectId.isValid(items[i].id) || !(await Item.exists({ id: items[i].id }))) {
                 success = false;
             }
-
+            
             let item = await Item.findById(items[i].id);
-            console.log(item);
+           
             if (item.state != 'PUBLISHED'){
                 success = false;
             }
-
+         
             if (item.quantity < items[i].quantity) {
                 success = false;
             }
-
-            item.quantity -= items[i].quantity;
-            if (item.quantity <= 0) {
-                item.state = 'SOLD';
-                item.quantity = 0;
+     
+            //se il flag è true, vengono modificate le quantità
+            if(modify){
+                item.quantity -= items[i].quantity;
+                if (item.quantity <= 0) {
+                    item.state = 'SOLD';
+                    item.quantity = 0;
+                }   
             }
 
             //salvataggio del "nuovo" articolo in array
@@ -236,12 +239,10 @@ const checkQuantity = async(items) => {
             j++;
         }
     }
-
+    
     //se il checkout è possibile, vado a salvare gli articoli 
     //modificati così da aggiornare le loro quantità
-    console.log(success);
-    console.log(newItems);
-    if(success) {
+    if(success && modify) {
         for(let i=0; i<newItems.length && success; i++){
             newItems[i].save(err => {
                 if (err) {
@@ -250,7 +251,7 @@ const checkQuantity = async(items) => {
             });
         }
     }
-
+    console.log("success: " + success);
     return success;
 }
 
