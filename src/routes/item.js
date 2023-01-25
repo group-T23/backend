@@ -24,19 +24,17 @@ const upload = multer({ storage });
 router.post('/', verifyAuthentication, upload.single('file'), itemController.create);
 
 // R - read
-router.get('/id=:id', itemController.getInfo);
-router.get('/username=:username', itemController.getByUser);
-router.get('/seller/id=:id', itemController.getInfoSeller);
-router.get('/buyer/id=:id', itemController.getInfoBuyer);
+router.get('/', itemController.getInfo);
+router.get('/seller', itemController.getByUser);
 
 
 // U - update
-router.put('/id=:id', verifyAuthentication, itemController.edit);
-router.put('/publish/id=:id', verifyAuthentication, itemController.publish);
-router.put('/retire/id=:id', verifyAuthentication, itemController.retire);
-router.put('/buy/id=:id', verifyAuthentication, itemController.buy);
+router.put('/', verifyAuthentication, itemController.edit);
+router.put('/publish', verifyAuthentication, itemController.publish);
+router.put('/retire', verifyAuthentication, itemController.retire);
+router.put('/buy', verifyAuthentication, itemController.buy);
 
 // D - delete
-router.delete('/id=:id', verifyAuthentication, itemController.remove);
+router.delete('/', verifyAuthentication, itemController.remove);
 
 module.exports = router;
