@@ -20,7 +20,7 @@ const create = async(req, res) => {
     let item = new Item({
         title: req.body.title,
         description: req.body.description,
-        ownerId: req.body.ownerId,
+        ownerId: seller._id,
         quantity: req.body.quantity,
         categories: categories,
         photos: [`${buyer.sellerId}_${seller.items.length}.${req.body.ext}`],
@@ -35,7 +35,10 @@ const create = async(req, res) => {
 
     let error = false;
     item.save(err => {
-        if (err) { console.log(err); error = true; }
+        if (err) {
+            console.log(err);
+            error = true;
+        }
     });
 
     if (error) return res.status(500).json({ code: "901", message: "unable to create" });
@@ -44,12 +47,15 @@ const create = async(req, res) => {
     seller.items.push(item.id);
 
     seller.save(err => {
-        if (err) { console.log(err); error = true; }
+        if (err) {
+            console.log(err);
+            error = true;
+        }
     });
 
     if (error) return res.status(500).json({ code: "901", message: "unable to save changes" });
 
-    return res.status(200).json({ code: "900", message: "success", item: item.id });
+    return res.status(201).json({ code: "900", message: "success", item: item.id });
 }
 
 const getInfo = async(req, res) => {
@@ -77,38 +83,11 @@ const getByUser = async(req, res) => {
     let buyer = await Buyer.findOne({ username: req.params.username });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
-   
+
     const items = await Item.find({ ownerId: buyer._id })
     return res.status(200).json({ items: items, code: "900", message: "success" });
 }
 
-const getInfoSeller = async(req, res) => {
-    // required params
-    if(!req.params.id)
-        return res.status(400).json({ code: "902", message: "missing arguments" });
-
-    // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Seller.exists({ userId: req.params.id })))
-        return res.status(400).json({ code: "903", message: "invalid arguments" });
-
-    let buyer = await Buyer.findOne({ _id: req.params.id });
-   
-    return res.status(200).json({ user: buyer, code: "900", message: "success" });    
-}
-
-const getInfoBuyer = async(req, res) => {
-    // required params
-    if(!req.params.id)
-        return res.status(400).json({ code: "902", message: "missing arguments" });
-
-    // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Buyer.exists({ userId: req.params.id })))
-        return res.status(400).json({ code: "903", message: "invalid arguments" });
-
-    let buyer = await Buyer.findOne({ _id: req.params.id });
-
-    return res.status(200).json({ user: buyer, code: "900", message: "success" });    
-}
 
 const edit = async(req, res) => {
 
@@ -133,7 +112,6 @@ const edit = async(req, res) => {
     item.description = req.body.description ? req.body.description : item.description;
     item.quantity = req.body.quantity ? req.body.quantity : item.quantity;
     item.categories = req.body.categories ? req.body.categories : item.categories;
-    item.photos = req.body.photos ? req.body.photos : item.photos;
     item.conditions = req.body.conditions ? req.body.conditions : item.conditions;
     item.price = req.body.price ? req.body.price : item.price;
     item.city = req.body.city ? req.body.city : item.city;
