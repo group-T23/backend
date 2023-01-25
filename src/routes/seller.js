@@ -8,7 +8,7 @@ router.post('/', verifyAuthentication, sellerController.create);
 
 // R - read
 router.get('/', verifyAuthentication, sellerController.getInfo)
-router.get('/public/:username', sellerController.getPublicInfo)
+router.get('/public', sellerController.getPublicInfo)
 
 // D - delete
 router.delete('/', verifyAuthentication, sellerController.remove);

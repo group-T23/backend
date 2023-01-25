@@ -22,7 +22,7 @@
   delete:
     $ref: ./seller/seller_remove.yaml
 
-/seller/public/{username}:
+/seller/public:
   get:
     $ref: ./seller/seller_public.yaml
   
@@ -99,8 +99,53 @@
   put:
     $ref: ./proposal/proposal_reject.yaml
 
+# Review
+/review:
+  get:
+    $ref: ./review/review_info.yaml
+  post:
+    $ref: ./review/review_create.yaml
+
+/review/seller:
+  get:
+    $ref: ./review/review_seller.yaml
+
+/review/in:
+  get:
+    $ref: ./review/review_all_in.yaml
+
+/review/out:
+  get:
+    $ref: ./review/review_all_out.yaml
+
 # Auth
 /login:
   post:
     $ref: ./auth/login.yaml
 
+# Item
+/item:
+  post:
+    $ref: ./item/item_create.yaml
+  get:
+    $ref: ./item/item_get.yaml
+  put:
+    $ref: ./item/item_edit.yaml
+  delete:
+    $ref: ./item/item_remove.yaml
+
+/item/seller:
+  get:
+    $ref: ./item/item_getByUser.yaml
+
+/item/buy:
+  put:
+    $ref: ./item/item_buy.yaml
+
+/item/retire:
+  put:
+    $ref: ./item/item_retire.yaml
+
+/item/publish:
+  put:
+    $ref: ./item/item_publish.yaml

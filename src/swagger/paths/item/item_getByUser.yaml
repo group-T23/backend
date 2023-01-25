@@ -1,0 +1,28 @@
+summary: Ritorna tutti i prodotti di un venditore
+description: Il venditore è specificato tramite il suo username nella query string
+tags:
+  - Item
+
+
+parameters:
+
+  - in: query
+    name: username
+    schema:
+      type: string
+    required: true
+
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      type: array
+      items:
+        schema:
+          $ref: ../../components/schemas/item/Item.yaml
+
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

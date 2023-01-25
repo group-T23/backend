@@ -20,7 +20,7 @@ const create = async(req, res) => {
     let item = new Item({
         title: req.body.title,
         description: req.body.description,
-        ownerId: req.body.ownerId,
+        ownerId: seller._id,
         quantity: req.body.quantity,
         categories: categories,
         photos: [`${buyer.sellerId}_${seller.items.length}.${req.body.ext}`],
@@ -35,7 +35,10 @@ const create = async(req, res) => {
 
     let error = false;
     item.save(err => {
-        if (err) { console.log(err); error = true; }
+        if (err) {
+            console.log(err);
+            error = true;
+        }
     });
 
     if (error) return res.status(500).json({ code: "901", message: "unable to create" });
@@ -44,71 +47,47 @@ const create = async(req, res) => {
     seller.items.push(item.id);
 
     seller.save(err => {
-        if (err) { console.log(err); error = true; }
+        if (err) {
+            console.log(err);
+            error = true;
+        }
     });
 
     if (error) return res.status(500).json({ code: "901", message: "unable to save changes" });
 
-    return res.status(200).json({ code: "900", message: "success", item: item.id });
+    return res.status(201).json({ code: "900", message: "success", item: item.id });
 }
 
 const getInfo = async(req, res) => {
     //required params
-    if (!req.params.id)
+    if (!req.query.id)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
     // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Item.exists({ id: req.body.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.body.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    const item = await Item.findById(req.params.id);
+    const item = await Item.findById(req.query.id);
     return res.status(200).json({ item: item, code: "900", message: "success" });
 }
 
 const getByUser = async(req, res) => {
     //required params
-    if (!req.params.username)
+    if (!req.query.username)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
     // invalid params
-    if (!(await Buyer.exists({ username: req.params.username })))
+    if (!(await Buyer.exists({ username: req.query.username })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await Buyer.findOne({ username: req.params.username });
+    let buyer = await Buyer.findOne({ username: req.query.username });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
-   
+
     const items = await Item.find({ ownerId: buyer._id })
     return res.status(200).json({ items: items, code: "900", message: "success" });
 }
 
-const getInfoSeller = async(req, res) => {
-    // required params
-    if(!req.params.id)
-        return res.status(400).json({ code: "902", message: "missing arguments" });
-
-    // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Seller.exists({ userId: req.params.id })))
-        return res.status(400).json({ code: "903", message: "invalid arguments" });
-
-    let buyer = await Buyer.findOne({ _id: req.params.id });
-   
-    return res.status(200).json({ user: buyer, code: "900", message: "success" });    
-}
-
-const getInfoBuyer = async(req, res) => {
-    // required params
-    if(!req.params.id)
-        return res.status(400).json({ code: "902", message: "missing arguments" });
-
-    // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Buyer.exists({ userId: req.params.id })))
-        return res.status(400).json({ code: "903", message: "invalid arguments" });
-
-    let buyer = await Buyer.findOne({ _id: req.params.id });
-
-    return res.status(200).json({ user: buyer, code: "900", message: "success" });    
-}
 
 const edit = async(req, res) => {
 
@@ -133,7 +112,6 @@ const edit = async(req, res) => {
     item.description = req.body.description ? req.body.description : item.description;
     item.quantity = req.body.quantity ? req.body.quantity : item.quantity;
     item.categories = req.body.categories ? req.body.categories : item.categories;
-    item.photos = req.body.photos ? req.body.photos : item.photos;
     item.conditions = req.body.conditions ? req.body.conditions : item.conditions;
     item.price = req.body.price ? req.body.price : item.price;
     item.city = req.body.city ? req.body.city : item.city;
@@ -152,10 +130,10 @@ const edit = async(req, res) => {
 const publish = async(req, res) => {
     // required params
     const token = req.headers['x-access-token'];
-    if (!req.body.itemId || !token)
+    if (!req.query.id || !token)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
 
@@ -165,10 +143,10 @@ const publish = async(req, res) => {
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
     let seller = await Seller.findById(buyer.sellerId);
-    if (!seller.items.includes(req.body.itemId))
+    if (!seller.items.includes(req.query.id))
         return res.status(400).json({ code: "905", message: "operation not permitted" });
 
-    let item = await Item.findById(req.body.itemId);
+    let item = await Item.findById(req.query.id);
 
     if (item.state != 'DRAFT')
         return res.status(400).json({ code: "907", message: "invalid item state" });
@@ -184,10 +162,10 @@ const publish = async(req, res) => {
 
 const retire = async(req, res) => {
     // required params
-    if (!req.body.itemId)
+    if (!req.query.id)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
     let buyer = await getAuthenticatedBuyer;
@@ -195,10 +173,10 @@ const retire = async(req, res) => {
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
     let seller = await Seller.findById(buyer.sellerId);
-    if (!seller.items.includes(req.body.itemId))
+    if (!seller.items.includes(req.query.id))
         return res.status(400).json({ code: "905", message: "operation not permitted" });
 
-    let item = await Item.findById(req.body.itemId);
+    let item = await Item.findById(req.query.id);
 
     if (item.state != 'PUBLISHED')
         return res.status(400).json({ code: "907", message: "invalid item state" });
@@ -214,24 +192,24 @@ const retire = async(req, res) => {
 
 const buy = async(req, res) => {
     // required params
-    if (!req.body.itemId || !req.body.quantity)
+    if (!req.query.id || !req.query.quantity)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    if (!Number.isInteger(req.body.quantity) || !req.body.quantity > 0)
+    if (!Number.isInteger(req.query.quantity) || !req.query.quantity > 0)
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let item = await Item.findById(req.body.itemId);
+    let item = await Item.findById(req.query.id);
 
     if (item.state != 'PUBLISHED')
         return res.status(400).json({ code: "907", message: "invalid item state" });
 
-    if (item.quantity < req.body.quantity)
+    if (item.quantity < req.query.quantity)
         return res.status().json({ code: "906", message: "max quantity exceeded" })
 
-    item.quantity -= req.body.quantity;
+    item.quantity -= req.query.quantity;
     if (item.quantity <= 0) {
         item.state = 'SOLD';
         item.quantity = 0;
@@ -247,10 +225,10 @@ const buy = async(req, res) => {
 
 const remove = async(req, res) => {
     // required params
-    if (!req.body.itemId)
+    if (!req.query.id)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
     let buyer = await getAuthenticatedBuyer;
@@ -258,10 +236,10 @@ const remove = async(req, res) => {
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
     let seller = await Seller.findById(buyer.sellerId);
-    if (!seller.items.includes(req.body.itemId))
+    if (!seller.items.includes(req.query.id))
         return res.status(400).json({ code: "905", message: "operation not permitted" });
 
-    let item = await Item.findById(req.body.itemId);
+    let item = await Item.findById(req.query.id);
 
     item.state = 'DELETED';
     item.save(err => {
@@ -276,8 +254,6 @@ module.exports = {
     create,
     getInfo,
     getByUser,
-    getInfoSeller,
-    getInfoBuyer,
     edit,
     publish,
     retire,

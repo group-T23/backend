@@ -200,19 +200,19 @@
           "200": {
             "description": "Found: l'username è già utilizzato da un account",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "400": {
             "description": "Bad Request: richiesta non formattata correttamente",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "404": {
             "description": "Not found: l'username è disponibile",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -313,7 +313,7 @@
         }
       }
     },
-    "/seller/public/{username}": {
+    "/seller/public": {
       "get": {
         "summary": "Ritorna le informazioni pubbliche di un venditore",
         "description": "contiene l'username e la valutazione di un utente",
@@ -322,12 +322,18 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "username",
             "schema": {
               "type": "string"
-            },
-            "required": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1270,6 +1276,175 @@
         }
       }
     },
+    "/review": {
+      "get": {
+        "summary": "Recupero info recensioni",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creazione di una nuova recensione",
+        "description": "Crea una nuova recensione",
+        "tags": [
+          "Review"
+        ],
+        "requestBody": {
+          "description": "Dati della recensione da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "number"
+                  },
+                  "sellerId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "rating",
+                  "sellerId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: recensione creata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/seller": {
+      "get": {
+        "summary": "Recupero recensioni di un venditore",
+        "description": "Recupera la recensioni assegnate ad un specifico venditore",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/in": {
+      "get": {
+        "summary": "Recupero recensioni ricevute",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/out": {
+      "get": {
+        "summary": "Recupero recensioni spedite",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "summary": "Login",
@@ -1339,6 +1514,351 @@
           },
           "401": {
             "description": "Unauthorized: credenziali mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/item": {
+      "post": {
+        "summary": "Creazione di un nuovo prodotto",
+        "description": "",
+        "tags": [
+          "Item"
+        ],
+        "requestBody": {
+          "description": "Dati del prodotto da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created: utente creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ritorna un prodotto in base al suo id",
+        "description": null,
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Modifica del prodotto in base al suo id",
+        "description": "L'id è specificato nella query string",
+        "tags": [
+          "Item"
+        ],
+        "requestBody": {
+          "description": "Nuovi dati del prodotto",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un prodotto in base al suo id",
+        "description": "L'id è specificato nella query string",
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/item/seller": {
+      "get": {
+        "summary": "Ritorna tutti i prodotti di un venditore",
+        "description": "Il venditore è specificato tramite il suo username nella query string",
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "schema": {
+                  "$ref": "#/components/schemas/Item"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/item/buy": {
+      "put": {
+        "summary": "Esegue l'acquisto del prodotto specificato nella query string",
+        "description": null,
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "quantity",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/item/retire": {
+      "put": {
+        "summary": "Ritira il prodotto specificato dalla vendita",
+        "description": null,
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/item/publish": {
+      "put": {
+        "summary": "Pubblica il prodotto specificato sul mercato",
+        "description": null,
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
               "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
@@ -1567,6 +2087,156 @@
           "itemId",
           "price"
         ]
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "int32"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conditions": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "pickUpAvail": {
+            "type": "boolean"
+          },
+          "shipmentAvail": {
+            "type": "boolean"
+          },
+          "shipmentCost": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "ItemForm": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "int32"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conditions": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "city": {
+            "type": "string"
+          },
+          "pickUpAvail": {
+            "type": "boolean"
+          },
+          "shipmentAvail": {
+            "type": "boolean"
+          },
+          "shipmentCost": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "ownerId",
+          "quantity",
+          "categories",
+          "conditions",
+          "price",
+          "city",
+          "pickUpAvail",
+          "shipmentAvail"
+        ]
+      },
+      "ItemEdit": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "int32"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conditions": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "city": {
+            "type": "string"
+          },
+          "pickUpAvail": {
+            "type": "boolean"
+          },
+          "shipmentAvail": {
+            "type": "boolean"
+          },
+          "shipmentCost": {
+            "type": "number",
+            "format": "float"
+          }
+        }
       },
       "Response": {
         "type": "object",
