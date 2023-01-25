@@ -189,7 +189,6 @@ const checkout = async(req, res) => {
     //NB facendo il checkout è da verificare prima 
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
-    
     let result = await checkQuantity(req.body.items, req.body.modify);
     if(result)
         return res.status(200).json({code: 400, message: "success"});
@@ -205,17 +204,15 @@ const checkout = async(req, res) => {
 const checkQuantity = async(items, modify) => {
     let success = true;
     let newItems = [];
-    let j = 0;
     for(let i=0; i<items.length && success; i++){
         //viene preso in considerazione l'articolo se ha una quantità maggiore di 0
-       
         if(items[i].quantity > 0) {
             if (!mongoose.Types.ObjectId.isValid(items[i].id) || !(await Item.exists({ id: items[i].id }))) {
                 success = false;
             }
             
             let item = await Item.findById(items[i].id);
-           
+
             if (item.state != 'PUBLISHED'){
                 success = false;
             }
@@ -226,26 +223,28 @@ const checkQuantity = async(items, modify) => {
      
             //se il flag è true, vengono modificate le quantità
             if(modify){
+                console.log("modify");
                 item.quantity -= items[i].quantity;
                 if (item.quantity <= 0) {
                     item.state = 'SOLD';
                     item.quantity = 0;
                 }   
+
+                //salvataggio del "nuovo" articolo in array
+                newItems.push(item);
             }
 
-            //salvataggio del "nuovo" articolo in array
-            newItems[j] = item;
-            j++;
         }
     }
     
     //se il checkout è possibile, vado a salvare gli articoli 
     //modificati così da aggiornare le loro quantità
     if(success && modify) {
-        for(let i=0; i<newItems.length && success; i++){
+        for(let i=0; i<newItems.length; i++){
+            console.log(newItems[i]);
             newItems[i].save(err => {
                 if (err) {
-                    success = false;
+                    return false;
                 }
             });
         }
