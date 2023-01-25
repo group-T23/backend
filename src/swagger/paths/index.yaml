@@ -123,3 +123,29 @@
   post:
     $ref: ./auth/login.yaml
 
+# Item
+/item:
+  post:
+    $ref: ./item/item_create.yaml
+  get:
+    $ref: ./item/item_get.yaml
+  put:
+    $ref: ./item/item_edit.yaml
+  delete:
+    $ref: ./item/item_remove.yaml
+
+/item/seller:
+  get:
+    $ref: ./item/item_getByUser.yaml
+
+/item/buy:
+  put:
+    $ref: ./item/item_buy.yaml
+
+/item/retire:
+  put:
+    $ref: ./item/item_retire.yaml
+
+/item/publish:
+  put:
+    $ref: ./item/item_publish.yaml

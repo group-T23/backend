@@ -1,0 +1,50 @@
+type: object
+
+properties:
+  
+  title:
+    type: string
+  
+  description:
+    type: string
+  
+  quantity:
+    type: number
+    format: int32
+  
+  categories:
+    type: array
+    items:
+      type: string
+  
+  conditions:
+    type: string
+  
+  price:
+    type: number
+    format: float
+  
+  city:
+    type: string
+  
+  pickUpAvail:
+    type: boolean
+  
+  shipmentAvail:
+    type: boolean
+  
+  shipmentCost:
+    type: number
+    format: float
+
+required:
+  - title
+  - description
+  - ownerId
+  - quantity
+  - categories
+  - conditions
+  - price
+  - city
+  - pickUpAvail
+  - shipmentAvail

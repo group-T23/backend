@@ -26,6 +26,16 @@ Proposal:
 ProposalForm:
   $ref: ./proposal/ProposalForm.yaml
 
+# Item's schemas
+Item:
+  $ref: ./item/Item.yaml
+
+ItemForm:
+  $ref: ./item/ItemForm.yaml
+
+ItemEdit:
+  $ref: ./item/ItemEdit.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml

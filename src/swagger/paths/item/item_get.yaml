@@ -1,0 +1,25 @@
+summary: Ritorna un prodotto in base al suo id
+description:
+tags:
+  - Item
+
+
+parameters:
+
+  - in: query
+    name: id
+    schema:
+      type: string
+    required: true
+
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      $ref: ../../components/schemas/item/Item.yaml
+
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
