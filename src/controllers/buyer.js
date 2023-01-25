@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { getAuthenticatedBuyer } = require('../utils/auth');
 const crypto = require('crypto');
 const Buyer = require('../models/Buyer');
@@ -25,10 +26,27 @@ const getInfo = async(req, res) => {
     return res.status(200).json({ buyer: ret, code: "", message: "success" });
 }
 
+const getInfoBuyer = async(req, res) => {
+    // required params
+    if(!req.params.id)
+        return res.status(400).json({ code: "", message: "missing arguments" });
+
+    // invalid params
+    if (!mongoose.Types.ObjectId.isValid(req.params.id) || !(await Buyer.exists({ userId: req.params.id })))
+        return res.status(400).json({ code: "", message: "invalid arguments" });
+
+    let buyer = await Buyer.findOne({ _id: req.params.id });
+   
+    return res.status(200).json({ user: buyer, code: "", message: "success" });    
+}
 
 const create = async(req, res) => {
     const url = require('../utils/address');
     const data = req.body;
+
+    if (!(data.firstname && data.lastname && data.username && data.email && data.password && data.terms))
+      return res.status(403).json({ code: 102, message: 'Missing arguments' });
+
     const hash = crypto.createHash('sha256');
     const password = hash.update(data.password, 'utf-8').digest('hex');
 
@@ -39,8 +57,7 @@ const create = async(req, res) => {
     } while (result);
 
     if (await Buyer.exists({ username: data.username }))
-        return res.status(422).json({ code: "", message: "unable to create, username not available" });
-
+        return res.status(422).json({ code: 103, message: "Username not available" });
 
     const buyer = new Buyer({
         firstname: data.firstname,
@@ -57,7 +74,7 @@ const create = async(req, res) => {
     });
 
     let seller;
-    if (data.address && data.prefix && data.number) {
+    if (data.isSeller && data.address && data.prefix && data.number) {
         buyer.isSeller = true;
         seller = new Seller({
             userId: buyer
@@ -71,9 +88,9 @@ const create = async(req, res) => {
             await seller.save();
 
         await Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${url}/verify/?email=${data.email}&code=${code}`);
-        return res.status(201).json({ code: "", message: "success" });
+        return res.status(201).json({ code: "100", message: "success" });
     } catch (error) {
-        return res.status(500).json({ code: "", message: "unable to create" });
+        return res.status(500).json({ code: "101", message: "unable to create" });
     }
 }
 
@@ -110,8 +127,6 @@ const edit = async(req, res) => {
 const remove = async(req, res) => {
     let buyer = await getAuthenticatedBuyer(req, res);
 
-    //TODO: remove chats
-
     //remove seller
     if (buyer.isSeller) {
         let seller = await Seller.find({ _id: buyer.sellerId });
@@ -139,9 +154,20 @@ const remove = async(req, res) => {
     return res.status(200).json({ code: "", message: "success" });
 }
 
+const find = async (req, res) => {
+  const username = req.query.username
+  if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
+
+  const check = await Buyer.findOne({ username: username })
+  if (check) res.status(200).json({ code: 107, message: 'Username found'})
+  else res.status(404).json({ code: 104, message: 'Username available'})
+};
+
 module.exports = {
     getInfo,
+    getInfoBuyer,
     create,
+    find,
     edit,
     remove
 };

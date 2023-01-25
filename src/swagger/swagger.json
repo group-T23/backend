@@ -42,31 +42,31 @@
           "201": {
             "description": "Created: utente creato con successo",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "400": {
             "description": "Bad Request: parametri mancanti o non validi",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "422": {
             "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -102,24 +102,13 @@
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 734
-                },
-                "message": {
-                  "type": "string",
-                  "example": "success"
-                }
-              }
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -145,19 +134,19 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -172,19 +161,58 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/buyer/find/": {
+      "get": {
+        "summary": "Cerca username",
+        "description": "Cerca se l'username fornito è già associato ad un account",
+        "tags": [
+          "Buyer"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found: l'username è già utilizzato da un account",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'username è disponibile",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -201,25 +229,25 @@
           "201": {
             "description": "Created: venditore creato con successo",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "422": {
             "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -240,19 +268,19 @@
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "422": {
             "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -267,19 +295,19 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "403": {
             "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           },
           "500": {
             "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -312,7 +340,1176 @@
           "400": {
             "description": "Bad Request: parametri mancanti o non validi",
             "schema": {
-              "$ref": "#/paths/~1buyer/get/responses/403/schema"
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Ritorna una lista di articoli",
+        "description": "Dati una serie di parametri, vengono trovati i soli articoli che rispettano i criteri di ricerca",
+        "tags": [
+          "Search"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "min_price",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_price",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "shipment",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rating",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "orderBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Richiesta mal formata, parametri mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Categoria non trovata",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/search/categories": {
+      "get": {
+        "summary": "Ritorna tutte le categorie presenti",
+        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/email": {
+      "get": {
+        "summary": "Controllo di una email",
+        "description": "si verifica che un indirizzo email sia raggiungibile",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reachable: email raggiungibile correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email già in utilizzo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Verifica di una email",
+        "description": "si esegue la verifica di un indirizzo email associato ad un utente",
+        "tags": [
+          "Email"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Codice di verifica",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verified: email verificata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: richiesta non formattata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: email non assocciata ad alcun utente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/cart": {
+      "post": {
+        "summary": "Articoli carrello",
+        "description": "Lista di tutti gli articoli del carrello dell'utente",
+        "tags": [
+          "Cart"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: lista articoli del carrello",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email non corrisponde a nessun utente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Modifica quantità articolo",
+        "description": "Modifica della quantità di un articolo del carrello",
+        "tags": [
+          "Cart"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo e nuova quantità",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: quantità modificata",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 734
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email, id e/o quantity non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id_item non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Rimozione articolo",
+        "description": "Rimozione di un articolo dal carrello",
+        "tags": [
+          "Cart"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo rimosso dal carrello",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/cart/add": {
+      "put": {
+        "summary": "Inserimento nuovo articolo",
+        "description": "Inserimento di un nuovo articolo all'interno del carrello dell'utente",
+        "tags": [
+          "Cart"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id_item": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo inserito nel carrello",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id_item non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id_item non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/cart/all": {
+      "delete": {
+        "summary": "Rimozione articoli",
+        "description": "Tutti gli articoli del carrello vengono rimossi",
+        "tags": [
+          "Cart"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articoli rimossi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email non fa riferimento a nessun utente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/cart/checkout": {
+      "post": {
+        "summary": "Checkout",
+        "description": "In fase di sviluppo",
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success: l'API viene chiamata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/wishlist": {
+      "post": {
+        "summary": "Articoli wishlist",
+        "description": "Lista di tutti gli articoli della wishlist dell'utente",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: lista articoli della wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email non corrisponde a nessun utente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Rimozione articolo",
+        "description": "Rimozione di un articolo dalla wishlist",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo rimosso dalla wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/wishlist/add": {
+      "put": {
+        "summary": "Inserimento nuovo articolo",
+        "description": "Inserimento di un nuovo articolo all'interno della wishlist dell'utente",
+        "tags": [
+          "Wishlist"
+        ],
+        "requestBody": {
+          "description": "Dati dell'utente e dell'articolo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "tpye": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: articolo inserito nella wishlist",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: il campo email e/o id_item non è stato definito",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Not found: l'email e/o l'id_item non fanno riferimento a nessuna entità",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals": {
+      "post": {
+        "summary": "Creazione di una proposta",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "requestBody": {
+          "description": "Dati della proposta da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created: utente creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ritorna la proposta specificata nella query string",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Proposal"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina la proposta specificata nella query string",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/in": {
+      "get": {
+        "summary": "Ritorna tutte le proposte in entrata dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/out": {
+      "get": {
+        "summary": "Ritorna tutte le proposte in uscita dell'utente autenticato",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/accept/{id}": {
+      "put": {
+        "summary": "Accetta la proposta specificata nel path",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/proposals/reject/{id}": {
+      "put": {
+        "summary": "Rifiuta la proposta specificata nel path",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review": {
+      "get": {
+        "summary": "Recupero info recensioni",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creazione di una nuova recensione",
+        "description": "Crea una nuova recensione",
+        "tags": [
+          "Review"
+        ],
+        "requestBody": {
+          "description": "Dati della recensione da creare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "number"
+                  },
+                  "sellerId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "rating",
+                  "sellerId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: recensione creata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/seller": {
+      "get": {
+        "summary": "Recupero recensioni di un venditore",
+        "description": "Recupera la recensioni assegnate ad un specifico venditore",
+        "tags": [
+          "Review"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/in": {
+      "get": {
+        "summary": "Recupero recensioni ricevute",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/review/out": {
+      "get": {
+        "summary": "Recupero recensioni spedite",
+        "description": "",
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created: recensioni recuperate con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "Dati di login dell'utente",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: venditore creato con successo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "firstname": {
+                      "type": "string"
+                    },
+                    "lastname": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: credenziali mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
           }
         }
@@ -497,6 +1694,48 @@
             "format": "int32"
           }
         }
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "Proposal": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "ProposalForm": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "required": [
+          "itemId",
+          "price"
+        ]
       },
       "Response": {
         "type": "object",

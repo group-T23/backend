@@ -29,13 +29,31 @@ const getPublicInfo = async(req, res) => {
 
     const seller = await Seller.findById(buyer.sellerId);
 
-    let rating = null;
-    if (seller.reviews) {
-        seller.reviews.forEach(async reviewId => {
-            const review = await Review.find({ id: reviewId });
-            rating += review.rating;
-        });
-        rating = rating * 1.0 / seller.reviews.length;
+    var rating = null;
+    
+    //calcolo media recensioni di ogni utente
+    if(seller.reviews) {
+        const rt = await Review.aggregate(
+            [
+                {
+                    "$group":
+                    {
+                        _id: "$sellerId",
+                        requests: {$sum: 1},
+                        avgRating: { $avg: "$rating"}
+                    }
+                }
+            ]
+        );
+
+        //ricerco all'interno dei gruppi quello del venditore ricercato usando seller.userId
+        let found = false;
+        for(let i=0; i<rt.length && !found; i++){
+            if((rt[i]._id).equals(seller.userId)){
+                found = true;
+                rating = rt[i].avgRating;
+            }
+        }
     }
 
     const pub = {

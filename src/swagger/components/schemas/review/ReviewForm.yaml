@@ -1,0 +1,19 @@
+type: object
+
+properties:
+  title:
+    type: string
+
+  description:
+    type: string
+
+  rating:
+    type: number
+
+  sellerId:
+    type: string
+
+required:
+  - title
+  - rating
+  - sellerId

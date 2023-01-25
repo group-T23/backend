@@ -1,0 +1,28 @@
+summary: Creazione di una nuova recensione
+description: 'Crea una nuova recensione'
+tags:
+  - Review
+
+requestBody:
+  description: Dati della recensione da creare
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/review/ReviewForm.yaml
+
+responses:
+  '200':
+    description: "Created: recensione creata con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

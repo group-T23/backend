@@ -4,6 +4,7 @@ const Buyer = require('../models/Buyer');
 // To use between requests that need authentication priviligies
 const verifyAuthentication = async(req, res, next) => {
     const authorization = req.headers['x-access-token'];
+
     if (!authorization)
         return res.status(403).json({ code: "", message: 'Access token property is missing' });
 
@@ -20,7 +21,7 @@ const verifyAuthentication = async(req, res, next) => {
 }
 
 async function getAuthenticatedBuyer(req, res) {
-    const token = req.headers['x-access-token'].split(' ')[0];
+    const token = req.headers['x-access-token'];
     let email;
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => {
         if (err)

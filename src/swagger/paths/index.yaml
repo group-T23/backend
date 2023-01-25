@@ -8,6 +8,10 @@
     $ref: ./buyer/buyer_edit.yaml
   delete:
     $ref: ./buyer/buyer_remove.yaml
+  
+/buyer/find/:
+  get:
+    $ref: ./buyer/buyer_find.yaml
 
 # Seller's API
 /seller:
@@ -22,3 +26,126 @@
   get:
     $ref: ./seller/seller_public.yaml
   
+# Search's API
+/search:
+  get:
+    $ref: ./search/search_get.yaml
+
+/search/categories:
+  get:
+    $ref: ./search/search_get_categories.yaml
+
+# Email's API
+/email:
+  get:
+    $ref: ./email/email_check.yaml
+  post:
+    $ref: ./email/email_verify.yaml
+
+# Cart's API
+/cart:
+  post:
+    $ref: ./cart/cart_post.yaml
+  put:
+    $ref: ./cart/cart_put.yaml
+  delete:
+    $ref: ./cart/cart_delete.yaml
+
+/cart/add:
+  put:
+    $ref: ./cart/cart_put_add.yaml
+
+/cart/all:
+  delete:
+    $ref: ./cart/cart_delete_all.yaml
+
+/cart/checkout:
+  post:
+    $ref: ./cart/cart_post_checkout.yaml
+
+# Wishlist's API
+/wishlist:
+  post:
+    $ref: ./wishlist/wishlist_post.yaml
+  delete:
+    $ref: ./wishlist/wishlist_delete.yaml
+
+/wishlist/add:
+  put:
+    $ref: ./wishlist/wishlist_put.yaml
+
+# Proposal's API
+/proposals:
+  post:
+    $ref: ./proposal/proposal_create.yaml
+  get:
+    $ref: ./proposal/proposal_get.yaml
+  delete:
+    $ref: ./proposal/proposal_remove.yaml
+
+/proposals/in:
+  get:
+    $ref: ./proposal/proposal_in.yaml
+
+/proposals/out:
+  get:
+    $ref: ./proposal/proposal_out.yaml
+
+/proposals/accept/{id}:
+  put:
+    $ref: ./proposal/proposal_accept.yaml
+
+/proposals/reject/{id}:
+  put:
+    $ref: ./proposal/proposal_reject.yaml
+
+# Review
+/review:
+  get:
+    $ref: ./review/review_info.yaml
+  post:
+    $ref: ./review/review_create.yaml
+
+/review/seller:
+  get:
+    $ref: ./review/review_seller.yaml
+
+/review/in:
+  get:
+    $ref: ./review/review_all_in.yaml
+
+/review/out:
+  get:
+    $ref: ./review/review_all_out.yaml
+
+# Auth
+/login:
+  post:
+    $ref: ./auth/login.yaml
+
+# Item
+/item:
+  post:
+    $ref: ./item/item_create.yaml
+  get:
+    $ref: ./item/item_get.yaml
+  put:
+    $ref: ./item/item_edit.yaml
+  delete:
+    $ref: ./item/item_remove.yaml
+
+/item/seller:
+  get:
+    $ref: ./item/item_getByUser.yaml
+
+/item/buy:
+  put:
+    $ref: ./item/item_buy.yaml
+
+/item/retire:
+  put:
+    $ref: ./item/item_retire.yaml
+
+/item/publish:
+  put:
+    $ref: ./item/item_publish.yaml

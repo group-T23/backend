@@ -7,6 +7,7 @@ const { verifyAuthentication } = require('../utils/auth');
 router.post('/', verifyAuthentication, reviewController.create);
 
 // R - read
+router.get('/seller/id=:id', reviewController.getSellerReviews);
 router.get('/id=:id', reviewController.getInfo);
 router.get('/in', verifyAuthentication, reviewController.getAllIn)
 router.get('/out', verifyAuthentication, reviewController.getAllOut)

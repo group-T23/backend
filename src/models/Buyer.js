@@ -24,6 +24,7 @@ const BuyerSchema = new mongoose.Schema({
     cart: [{ id: { type: mongoose.Types.ObjectId, required: true }, quantity: { type: Number, default: 1 } }],
     wishlist: [{ id: { type: mongoose.Types.ObjectId, required: true } }],
     proposals: { type: [mongoose.Types.ObjectId], required: true },
+    chats: { type: [mongoose.Types.ObjectId], required: true },
 
     isSeller: { type: Boolean, default: false },
     sellerId: { type: mongoose.Types.ObjectId, default: null },
