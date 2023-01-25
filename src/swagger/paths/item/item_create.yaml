@@ -21,6 +21,11 @@ responses:
     description: "Bad Request: parametri mancanti o non validi"
     schema:
       $ref: ../../components/schemas/common/response.yaml
+
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
   
   '500':
     description: "Internal Server Error: non è stato possibile portare a termine l'operazione"

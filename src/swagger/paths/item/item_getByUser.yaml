@@ -1,5 +1,5 @@
 summary: Ritorna tutti i prodotti di un venditore
-description: Il venditore è specificato tramite il suo id nella query string
+description: Il venditore è specificato tramite il suo username nella query string
 tags:
   - Item
 
@@ -7,7 +7,7 @@ tags:
 parameters:
 
   - in: query
-    name: id
+    name: username
     schema:
       type: string
     required: true

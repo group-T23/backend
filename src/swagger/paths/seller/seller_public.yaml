@@ -4,11 +4,15 @@ tags:
   - Seller
 
 parameters:
-  - in: path
+  - in: query
     name: username
     schema:
       type: string
-    required: true
+  
+  - in: query
+    name: id
+    schema:
+      type: string
 
 
 responses:

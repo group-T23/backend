@@ -4,21 +4,13 @@ tags:
   - Item
 
 
-parameters:
-  - in: query
-    name: id
-    schema:
-      type: string
-    required: true
-
-
 requestBody:
   description: Nuovi dati del prodotto
   required: true
   content:
     application/json:
       schema:
-        $ref: ../../schemas/item/ItemEdit.yaml
+        $ref: ../../components/schemas/item/ItemEdit.yaml
 
 
 responses:
@@ -29,6 +21,11 @@ responses:
   
   '400':
     description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
     schema:
       $ref: ../../components/schemas/common/response.yaml
   

@@ -22,7 +22,7 @@
   delete:
     $ref: ./seller/seller_remove.yaml
 
-/seller/public/{username}:
+/seller/public:
   get:
     $ref: ./seller/seller_public.yaml
   

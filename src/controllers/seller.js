@@ -16,40 +16,45 @@ const getInfo = async(req, res) => {
 
 const getPublicInfo = async(req, res) => {
 
-    if (!req.params.username)
+    if (!req.query.username && !req.query.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
-    if (!(await Buyer.exists({ username: req.params.username })))
-        return res.status(400).json({ code: "", message: "invalid arguments" });
+    var buyer
 
-    const buyer = await Buyer.findOne({ username: req.params.username })
+    if (req.query.username) {
+        if (!(await Buyer.exists({ username: req.query.username })))
+            return res.status(400).json({ code: "", message: "invalid arguments" });
+
+        buyer = await Buyer.findOne({ username: req.query.username })
+    } else {
+        if (!(await Buyer.exists({ id: req.query.id })))
+            return res.status(400).json({ code: "", message: "invalid arguments" });
+
+        buyer = await Buyer.findById(req.query.id)
+    }
 
     if (!buyer.isSeller)
         return res.status(422).json({ code: "", message: "invalid account type" });
 
     const seller = await Seller.findById(buyer.sellerId);
-
     var rating = null;
-    
+
     //calcolo media recensioni di ogni utente
-    if(seller.reviews) {
+    if (seller.reviews) {
         const rt = await Review.aggregate(
-            [
-                {
-                    "$group":
-                    {
-                        _id: "$sellerId",
-                        requests: {$sum: 1},
-                        avgRating: { $avg: "$rating"}
-                    }
+            [{
+                "$group": {
+                    _id: "$sellerId",
+                    requests: { $sum: 1 },
+                    avgRating: { $avg: "$rating" }
                 }
-            ]
+            }]
         );
 
         //ricerco all'interno dei gruppi quello del venditore ricercato usando seller.userId
         let found = false;
-        for(let i=0; i<rt.length && !found; i++){
-            if((rt[i]._id).equals(seller.userId)){
+        for (let i = 0; i < rt.length && !found; i++) {
+            if ((rt[i]._id).equals(seller.userId)) {
                 found = true;
                 rating = rt[i].avgRating;
             }
@@ -63,6 +68,7 @@ const getPublicInfo = async(req, res) => {
 
     return res.status(200).json({ seller: pub, code: "", message: "success" });
 }
+
 
 const create = async(req, res) => {
     let buyer = await getAuthenticatedBuyer(req, res);
