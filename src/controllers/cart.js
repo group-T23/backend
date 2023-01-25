@@ -191,7 +191,6 @@ const checkout = async(req, res) => {
     //la quantità definita nel carrello
     
     let result = await checkQuantity(req.body.items, req.body.modify);
-    console.log(result);
     if(result)
         return res.status(200).json({code: 400, message: "success"});
     else
@@ -251,7 +250,7 @@ const checkQuantity = async(items, modify) => {
             });
         }
     }
-    console.log("success: " + success);
+
     return success;
 }
 
