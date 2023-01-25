@@ -1,0 +1,38 @@
+summary: Modifica del prodotto in base al suo id
+description: L'id è specificato nella query string
+tags:
+  - Item
+
+
+parameters:
+  - in: query
+    name: id
+    schema:
+      type: string
+    required: true
+
+
+requestBody:
+  description: Nuovi dati del prodotto
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../schemas/item/ItemEdit.yaml
+
+
+responses:
+  '200':
+    description: "OK"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
