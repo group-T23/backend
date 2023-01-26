@@ -15,18 +15,17 @@ const getInfo = async(req, res) => {
 }
 
 const getPublicInfo = async(req, res) => {
-
     if (!req.query.username && !req.query.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
-    var buyer
+    var buyer;
 
     if (req.query.username) {
         if (!(await Buyer.exists({ username: req.query.username })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
         buyer = await Buyer.findOne({ username: req.query.username })
-    } else {
+    } else if(req.query.id){
         if (!(await Buyer.exists({ id: req.query.id })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
@@ -61,11 +60,12 @@ const getPublicInfo = async(req, res) => {
         }
     }
 
+    let user = buyer.username;
     const pub = {
-        username: buyer.username,
+        username: user,
         rating: rating,
     }
-
+  
     return res.status(200).json({ seller: pub, code: "", message: "success" });
 }
 
