@@ -190,10 +190,10 @@ const checkout = async(req, res) => {
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
     //TODO: salvare nella collection Orders l'ordine appena fatto
-    //TODO: creare model Order per poter salvare gli ordini fatti
     let result = await checkQuantity(req.body.items, req.body.modify);
-    if(result)
+    if(result) {
         return res.status(200).json({code: 400, message: "success"});
+    }
     else
         return res.status(400).json({code: 406, message: "checkout failed"});
 };
@@ -225,7 +225,6 @@ const checkQuantity = async(items, modify) => {
      
             //se il flag è true, vengono modificate le quantità
             if(modify){
-                console.log("modify");
                 item.quantity -= items[i].quantity;
                 if (item.quantity <= 0) {
                     item.state = 'SOLD';
@@ -243,7 +242,6 @@ const checkQuantity = async(items, modify) => {
     //modificati così da aggiornare le loro quantità
     if(success && modify) {
         for(let i=0; i<newItems.length; i++){
-            console.log(newItems[i]);
             newItems[i].save(err => {
                 if (err) {
                     return false;
