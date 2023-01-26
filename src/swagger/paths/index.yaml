@@ -99,7 +99,7 @@
   put:
     $ref: ./proposal/proposal_reject.yaml
 
-# Review
+# Review's API
 /review:
   get:
     $ref: ./review/review_info.yaml
@@ -118,12 +118,12 @@
   get:
     $ref: ./review/review_all_out.yaml
 
-# Auth
+# Auth's API
 /login:
   post:
     $ref: ./auth/login.yaml
 
-# Item
+# Item's API
 /item:
   post:
     $ref: ./item/item_create.yaml
@@ -149,3 +149,14 @@
 /item/publish:
   put:
     $ref: ./item/item_publish.yaml
+
+# Order's API
+/order:
+  post:
+    $ref: ./order/order_create.yaml
+  put:
+    $ref: ./order/order_edit.yaml  
+
+/order/getAll:
+  post:
+    $ref: ./order/order_get.yaml

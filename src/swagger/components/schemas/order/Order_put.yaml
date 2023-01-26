@@ -1,0 +1,9 @@
+type: object
+
+properties:
+
+  order:
+    type: string
+
+  newState: 
+    type: string  

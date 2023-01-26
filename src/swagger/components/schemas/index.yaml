@@ -36,6 +36,16 @@ ItemForm:
 ItemEdit:
   $ref: ./item/ItemEdit.yaml
 
+# Order's schemas
+Order:
+  $ref: ./order/Order.yaml
+
+OrderGet:
+  $ref: ./order/Order_get.yaml
+
+OrderPut:
+  $ref: ./order/Order_put.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml

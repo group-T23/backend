@@ -1865,6 +1865,142 @@
           }
         }
       }
+    },
+    "/order": {
+      "post": {
+        "summary": "Creazione ordine",
+        "description": "Viene creato l'ordine con gli articoli acquistati",
+        "tags": [
+          "Order"
+        ],
+        "requestBody": {
+          "description": "Dati del checkout e codice id del buyer",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: ordine creato con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Visualizzazione ordini",
+        "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
+        "tags": [
+          "Order"
+        ],
+        "requestBody": {
+          "description": "Il codice id del'ordine e il suo nuovo stato",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stato ordine modificato con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/order/getAll": {
+      "post": {
+        "summary": "Visualizzazione ordini",
+        "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
+        "tags": [
+          "Order"
+        ],
+        "requestBody": {
+          "description": "Il codice id del buyer",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderGet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ordini ritornati con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2235,6 +2371,58 @@
           "shipmentCost": {
             "type": "number",
             "format": "float"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "buyer": {
+            "type": "string"
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "tpye": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "shipment": {
+            "type": "number",
+            "format": "float"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderGet": {
+        "type": "object",
+        "properties": {
+          "buyer": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderPut": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "string"
+          },
+          "newState": {
+            "type": "string"
           }
         }
       },

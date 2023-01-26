@@ -1,0 +1,33 @@
+summary: Creazione ordine
+description: Viene creato l'ordine con gli articoli acquistati
+tags:
+  - Order
+
+requestBody:
+  description: Dati del checkout e codice id del buyer
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/order/Order.yaml
+
+responses:
+  '200':
+    description: "Created: ordine creato con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

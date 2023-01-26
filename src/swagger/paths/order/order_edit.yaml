@@ -1,0 +1,33 @@
+summary: Visualizzazione ordini
+description: Vengono visualizzati tutti gli ordini effettuati dall'utente
+tags:
+  - Order
+
+requestBody:
+  description: Il codice id del'ordine e il suo nuovo stato
+  required: true
+  content:
+    application/json:
+      schema:
+          $ref: ../../components/schemas/order/Order_put.yaml
+
+responses:
+  '200':
+    description: "Stato ordine modificato con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '403':
+    description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

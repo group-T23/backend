@@ -1,0 +1,27 @@
+type: object
+
+properties:
+
+  buyer:
+    type: string
+  
+  articles:
+    type: array
+    items: 
+      type: object
+      properties:
+        id:
+          tpye: string
+        quantity:
+          type: integer
+  
+  price:
+    type: number
+    format: float
+
+  shipment:
+    type: number
+    format: float
+
+  state:
+    type: string
