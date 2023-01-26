@@ -1,5 +1,7 @@
 summary: Creazione ordine
 description: Viene creato l'ordine con gli articoli acquistati
+security: 
+  - ApiKeyAuth: [admin]
 tags:
   - Order
 

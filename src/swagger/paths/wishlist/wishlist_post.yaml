@@ -1,5 +1,7 @@
 summary: Articoli wishlist
 description: Lista di tutti gli articoli della wishlist dell'utente
+security: 
+  - ApiKeyAuth: [admin]
 tags:
   - Wishlist
 

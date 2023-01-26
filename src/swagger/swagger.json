@@ -831,6 +831,13 @@
       "post": {
         "summary": "Articoli wishlist",
         "description": "Lista di tutti gli articoli della wishlist dell'utente",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Wishlist"
         ],
@@ -875,6 +882,13 @@
       "delete": {
         "summary": "Rimozione articolo",
         "description": "Rimozione di un articolo dalla wishlist",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Wishlist"
         ],
@@ -924,6 +938,13 @@
       "put": {
         "summary": "Inserimento nuovo articolo",
         "description": "Inserimento di un nuovo articolo all'interno della wishlist dell'utente",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Wishlist"
         ],
@@ -1870,6 +1891,13 @@
       "post": {
         "summary": "Creazione ordine",
         "description": "Viene creato l'ordine con gli articoli acquistati",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Order"
         ],
@@ -1914,6 +1942,13 @@
       "put": {
         "summary": "Visualizzazione ordini",
         "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Order"
         ],
@@ -1960,6 +1995,13 @@
       "post": {
         "summary": "Visualizzazione ordini",
         "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
+        "security": [
+          {
+            "ApiKeyAuth": [
+              "admin"
+            ]
+          }
+        ],
         "tags": [
           "Order"
         ],
@@ -2439,6 +2481,14 @@
             "example": "success"
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "description": "il token di accesso in fase di login, usare eyJhbGciOiJIUzI1NiJ9.ZG9yaWphbi5kaXplcHBAZ21haWwuY29t.X0PLh2A6DG92wSviAoqZ68xsSPhmAQp-gQXaIsyql_o",
+        "in": "header",
+        "name": "x-access-token"
       }
     }
   }

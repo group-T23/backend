@@ -1,5 +1,7 @@
 summary: Rimozione articolo
 description: Rimozione di un articolo dalla wishlist
+security: 
+  - ApiKeyAuth: [admin]
 tags:
   - Wishlist
 

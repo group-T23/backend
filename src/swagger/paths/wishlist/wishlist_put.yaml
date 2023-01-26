@@ -1,5 +1,7 @@
 summary: Inserimento nuovo articolo
 description: Inserimento di un nuovo articolo all'interno della wishlist dell'utente
+security: 
+  - ApiKeyAuth: [admin]
 tags:
   - Wishlist
 

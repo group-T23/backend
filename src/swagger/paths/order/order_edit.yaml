@@ -1,5 +1,7 @@
 summary: Visualizzazione ordini
 description: Vengono visualizzati tutti gli ordini effettuati dall'utente
+security: 
+  - ApiKeyAuth: [admin]
 tags:
   - Order
 
