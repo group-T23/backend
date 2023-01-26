@@ -28,6 +28,7 @@ const review = require('./routes/review');
 const buyer = require('./routes/buyer');
 const seller = require('./routes/seller');
 const item = require('./routes/item');
+const order = require('./routes/order');
 app.use('/email', email);
 app.use('/login', login);
 app.use('/search', search);
@@ -39,6 +40,7 @@ app.use('/review', review);
 app.use('/buyer', buyer);
 app.use('/seller', seller);
 app.use('/item', item);
+app.use('/order', order);
 
 // Media endpoint
 app.use(express.static('media'));

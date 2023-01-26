@@ -189,6 +189,8 @@ const checkout = async(req, res) => {
     //NB facendo il checkout è da verificare prima 
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
+    //TODO: salvare nella collection Orders l'ordine appena fatto
+    //TODO: creare model Order per poter salvare gli ordini fatti
     let result = await checkQuantity(req.body.items, req.body.modify);
     if(result)
         return res.status(200).json({code: 400, message: "success"});
