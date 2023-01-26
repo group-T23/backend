@@ -16,7 +16,7 @@ const create = async(req, res) => {
     const state = "PAID";//l'ordine creato ha come stato pagato
 
     //verifica presenza parametri di richiesta
-    if(!buyer || !articles || !price || !shipment || !state)
+    if(!buyer || !articles || !price || !shipment)
         return res.status(403).json({code: 1002, message: "Missing arguments"});
     
     //verifica esistenza buyer e articoli
