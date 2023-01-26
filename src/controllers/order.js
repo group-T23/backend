@@ -57,29 +57,62 @@ const create = async(req, res) => {
 };
 
 /**
- * la funzione permette di recuperare un ordine specifico
- */
-const get = async(req, res) => {
-    
-};
-
-/**
  * la funzione permette di recuperare tutti gli ordini fatti da un utente
  */
 const getAll = async(req, res) => {
+    const buyer = req.body.buyer;//id del compratore
+
+    //verifica presenza parametri di richiesta
+    if(!buyer)
+        return res.status(403).json({code: 1002, message: "Missing arguments"});
     
+    //verifica esistenza buyer e articoli
+    if(!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))){
+        return res.status(404).json({code: 1005, message: "Buyer not found"});
+    }
+
+    //recupero ordini fatti dal buyer
+    try{
+        const result = await Order.find({buyer: buyer});
+        return res.status(200).json({code: 1000, message: "success", orders: result});
+    }catch(error){
+        return res.status(500).json({code: 1001, message: "database error"});
+    }
 };
 
 /**
  * la funzione permette di modificare lo stato dell'ordine
  */
 const edit = async(req, res) => {
+    const order = req.body.order;//id ordine
+    const newState = req.body.state;//nuovo stato dell'ordine
+
+    //verifica presenza parametri di richiesta
+    if(!order || !newState)
+        return res.status(403).json({code: 1002, message: "Missing arguments"});
     
+    //verifica esistenza buyer e articoli
+    if(!(mongoose.Types.ObjectId.isValid(order)) || !(await Order.findById(order))){
+        return res.status(404).json({code: 1007, message: "Order not found"});
+    }
+
+    //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
+    if(newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
+        return res.status(403).json({code: 1003, message: "Invalid arguments"});
+
+    //recupero ordine e modifica del campo state
+    try{
+        let result = await Order.findById(order);
+        result.state = newState;
+        await result.save();
+        return res.status(200).json({code: 1000, message: "success"});
+    }catch(error){
+        return res.status(500).json({code: 1001, message: "database error"});
+    }
 };
 
 module.exports = {
     create,
-    get,
     getAll,
     edit
 };
