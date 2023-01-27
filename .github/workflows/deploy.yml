@@ -28,6 +28,6 @@ jobs:
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
             cd src
-            node index.js
+            forever start index.js
 
     
