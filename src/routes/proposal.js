@@ -19,6 +19,3 @@ router.put('/reject/:id', verifyAuthentication, proposalController.reject);
 router.delete('/', verifyAuthentication, proposalController.remove);
 
 module.exports = router;
-
-
-//ce4fdc30f9d08049b2e615ba10a99fa05ef8cce4a2010b1a3cfe5a406e4a43c4
