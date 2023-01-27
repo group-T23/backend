@@ -21,6 +21,13 @@ paths:
 components:
   schemas:
     $ref: "./components/schemas/index.yaml"
+  
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-access-token
+
 
   securitySchemes:
     ApiKeyAuth:

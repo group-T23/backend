@@ -3,10 +3,16 @@
   post:
     $ref: ./buyer/buyer_create.yaml
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./buyer/buyer_get.yaml
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./buyer/buyer_edit.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./buyer/buyer_remove.yaml
   
 /buyer/find/:
@@ -16,10 +22,16 @@
 # Seller's API
 /seller:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./seller/seller_create.yaml
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./seller/seller_get.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./seller/seller_remove.yaml
 
 /seller/public:
@@ -45,58 +57,90 @@
 # Cart's API
 /cart:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_post.yaml
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_put.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_delete.yaml
 
 /cart/add:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_put_add.yaml
 
 /cart/all:
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_delete_all.yaml
 
 /cart/checkout:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./cart/cart_post_checkout.yaml
 
 # Wishlist's API
 /wishlist:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./wishlist/wishlist_post.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./wishlist/wishlist_delete.yaml
 
 /wishlist/add:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./wishlist/wishlist_put.yaml
 
 # Proposal's API
-/proposals:
+/proposal:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_create.yaml
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_get.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_remove.yaml
 
-/proposals/in:
+/proposal/in:
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_in.yaml
 
-/proposals/out:
+/proposal/out:
   get:
+    security:
+      - ApiKeyAuth: []
     $ref: ./proposal/proposal_out.yaml
 
-/proposals/accept/{id}:
+/proposal/accept/{id}:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_accept.yaml
 
-/proposals/reject/{id}:
+/proposal/reject/{id}:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./proposal/proposal_reject.yaml
 
 # Review's API
@@ -104,6 +148,8 @@
   get:
     $ref: ./review/review_info.yaml
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./review/review_create.yaml
 
 /review/seller:
@@ -112,10 +158,14 @@
 
 /review/in:
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./review/review_all_in.yaml
 
 /review/out:
   get:
+    security:
+        - ApiKeyAuth: []
     $ref: ./review/review_all_out.yaml
 
 # Auth's API
@@ -126,12 +176,18 @@
 # Item's API
 /item:
   post:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_create.yaml
   get:
     $ref: ./item/item_get.yaml
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_edit.yaml
   delete:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_remove.yaml
 
 /item/seller:
@@ -140,14 +196,20 @@
 
 /item/buy:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_buy.yaml
 
 /item/retire:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_retire.yaml
 
 /item/publish:
   put:
+    security:
+        - ApiKeyAuth: []
     $ref: ./item/item_publish.yaml
 
 # Order's API
