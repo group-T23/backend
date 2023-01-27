@@ -27,5 +27,6 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
-            node src/index.json
+            node src/index.js
+
     
