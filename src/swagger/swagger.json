@@ -72,6 +72,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritorna il profilo dell'utente autenticato",
         "description": "",
         "tags": [
@@ -114,6 +119,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Modifica dell'utente autenticato",
         "description": "",
         "tags": [
@@ -152,6 +162,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Eliminazione dell'utente autenticato",
         "description": "",
         "tags": [
@@ -220,6 +235,11 @@
     },
     "/seller": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Creazione di un venditore",
         "description": "si abilita l' utente autenticato (buyer) ad operare come venditore",
         "tags": [
@@ -253,6 +273,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritorna il profilo del venditore autenticato",
         "description": "",
         "tags": [
@@ -286,6 +311,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Eliminazione del venditore autenticato",
         "description": "",
         "tags": [
@@ -563,6 +593,11 @@
     },
     "/cart": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Articoli carrello",
         "description": "Lista di tutti gli articoli del carrello dell'utente",
         "tags": [
@@ -607,6 +642,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Modifica quantità articolo",
         "description": "Modifica della quantità di un articolo del carrello",
         "tags": [
@@ -668,6 +708,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Rimozione articolo",
         "description": "Rimozione di un articolo dal carrello",
         "tags": [
@@ -717,6 +762,11 @@
     },
     "/cart/add": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Inserimento nuovo articolo",
         "description": "Inserimento di un nuovo articolo all'interno del carrello dell'utente",
         "tags": [
@@ -766,6 +816,11 @@
     },
     "/cart/all": {
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Rimozione articoli",
         "description": "Tutti gli articoli del carrello vengono rimossi",
         "tags": [
@@ -812,6 +867,11 @@
     },
     "/cart/checkout": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Checkout",
         "description": "In fase di sviluppo",
         "tags": [
@@ -829,6 +889,11 @@
     },
     "/wishlist": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Articoli wishlist",
         "description": "Lista di tutti gli articoli della wishlist dell'utente",
         "tags": [
@@ -873,6 +938,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Rimozione articolo",
         "description": "Rimozione di un articolo dalla wishlist",
         "tags": [
@@ -922,6 +992,11 @@
     },
     "/wishlist/add": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Inserimento nuovo articolo",
         "description": "Inserimento di un nuovo articolo all'interno della wishlist dell'utente",
         "tags": [
@@ -969,8 +1044,13 @@
         }
       }
     },
-    "/proposals": {
+    "/proposal": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Creazione di una proposta",
         "description": "",
         "tags": [
@@ -1021,6 +1101,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritorna la proposta specificata nella query string",
         "tags": [
           "Proposal"
@@ -1063,6 +1148,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Elimina la proposta specificata nella query string",
         "description": "",
         "tags": [
@@ -1106,8 +1196,13 @@
         }
       }
     },
-    "/proposals/in": {
+    "/proposal/in": {
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritorna tutte le proposte in entrata dell'utente autenticato",
         "description": "",
         "tags": [
@@ -1146,8 +1241,13 @@
         }
       }
     },
-    "/proposals/out": {
+    "/proposal/out": {
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritorna tutte le proposte in uscita dell'utente autenticato",
         "description": "",
         "tags": [
@@ -1186,8 +1286,13 @@
         }
       }
     },
-    "/proposals/accept/{id}": {
+    "/proposal/accept/{id}": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Accetta la proposta specificata nel path",
         "description": "",
         "tags": [
@@ -1231,8 +1336,13 @@
         }
       }
     },
-    "/proposals/reject/{id}": {
+    "/proposal/reject/{id}": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Rifiuta la proposta specificata nel path",
         "description": "",
         "tags": [
@@ -1309,6 +1419,11 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Creazione di una nuova recensione",
         "description": "Crea una nuova recensione",
         "tags": [
@@ -1401,6 +1516,11 @@
     },
     "/review/in": {
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Recupero recensioni ricevute",
         "description": "",
         "tags": [
@@ -1424,6 +1544,11 @@
     },
     "/review/out": {
       "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Recupero recensioni spedite",
         "description": "",
         "tags": [
@@ -1523,6 +1648,11 @@
     },
     "/item": {
       "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Creazione di un nuovo prodotto",
         "description": "",
         "tags": [
@@ -1598,6 +1728,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Modifica del prodotto in base al suo id",
         "description": "L'id è specificato nella query string",
         "tags": [
@@ -1642,6 +1777,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Elimina un prodotto in base al suo id",
         "description": "L'id è specificato nella query string",
         "tags": [
@@ -1725,6 +1865,11 @@
     },
     "/item/buy": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Esegue l'acquisto del prodotto specificato nella query string",
         "description": null,
         "tags": [
@@ -1778,6 +1923,11 @@
     },
     "/item/retire": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Ritira il prodotto specificato dalla vendita",
         "description": null,
         "tags": [
@@ -1823,6 +1973,11 @@
     },
     "/item/publish": {
       "put": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "summary": "Pubblica il prodotto specificato sul mercato",
         "description": null,
         "tags": [
@@ -2251,6 +2406,13 @@
             "example": "success"
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-access-token"
       }
     }
   }
