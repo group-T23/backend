@@ -24,7 +24,8 @@ jobs:
             killall node
             cd /var/www/backend
             git pull
-            source ~/.bashrc
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
             npm ci --omit=dev
             node src/index.json
     
