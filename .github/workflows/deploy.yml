@@ -24,6 +24,6 @@ jobs:
             killall node
             cd /var/www/backend
             git pull
-            npm ci --production
+            npm ci --omit=dev
             node src/index.json
     
