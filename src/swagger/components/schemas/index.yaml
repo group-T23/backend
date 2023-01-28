@@ -46,6 +46,10 @@ OrderGet:
 OrderPut:
   $ref: ./order/Order_put.yaml
 
+# Cart's schemas
+CartCheckout:
+  $ref: ./cart/Cart_checkout.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml

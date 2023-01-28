@@ -827,13 +827,30 @@
           }
         ],
         "summary": "Checkout",
-        "description": "In fase di sviluppo",
+        "description": "Procedura al checkout",
         "tags": [
           "Cart"
         ],
+        "requestBody": {
+          "description": "Viene verificata la disponibilità degli articoli e modificata la loro quantità se indicato",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartCheckout"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success: l'API viene chiamata correttamente",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad request: non è possibile fare il checkout",
             "schema": {
               "$ref": "#/paths/~1cart/put/responses/200/schema"
             }
@@ -2531,6 +2548,28 @@
           }
         }
       },
+      "CartCheckout": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "tpye": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "modify": {
+            "type": "boolean"
+          }
+        }
+      },
       "Response": {
         "type": "object",
         "properties": {
@@ -2549,7 +2588,7 @@
     "securitySchemes": {
       "ApiKeyAuth": {
         "type": "apiKey",
-        "description": "il token di accesso in fase di login, usare eyJhbGciOiJIUzI1NiJ9.ZG9yaWphbi5kaXplcHBAZ21haWwuY29t.X0PLh2A6DG92wSviAoqZ68xsSPhmAQp-gQXaIsyql_o",
+        "description": "per ottenere il token, utilizzare l'api login presente nel tag Authentication e recuperarlo dal messaggio di risposta",
         "in": "header",
         "name": "x-access-token"
       }

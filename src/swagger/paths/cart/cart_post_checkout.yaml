@@ -1,10 +1,24 @@
 summary: Checkout
-description: In fase di sviluppo
+description: Procedura al checkout
 tags:
   - Cart
+
+requestBody:
+  description: Viene verificata la disponibilità degli articoli e modificata la loro quantità se indicato
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/cart/Cart_checkout.yaml   
+
 
 responses:
   '200':
     description: "Success: l'API viene chiamata correttamente"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '400':
+    description: "Bad request: non è possibile fare il checkout"
     schema:
       $ref: ../../components/schemas/common/response.yaml

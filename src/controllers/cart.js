@@ -209,32 +209,36 @@ const checkQuantity = async(items, modify) => {
     for(let i=0; i<items.length && success; i++){
         //viene preso in considerazione l'articolo se ha una quantità maggiore di 0
         if(items[i].quantity > 0) {
-            if (!mongoose.Types.ObjectId.isValid(items[i].id) || !(await Item.exists({ id: items[i].id }))) {
+            
+            if (!(mongoose.Types.ObjectId.isValid(items[i].id)) || !(await Item.exists({ _id: items[i].id }))) {
                 success = false;
             }
             
-            let item = await Item.findById(items[i].id);
+            let item;
+            //se l'item è stato trovato
+            if(success) {
+                item = await Item.findById(items[i].id);
 
-            if (item.state != 'PUBLISHED'){
-                success = false;
-            }
-         
-            if (item.quantity < items[i].quantity) {
-                success = false;
-            }
+                if (item.state != 'PUBLISHED'){
+                    success = false;
+                }
+            
+                if (item.quantity < items[i].quantity) {
+                    success = false;
+                }
      
-            //se il flag è true, vengono modificate le quantità
-            if(modify){
-                item.quantity -= items[i].quantity;
-                if (item.quantity <= 0) {
-                    item.state = 'SOLD';
-                    item.quantity = 0;
-                }   
+                //se il flag è true, vengono modificate le quantità
+                if(modify){
+                    item.quantity -= items[i].quantity;
+                    if (item.quantity <= 0) {
+                        item.state = 'SOLD';
+                        item.quantity = 0;
+                    }   
 
-                //salvataggio del "nuovo" articolo in array
-                newItems.push(item);
+                    //salvataggio del "nuovo" articolo in array
+                    newItems.push(item);
+                }
             }
-
         }
     }
     

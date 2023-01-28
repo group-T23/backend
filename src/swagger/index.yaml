@@ -25,6 +25,7 @@ components:
   securitySchemes:
     ApiKeyAuth:
         type: apiKey
-        description: il token di accesso in fase di login, usare eyJhbGciOiJIUzI1NiJ9.ZG9yaWphbi5kaXplcHBAZ21haWwuY29t.X0PLh2A6DG92wSviAoqZ68xsSPhmAQp-gQXaIsyql_o
+        description: per ottenere il token, utilizzare l'api login presente nel tag Authentication e recuperarlo dal messaggio
+                    di risposta
         in: header
         name: x-access-token
