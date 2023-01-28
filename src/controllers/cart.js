@@ -51,7 +51,7 @@ const insertItem = async(req, res) => {
     else {
         if (Object.keys(result).length === 0) {
             //item non già presente nel carrello, inserimento id
-            const result = await Buyer.updateOne({ _id: user.id }, { $push: { cart: { id: id_item } } });
+            const result = await Buyer.updateOne({ _id: user._id }, { $push: { cart: { id: id_item } } });
             return res.status(200).json({ code: "400", message: "product added in cart" });
         } else
             return res.status(200).json({ code: "400", message: "product not added in cart" });
