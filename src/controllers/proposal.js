@@ -21,7 +21,7 @@ const create = async(req, res) => {
 
     // only one proposal can exists for one author and one item
     if (valid)
-        valid = !(await Proposal.exists({ item_id: req.body.itemId, author_id: req.body.authorId }));
+        valid = !(await Proposal.findOne({ itemId: req.body.itemId, authorId: author._id }));
 
     // the author of the proposal must be different from the item owner
     if (valid)
