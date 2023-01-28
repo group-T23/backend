@@ -1,6 +1,7 @@
 const Buyer = require("../models/Buyer")
 const Item = require("../models/Item");
 const mongoose = require('mongoose');
+const { getAuthenticatedBuyer } = require('../utils/auth');
 
 /**
  * la funzione ritorna la lista degli articoli presenti nel carrello
@@ -8,12 +9,9 @@ const mongoose = require('mongoose');
  */
 const getItems = async(req, res) => {
     //get all items inserted in the cart
-    const email = req.body.email;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (email == null)
-        return res.status(400).json({ code: "402", message: "missing arguments" });
-
-    const result = await Buyer.findOne({ email: email });
+    const result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
 
     //una volta trovati gli id, devo trovare i prodotti all'interno della collection articoli
@@ -37,21 +35,23 @@ const getItems = async(req, res) => {
  */
 const insertItem = async(req, res) => {
     const data = req.body;
-    let email = data.email;
     let id_item = data.id;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (!email || !id_item)
+    if (!id_item)
         return res.status(400).json({ code: "402", message: "missing arguments" });
-    //campi non presenti, sessione probabilmente non valida
+    
+    if(!(mongoose.Types.ObjectId.isValid(id_item)) || !(await Item.findById(id_item)))
+        return res.status(404).json({code: "401", message: "item not found"});
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
     //quantità di quello già presente
-    const result = await Buyer.find({ "$and": [{ email: email }, { cart: { "$elemMatch": { id: id_item } } }] });
+    const result = await Buyer.find({ "$and": [{ _id: user._id }, { cart: { "$elemMatch": { id: id_item } } }] });
     if (!result) return res.status(404).json({ code: "401", message: "user or item not found" });
     else {
         if (Object.keys(result).length === 0) {
             //item non già presente nel carrello, inserimento id
-            const result = await Buyer.updateOne({ email: email }, { $push: { cart: { id: id_item } } });
+            const result = await Buyer.updateOne({ _id: user.id }, { $push: { cart: { id: id_item } } });
             return res.status(200).json({ code: "400", message: "product added in cart" });
         } else
             return res.status(200).json({ code: "400", message: "product not added in cart" });
@@ -64,16 +64,19 @@ const insertItem = async(req, res) => {
  * con un valore passato da input
  */
 const updateQuantity = async(req, res) => {
-    let email = req.body.email;
     let id = req.body.id; //id item
     let quantity = req.body.quantity;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (!email || !id || quantity < 0) {
+    if (!id || quantity < 0) {
         return res.status(400).json({ code: "402", message: "missing arguments" });
         //campi non presenti o non validi, sessione probabilmente non valida
     }
 
-    let result = await Buyer.findOne({ email: email });
+    if(!(mongoose.Types.ObjectId.isValid(id)) || !(await Item.findById(id)))
+        return res.status(404).json({code: "401", message: "item not found"});
+
+    let result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
 
     //modifica quantità articolo carrello
@@ -91,12 +94,12 @@ const updateQuantity = async(req, res) => {
 
     if (notFound) return res.status(404).json({ code: "404", message: "product not found" });
 
-    result = await Buyer.updateOne({ "$and": [{ "email": email }, { 'cart._id': id_item }] }, {
+    result = await Buyer.updateOne({ "$and": [{ id: user._id}, { 'cart._id': id_item }] }, {
         $set: { 'cart.$.quantity': quantity }
     });
 
     if (!result) return res.status(500).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "product's quantity updated" });
+        return res.status(200).json({ code: "400", message: "product's quantity updated" });
 
 }
 
@@ -107,18 +110,15 @@ const updateQuantity = async(req, res) => {
  */
 const deleteOneItem = async(req, res) => {
     //remove an item with a defined id
-    let email = req.body.email; //email ricavata dal corpo della richiesta come in post
     let id = req.body.id;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (!email || !id)
+    if (!id)
         return res.status(400).json({ code: "402", message: "missing arguments" });
     //campi non presenti, sessione probabilmente non valida
 
-    let result = await Buyer.findOne({ email: email });
-    if (!result) return res.status(404).json({ code: "403", message: "user not found" });
-
     //modifica carrello del risultato ottenuto
-    const items = result.cart;
+    const items = user.cart;
     let id_item;
     let notFound = true;
 
@@ -132,7 +132,7 @@ const deleteOneItem = async(req, res) => {
 
     if (notFound) return res.status(404).json({ code: "404", message: "product not found" });
 
-    result = await Buyer.updateOne({ "email": email }, {
+    result = await Buyer.updateOne({ _id: user._id }, {
         $pull: {
             cart: {
                 _id: { $in: id_item }
@@ -141,7 +141,7 @@ const deleteOneItem = async(req, res) => {
     });
 
     if (!result) return res.status(404).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "product removed" });
+        return res.status(200).json({ code: "400", message: "product removed" });
 };
 
 /**
@@ -150,15 +150,10 @@ const deleteOneItem = async(req, res) => {
  * questa funzione verrà usata nel momento del checkout dal carrello
  */
 const deleteAll = async(req, res) => {
-    const email = req.body.email;
-
-    if (!email) {
-        return res.status(400).json({ code: "402", message: "missing arguments" });
-        //campi non presenti, sessione probabilmente non valida
-    }
+    let user = await getAuthenticatedBuyer(req, res);
 
     //ricerca utente
-    let result = await Buyer.findOne({ email: email });
+    let result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
     
     const cart = result.cart;
@@ -170,14 +165,14 @@ const deleteAll = async(req, res) => {
     }
 
     //pull valori array per rimozione articoli dal carrello
-    result = await Buyer.updateOne({ "email": email },  { $pull: {
+    result = await Buyer.updateOne({ _id: user._id },  { $pull: {
         cart: {
             _id: { $in: ids }
         }
     }});
 
     if (!result) return res.status(404).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "cart cleared" });
+        return res.status(200).json({ code: "400", message: "cart cleared" });
 
 }
 
@@ -186,10 +181,8 @@ const deleteAll = async(req, res) => {
  * e dello svuotamento del carrello
  */
 const checkout = async(req, res) => {
-    //NB facendo il checkout è da verificare prima 
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
-    //TODO: salvare nella collection Orders l'ordine appena fatto
     let result = await checkQuantity(req.body.items, req.body.modify);
     if(result) {
         return res.status(200).json({code: 400, message: "success"});
@@ -199,7 +192,7 @@ const checkout = async(req, res) => {
 };
 
 /**
- * la funzioen verifica la quantità dei singoli prodotti
+ * la funzione verifica la quantità dei singoli prodotti
  * ovvero, se sono disponibili.
  * se indicato diversamente, la funzione aggiorna nel db la quantità dei prodotti acquistati
  */
