@@ -24,13 +24,6 @@ components:
   
   securitySchemes:
     ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: x-access-token
-
-
-  securitySchemes:
-    ApiKeyAuth:
         type: apiKey
         description: il token di accesso in fase di login, usare eyJhbGciOiJIUzI1NiJ9.ZG9yaWphbi5kaXplcHBAZ21haWwuY29t.X0PLh2A6DG92wSviAoqZ68xsSPhmAQp-gQXaIsyql_o
         in: header

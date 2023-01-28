@@ -1,21 +1,8 @@
 summary: Articoli wishlist
 description: Lista di tutti gli articoli della wishlist dell'utente
-security: 
-  - ApiKeyAuth: [admin]
+
 tags:
   - Wishlist
-
-requestBody:
-  description: Dati dell'utente
-  required: true
-  content:
-    application/json:
-      schema:
-        tpye: object
-        properties:
-          email:
-            type: string
-            format: email
 
 responses:
   '200':

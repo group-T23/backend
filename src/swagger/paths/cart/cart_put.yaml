@@ -4,16 +4,13 @@ tags:
   - Cart
 
 requestBody:
-  description: Dati dell'utente e dell'articolo e nuova quantità
+  description: Dati  dell'articolo e nuova quantità
   required: true
   content:
     application/json:
       schema:
         tpye: object
         properties:
-          email:
-            type: string
-            format: email
           id:
             type: string
           quantity:

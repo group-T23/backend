@@ -603,23 +603,6 @@
         "tags": [
           "Cart"
         ],
-        "requestBody": {
-          "description": "Dati dell'utente",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "tpye": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success: lista articoli del carrello",
@@ -653,17 +636,13 @@
           "Cart"
         ],
         "requestBody": {
-          "description": "Dati dell'utente e dell'articolo e nuova quantità",
+          "description": "Dati  dell'articolo e nuova quantità",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "tpye": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
                   "id": {
                     "type": "string"
                   },
@@ -719,17 +698,13 @@
           "Cart"
         ],
         "requestBody": {
-          "description": "Dati dell'utente e dell'articolo",
+          "description": "Dati dell'articolo",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "tpye": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
                   "id": {
                     "type": "string"
                   }
@@ -773,17 +748,13 @@
           "Cart"
         ],
         "requestBody": {
-          "description": "Dati dell'utente e dell'articolo",
+          "description": "Dati dell'articolo",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "tpye": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
                   "id_item": {
                     "type": "string"
                   }
@@ -826,23 +797,6 @@
         "tags": [
           "Cart"
         ],
-        "requestBody": {
-          "description": "Dati dell'utente",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "tpye": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success: articoli rimossi",
@@ -896,33 +850,9 @@
         ],
         "summary": "Articoli wishlist",
         "description": "Lista di tutti gli articoli della wishlist dell'utente",
-        "security": [
-          {
-            "ApiKeyAuth": [
-              "admin"
-            ]
-          }
-        ],
         "tags": [
           "Wishlist"
         ],
-        "requestBody": {
-          "description": "Dati dell'utente",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "tpye": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success: lista articoli della wishlist",
@@ -952,28 +882,17 @@
         ],
         "summary": "Rimozione articolo",
         "description": "Rimozione di un articolo dalla wishlist",
-        "security": [
-          {
-            "ApiKeyAuth": [
-              "admin"
-            ]
-          }
-        ],
         "tags": [
           "Wishlist"
         ],
         "requestBody": {
-          "description": "Dati dell'utente e dell'articolo",
+          "description": "Dati dell'articolo",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "tpye": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
                   "id": {
                     "type": "string"
                   }
@@ -1013,28 +932,17 @@
         ],
         "summary": "Inserimento nuovo articolo",
         "description": "Inserimento di un nuovo articolo all'interno della wishlist dell'utente",
-        "security": [
-          {
-            "ApiKeyAuth": [
-              "admin"
-            ]
-          }
-        ],
         "tags": [
           "Wishlist"
         ],
         "requestBody": {
-          "description": "Dati dell'utente e dell'articolo",
+          "description": "Dati dell'articolo",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "tpye": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
                   "id": {
                     "type": "string"
                   }
@@ -2641,6 +2549,7 @@
     "securitySchemes": {
       "ApiKeyAuth": {
         "type": "apiKey",
+        "description": "il token di accesso in fase di login, usare eyJhbGciOiJIUzI1NiJ9.ZG9yaWphbi5kaXplcHBAZ21haWwuY29t.X0PLh2A6DG92wSviAoqZ68xsSPhmAQp-gQXaIsyql_o",
         "in": "header",
         "name": "x-access-token"
       }

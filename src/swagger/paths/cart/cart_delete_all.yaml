@@ -3,18 +3,6 @@ description: Tutti gli articoli del carrello vengono rimossi
 tags:
   - Cart
 
-requestBody:
-  description: Dati dell'utente
-  required: true
-  content:
-    application/json:
-      schema:
-        tpye: object
-        properties:
-          email:
-            type: string
-            format: email
-
 responses:
   '200':
     description: "Success: articoli rimossi"

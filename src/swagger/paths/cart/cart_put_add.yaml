@@ -4,16 +4,13 @@ tags:
   - Cart
 
 requestBody:
-  description: Dati dell'utente e dell'articolo
+  description: Dati dell'articolo
   required: true
   content:
     application/json:
       schema:
         tpye: object
         properties:
-          email:
-            type: string
-            format: email
           id_item:
             type: string  
 
