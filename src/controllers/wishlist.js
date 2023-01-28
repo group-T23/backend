@@ -1,20 +1,16 @@
 const Buyer = require("../models/Buyer");
 const Item = require("../models/Item");
+const { getAuthenticatedBuyer } = require('../utils/auth');
+
 
 /**
  * la funzione ritorna la lista degli articoli presenti nella wishlist
  */
 const getItems = async(req, res) => {
-    const email = req.body.email;
-
-    if (email == null)
-        return res.status(400).json({ code: "502", message: "missing arguments" });
-
-    const result = await Buyer.findOne({ email: email });
-    if (!result) return res.status(404).json({ code: "503", message: "user not found" });
+    let user = await getAuthenticatedBuyer(req, res);
 
     //una volta trovati gli id, trovo gli articoli presenti nella lista
-    let wishlist = result.wishlist;
+    let wishlist = user.wishlist;
     let articoli = [];
 
     for (let i = 0; i < wishlist.length; i++) {
@@ -26,7 +22,6 @@ const getItems = async(req, res) => {
 
     //inserire nella risposta gli articoli
     return res.status(200).json({ code: "500", message: "success", wishlist: articoli, wishlist_ids: wishlist });
-
 }
 
 /**
@@ -34,26 +29,24 @@ const getItems = async(req, res) => {
  */
 const insertItem = async(req, res) => {
     const data = req.body;
-    let email = data.email;
     let id_item = data.id;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (!email || !id_item)
+    if (!id_item)
         return res.status(400).json({ code: "502", message: "missing arguments" });
-    //campi non presenti, sessione probabilmente non valida
 
     //se l'elemento è un duplicato, questo non viene inserito
-    const result = await Buyer.find({ "$and": [{ email: email }, { wishlist: { "$elemMatch": { id: id_item } } }] });
+    const result = await Buyer.find({ "$and": [{ _id: user._id }, { wishlist: { "$elemMatch": { id: id_item } } }] });
     if (!result) return res.status(404).json({ code: "501", message: "user or item not found" });
     else {
         if (Object.keys(result).length === 0) {
             //item non presente nel carrello, inserimento id
-            const result = await Buyer.updateOne({ email: email }, { $push: { wishlist: { id: id_item } } });
-
+            console.log(user);
+            const result = await Buyer.updateOne({ _id: user._id }, { $push: { wishlist: { id: id_item } } });
             return res.status(200).json({ code: "500", message: "product added in wishlist" });
         } else
             return res.status(200).json({ code: "500", message: "product not added in wishlist" });
     }
-
 }
 
 /**
@@ -61,18 +54,14 @@ const insertItem = async(req, res) => {
  */
 const deleteOneItem = async(req, res) => {
     //remove an item with a defined id
-    let email = req.body.email; //email ricavata dal corpo della richiesta come in post
     let id = req.body.id;
+    let user = await getAuthenticatedBuyer(req, res);
 
-    if (!email || !id)
+    if (!id)
         return res.status(400).json({ code: "502", message: "missing arguments" });
-    //campi non presenti, sessione probabilmente non valida
-
-    let result = await Buyer.findOne({ email: email });
-    if (!result) return res.status(404).json({ code: "503", message: "user not found" });
 
     //modifica wishlist
-    const items = result.wishlist;
+    const items = user.wishlist;
     let id_item;
     let notFound = true;
 
@@ -86,7 +75,7 @@ const deleteOneItem = async(req, res) => {
 
     if (notFound) return res.status(404).json({ code: "504", message: "product not found" });
 
-    result = await Buyer.updateOne({ "email": email }, {
+    result = await Buyer.updateOne({ _id: user._id }, {
         $pull: {
             wishlist: {
                 _id: { $in: id_item }
@@ -95,7 +84,7 @@ const deleteOneItem = async(req, res) => {
     });
 
     if (!result) return res.status(500).json({ code: "501", message: "database error" });
-    return res.status(200).json({ code: "500", message: "product removed" });
+        return res.status(200).json({ code: "500", message: "product removed" });
 }
 
 module.exports = {
