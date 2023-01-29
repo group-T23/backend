@@ -1,0 +1,16 @@
+type: object
+properties:
+
+  user1:
+    type: string
+  
+  user2:
+    type: string
+
+  messages:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string

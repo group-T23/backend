@@ -168,10 +168,44 @@
         - ApiKeyAuth: []
     $ref: ./review/review_all_out.yaml
 
+#Chat's API
+/chat:
+  get:
+    security:
+        - ApiKeyAuth: []
+    $ref: ./chat/chat_get.yaml
+
+  post:
+    security:
+      - ApiKeyAuth: []
+    $ref: ./chat/chat_create.yaml
+
+  delete:
+    security:
+      - ApiKeyAuth: []
+    $ref: ./chat/chat_delete.yaml
+
+/chat/message:
+  get:
+    security:
+      - ApiKeyAuth: []
+    $ref: ./chat/chat_getMessage.yaml
+
+  post:
+    security:
+      - ApiKeyAuth: []
+    $ref: ./chat/chat_sendMessage.yaml
+
+/chat/messageId:
+  get:
+    security:
+      - ApiKeyAuth: []
+    $ref: ./chat/chat_getMessageById.yaml
+
 # Auth's API
 /login:
   post:
-    $ref: ./auth/login.yaml
+    $ref: ./auth/login.yaml   
 
 # Item's API
 /item:

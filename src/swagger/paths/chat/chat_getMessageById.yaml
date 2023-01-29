@@ -1,0 +1,26 @@
+summary: Ritorna i messaggi di una chat
+description: Dato l'id della chat, vengono ritornati tutti i messaggi che sono stati inviati e ricevuti in una chat
+tags:
+  - Chat
+
+parameters:
+  - in: query
+    name: id
+    schema:
+      type: string
+
+responses:
+  '200':
+    description: "OK"
+    schema: 
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Richiesta mal formata, parametri mancanti"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '404':
+    description: "Categoria non trovata"
+    schema: 
+      $ref: ../../components/schemas/common/response.yaml

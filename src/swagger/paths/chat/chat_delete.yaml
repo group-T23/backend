@@ -1,0 +1,34 @@
+summary: Cancellazine chat
+description: Viene eliminata una chat tra due utenti registrati
+tags:
+  - Chat
+
+parameters:
+  - in: query
+    name: username
+    schema:
+      type: string  
+
+requestBody:
+  description: Lo username del contatto
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/chat/Chat_create.yaml
+
+responses:
+  '200':
+    description: "Deleted: chat eliminata con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

@@ -1,0 +1,34 @@
+summary: Invio di un messaggio
+description: Viene inviato il messaggio all'utente che fa parte della chat
+tags:
+  - Chat
+
+parameters:
+  - in: query
+    name: username
+    schema:
+      type: string  
+
+requestBody:
+  description: Lo username del contatto e il messaggio da inviare
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/chat/Chat_send.yaml
+
+responses:
+  '200':
+    description: "Created: chat creata con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '500':
+    description: "Internal Server Error: non è stato possibile portare a termine l'operazione"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

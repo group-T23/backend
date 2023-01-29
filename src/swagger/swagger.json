@@ -1516,6 +1516,298 @@
         }
       }
     },
+    "/chat": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Ritorna le chat dell'utente",
+        "description": "Dato lo username dell'utente, vengono ritornate tutte le chat con i rispettivi messaggi",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Richiesta mal formata, parametri mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Categoria non trovata",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Creazione chat",
+        "description": "Viene creata una chat tra due utenti registrati",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Lo username del contatto",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CharCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: chat creata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Cancellazine chat",
+        "description": "Viene eliminata una chat tra due utenti registrati",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Lo username del contatto",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CharCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deleted: chat eliminata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/chat/message": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Ritorna i messaggi di una chat",
+        "description": "Dati dei parametri, vengono ritornati tutti i messaggi che sono stati inviati e ricevuti in una chat",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "contact",
+            "schema": {
+              "tpye": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Richiesta mal formata, parametri mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Categoria non trovata",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Invio di un messaggio",
+        "description": "Viene inviato il messaggio all'utente che fa parte della chat",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Lo username del contatto e il messaggio da inviare",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatSend"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created: chat creata con successo",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Bad Request: parametri mancanti o non validi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
+    "/chat/messageId": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Ritorna i messaggi di una chat",
+        "description": "Dato l'id della chat, vengono ritornati tutti i messaggi che sono stati inviati e ricevuti in una chat",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "400": {
+            "description": "Richiesta mal formata, parametri mancanti",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "404": {
+            "description": "Categoria non trovata",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "summary": "Login",
@@ -2567,6 +2859,47 @@
           },
           "modify": {
             "type": "boolean"
+          }
+        }
+      },
+      "Chat": {
+        "type": "object",
+        "properties": {
+          "user1": {
+            "type": "string"
+          },
+          "user2": {
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CharCreate": {
+        "type": "object",
+        "properties": {
+          "contact": {
+            "type": "string"
+          }
+        }
+      },
+      "ChatSend": {
+        "type": "object",
+        "properties": {
+          "contact": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },

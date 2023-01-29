@@ -50,6 +50,16 @@ OrderPut:
 CartCheckout:
   $ref: ./cart/Cart_checkout.yaml
 
+# Chat's schemas
+Chat:
+ $ref: ./chat/Chat.yaml
+
+CharCreate:
+  $ref: ./chat/Chat_create.yaml
+
+ChatSend:
+  $ref: ./chat/Chat_send.yaml
+
 # Common schemas
 Response:
   $ref: ./common/Response.yaml

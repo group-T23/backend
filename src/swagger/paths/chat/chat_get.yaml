@@ -1,0 +1,26 @@
+summary: Ritorna le chat dell'utente
+description: Dato lo username dell'utente, vengono ritornate tutte le chat con i rispettivi messaggi
+tags:
+  - Chat
+
+parameters:
+  - in: query
+    name: username
+    schema:
+      type: string       
+
+responses:
+  '200':
+    description: "OK"
+    schema: 
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '400':
+    description: "Richiesta mal formata, parametri mancanti"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
+  '404':
+    description: "Categoria non trovata"
+    schema: 
+      $ref: ../../components/schemas/common/response.yaml
