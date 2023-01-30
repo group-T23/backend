@@ -22,10 +22,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /var/www/backend
-            ps auxwwwe | egrep " [n]ode .+ PWD=$PWD" | awk '{ print $2 }' | xargs kill
             git pull
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
             cd src
+            ps auxwwwe | egrep " [n]ode .+ PWD=$PWD" | awk '{ print $2 }' | xargs kill
             node index.js &
