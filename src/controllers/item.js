@@ -138,7 +138,7 @@ const publish = async(req, res) => {
 
 
     const email = jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => data);
-    const buyer = await Buyer.findOne({ email });
+    const buyer = await Buyer.findOne({ email: email });
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
