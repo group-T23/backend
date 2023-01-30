@@ -29,5 +29,3 @@ jobs:
             npm ci --omit=dev
             cd src
             node index.js &
-
-    
