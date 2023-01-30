@@ -28,5 +28,5 @@ jobs:
             npm ci --omit=dev
             cd src
             ps auxwwwe | egrep " [n]ode .+ PWD=$PWD" | awk '{ print $2 }' | xargs kill
-            node index.js &
+            nohup node index.js &
             exit
