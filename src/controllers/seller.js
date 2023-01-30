@@ -4,7 +4,6 @@ const Seller = require('../models/Seller');
 const Buyer = require('../models/Buyer');
 const Item = require('../models/Item');
 const Review = require('../models/Review');
-const { buy } = require('./item');
 
 const getInfo = async(req, res) => {
     const buyer = await getAuthenticatedBuyer(req, res);
@@ -27,14 +26,14 @@ const getPublicInfo = async(req, res) => {
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
         buyer = await Buyer.findOne({ username: req.query.username })
-        seller = Seller.findById(buyer.sellerId);
+        seller = await Seller.findById(buyer.sellerId);
 
     } else if (req.query.id) {
         if (!(await Seller.exists({ id: req.query.id })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
-        seller = Seller.findById(req.query.id);
-        buyer = Buyer.findById(seller.userId);
+        seller = await Seller.findById(req.query.id);
+        buyer = await Buyer.findById(seller.userId);
     }
 
     var rating = null;
