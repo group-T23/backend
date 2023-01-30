@@ -2364,7 +2364,7 @@
       }
     },
     "/order/getAll": {
-      "post": {
+      "get": {
         "summary": "Visualizzazione ordini",
         "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
         "security": [

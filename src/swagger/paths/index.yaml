@@ -254,5 +254,5 @@
     $ref: ./order/order_edit.yaml  
 
 /order/getAll:
-  post:
+  get:
     $ref: ./order/order_get.yaml
