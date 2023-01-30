@@ -8,7 +8,6 @@ const BuyerSchema = new mongoose.Schema({
     passwordHash: { type: String, required: true },
     addresses: [{
         address: { type: String, default: null },
-        isVerified: { type: Boolean, default: false },
         isDefault: { type: Boolean, default: false }
     }],
     phone: {

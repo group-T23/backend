@@ -114,6 +114,9 @@ const edit = async(req, res) => {
 
     if (req.body.number)
         buyer.number = req.body.number;
+    
+    if (req.body.addresses)
+        buyer.addresses = req.body.addresses
 
     buyer.save()
         .then(ok => {
