@@ -40,9 +40,6 @@ ItemEdit:
 Order:
   $ref: ./order/Order.yaml
 
-OrderGet:
-  $ref: ./order/Order_get.yaml
-
 OrderPut:
   $ref: ./order/Order_put.yaml
 

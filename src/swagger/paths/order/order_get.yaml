@@ -5,14 +5,6 @@ security:
 tags:
   - Order
 
-requestBody:
-  description: Il codice id del buyer
-  required: true
-  content:
-    application/json:
-      schema:
-          $ref: ../../components/schemas/order/Order_get.yaml
-
 responses:
   '200':
     description: "Ordini ritornati con successo"

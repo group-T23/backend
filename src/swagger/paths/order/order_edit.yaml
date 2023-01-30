@@ -1,5 +1,5 @@
-summary: Visualizzazione ordini
-description: Vengono visualizzati tutti gli ordini effettuati dall'utente
+summary: Modifica stato ordine
+description: Viene modificato lo stato dell'ordine
 security: 
   - ApiKeyAuth: [admin]
 tags:

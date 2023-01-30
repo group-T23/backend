@@ -6,7 +6,7 @@ tags:
   - Order
 
 requestBody:
-  description: Dati del checkout e codice id del buyer
+  description: Dati del checkout
   required: true
   content:
     application/json:

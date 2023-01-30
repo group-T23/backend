@@ -27,5 +27,5 @@ jobs:
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
             cd src
-            forever stop index.js
-            forever start index.js
+            forever stop production.js
+            forever start production.js

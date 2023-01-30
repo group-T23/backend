@@ -2274,7 +2274,7 @@
           "Order"
         ],
         "requestBody": {
-          "description": "Dati del checkout e codice id del buyer",
+          "description": "Dati del checkout",
           "required": true,
           "content": {
             "application/json": {
@@ -2312,8 +2312,8 @@
         }
       },
       "put": {
-        "summary": "Visualizzazione ordini",
-        "description": "Vengono visualizzati tutti gli ordini effettuati dall'utente",
+        "summary": "Modifica stato ordine",
+        "description": "Viene modificato lo stato dell'ordine",
         "security": [
           {
             "ApiKeyAuth": [
@@ -2377,17 +2377,6 @@
         "tags": [
           "Order"
         ],
-        "requestBody": {
-          "description": "Il codice id del buyer",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderGet"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Ordini ritornati con successo",
@@ -2791,9 +2780,6 @@
       "Order": {
         "type": "object",
         "properties": {
-          "buyer": {
-            "type": "string"
-          },
           "articles": {
             "type": "array",
             "items": {
@@ -2815,17 +2801,6 @@
           "shipment": {
             "type": "number",
             "format": "float"
-          },
-          "state": {
-            "type": "string"
-          }
-        }
-      },
-      "OrderGet": {
-        "type": "object",
-        "properties": {
-          "buyer": {
-            "type": "string"
           }
         }
       },
