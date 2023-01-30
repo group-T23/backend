@@ -4,6 +4,7 @@ const Seller = require('../models/Seller');
 const Buyer = require('../models/Buyer');
 const Item = require('../models/Item');
 const Review = require('../models/Review');
+const { buy } = require('./item');
 
 const getInfo = async(req, res) => {
     const buyer = await getAuthenticatedBuyer(req, res);
@@ -18,24 +19,24 @@ const getPublicInfo = async(req, res) => {
     if (!req.query.username && !req.query.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
-    var buyer;
+    let seller
+    let buyer
 
     if (req.query.username) {
         if (!(await Buyer.exists({ username: req.query.username })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
         buyer = await Buyer.findOne({ username: req.query.username })
-    } else if(req.query.id){
-        if (!(await Buyer.exists({ id: req.query.id })))
+        seller = Seller.findById(buyer.sellerId);
+
+    } else if (req.query.id) {
+        if (!(await Seller.exists({ id: req.query.id })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
 
-        buyer = await Buyer.findById(req.query.id)
+        seller = Seller.findById(req.query.id);
+        buyer = Buyer.findById(seller.userId);
     }
 
-    if (!buyer.isSeller)
-        return res.status(422).json({ code: "", message: "invalid account type" });
-
-    const seller = await Seller.findById(buyer.sellerId);
     var rating = null;
 
     //calcolo media recensioni di ogni utente
@@ -60,12 +61,11 @@ const getPublicInfo = async(req, res) => {
         }
     }
 
-    let user = buyer.username;
     const pub = {
-        username: user,
+        username: buyer.username,
         rating: rating,
     }
-  
+
     return res.status(200).json({ seller: pub, code: "", message: "success" });
 }
 
