@@ -16,11 +16,11 @@ const create = async(req, res) => {
     let seller = await Seller.findById(buyer.sellerId);
 
     const itemCategories = await Category.find({ title: { $in: req.body.categories } });
-    const categories = itemCategories.map(category => category._id)
+    const categories = itemCategories.map(category => category.id)
     let item = new Item({
         title: req.body.title,
         description: req.body.description,
-        ownerId: seller._id,
+        ownerId: seller.id,
         quantity: req.body.quantity,
         categories: categories,
         photos: [`${buyer.sellerId}_${seller.items.length}.${req.body.ext}`],
