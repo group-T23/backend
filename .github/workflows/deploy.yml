@@ -21,13 +21,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            killall node
             cd /var/www/backend
+            ps auxwwwe | egrep " [n]ode .+ PWD=$PWD" | awk '{ print $2 }' | xargs kill
             git pull
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
             cd src
-            forever start index.js
+            node index.js &
 
     
