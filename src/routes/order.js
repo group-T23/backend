@@ -4,7 +4,7 @@ const orderController = require('../controllers/order');
 const { verifyAuthentication } = require('../utils/auth');
 
 router.post('/', verifyAuthentication, orderController.create);
-router.post('/getAll', verifyAuthentication, orderController.getAll);
+router.get('/getAll', verifyAuthentication, orderController.getAll);
 
 router.put('/', verifyAuthentication, orderController.edit);
 
