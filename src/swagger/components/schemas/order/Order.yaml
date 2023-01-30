@@ -2,9 +2,6 @@ type: object
 
 properties:
 
-  buyer:
-    type: string
-  
   articles:
     type: array
     items: 
@@ -22,6 +19,3 @@ properties:
   shipment:
     type: number
     format: float
-
-  state:
-    type: string

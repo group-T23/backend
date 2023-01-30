@@ -9,16 +9,21 @@ const Item = require("../models/Item");
  * all'interno del db
  */
 const create = async(req, res) => {
-    const buyer = req.body.buyer;//id del compratore
+    let user = await getAuthenticatedBuyer(req, res);
+
+    const buyer = user._id;//id del compratore
     const articles = req.body.articles;
     const price = req.body.price;
     const shipment = req.body.shipment;
     const state = "PAID";//l'ordine creato ha come stato pagato
-
+  
     //verifica presenza parametri di richiesta
-    if(!buyer || !articles || !price || !shipment)
-        return res.status(403).json({code: 1002, message: "Missing arguments"});
-    
+    //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
+    //che un valore valido a differenza di price
+    if(!buyer || !articles || !price) {
+        return res.status(400).json({code: 1002, message: "Missing arguments"});
+    }
+
     //verifica esistenza buyer e articoli
     if(!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))){
         return res.status(404).json({code: 1005, message: "Buyer not found"});
@@ -60,11 +65,12 @@ const create = async(req, res) => {
  * la funzione permette di recuperare tutti gli ordini fatti da un utente
  */
 const getAll = async(req, res) => {
-    const buyer = req.body.buyer;//id del compratore
+    let user = await getAuthenticatedBuyer(req, res);
 
+    const buyer = user._id;//id del compratore
     //verifica presenza parametri di richiesta
     if(!buyer)
-        return res.status(403).json({code: 1002, message: "Missing arguments"});
+        return res.status(400).json({code: 1002, message: "Missing arguments"});
     
     //verifica esistenza buyer e articoli
     if(!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))){
@@ -89,7 +95,7 @@ const edit = async(req, res) => {
 
     //verifica presenza parametri di richiesta
     if(!order || !newState)
-        return res.status(403).json({code: 1002, message: "Missing arguments"});
+        return res.status(400).json({code: 1002, message: "Missing arguments"});
     
     //verifica esistenza buyer e articoli
     if(!(mongoose.Types.ObjectId.isValid(order)) || !(await Order.findById(order))){
