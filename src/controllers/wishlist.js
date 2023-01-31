@@ -41,7 +41,6 @@ const insertItem = async(req, res) => {
     else {
         if (Object.keys(result).length === 0) {
             //item non presente nel carrello, inserimento id
-            console.log(user);
             const result = await Buyer.updateOne({ _id: user._id }, { $push: { wishlist: { id: id_item } } });
             return res.status(200).json({ code: "500", message: "product added in wishlist" });
         } else
@@ -84,7 +83,7 @@ const deleteOneItem = async(req, res) => {
     });
 
     if (!result) return res.status(500).json({ code: "501", message: "database error" });
-        return res.status(200).json({ code: "500", message: "product removed" });
+    return res.status(200).json({ code: "500", message: "product removed" });
 }
 
 module.exports = {
