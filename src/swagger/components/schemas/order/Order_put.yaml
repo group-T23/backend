@@ -7,3 +7,7 @@ properties:
 
   newState: 
     type: string  
+
+  newReviewed:
+    type: boolean
+    default: false

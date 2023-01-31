@@ -7,6 +7,7 @@ const OrderSchema = new mongoose.Schema({
   price: { type: mongoose.Types.Decimal128, required: true },
   shipment: { type: mongoose.Types.Decimal128, required: true },
   state: { type: String, required: true },
+  reviewed: { type: Boolean, default: false},
 });
 
 const Order = mongoose.model('Order', OrderSchema);

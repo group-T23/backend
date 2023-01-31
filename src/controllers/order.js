@@ -87,11 +87,12 @@ const getAll = async(req, res) => {
 };
 
 /**
- * la funzione permette di modificare lo stato dell'ordine
+ * la funzione permette di modificare lo stato dell'ordine e il flag reviewed
  */
 const edit = async(req, res) => {
     const order = req.body.order;//id ordine
     const newState = req.body.state;//nuovo stato dell'ordine
+    const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
 
     //verifica presenza parametri di richiesta
     if(!order || !newState)
@@ -110,6 +111,9 @@ const edit = async(req, res) => {
     try{
         let result = await Order.findById(order);
         result.state = newState;
+        if(newReviewed)//il parametro newReviewed è opzionale e può non essere indicato
+            result.reviewed = newReviewed;
+
         await result.save();
         return res.status(200).json({code: 1000, message: "success"});
     }catch(error){
