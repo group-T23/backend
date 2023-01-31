@@ -90,27 +90,31 @@ const getAll = async(req, res) => {
  * la funzione permette di modificare lo stato dell'ordine e il flag reviewed
  */
 const edit = async(req, res) => {
+    
     const order = req.body.order;//id ordine
     const newState = req.body.state;//nuovo stato dell'ordine
     const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
 
     //verifica presenza parametri di richiesta
-    if(!order || !newState)
+    if(!order)
         return res.status(400).json({code: 1002, message: "Missing arguments"});
     
-    //verifica esistenza buyer e articoli
+    //verifica esistenza ordine
     if(!(mongoose.Types.ObjectId.isValid(order)) || !(await Order.findById(order))){
         return res.status(404).json({code: 1007, message: "Order not found"});
     }
 
     //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
-    if(newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
-        return res.status(403).json({code: 1003, message: "Invalid arguments"});
+    if(newState){
+        if(newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
+            return res.status(403).json({code: 1003, message: "Invalid arguments"});
+    }
 
-    //recupero ordine e modifica del campo state
+    //recupero ordine e modifica del campo state e/o reviewed
     try{
         let result = await Order.findById(order);
-        result.state = newState;
+        if(newState)//il parametro newState è opzionale e può non essere indicato
+            result.state = newState;
         if(newReviewed)//il parametro newReviewed è opzionale e può non essere indicato
             result.reviewed = newReviewed;
 

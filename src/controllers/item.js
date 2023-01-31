@@ -81,10 +81,12 @@ const getByUser = async(req, res) => {
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
     let buyer = await Buyer.findOne({ username: req.query.username });
+   
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
-    const items = await Item.find({ ownerId: buyer._id })
+    const items = await Item.find({ ownerId: buyer.sellerId })
+  
     return res.status(200).json({ items: items, code: "900", message: "success" });
 }
 

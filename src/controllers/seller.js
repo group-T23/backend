@@ -31,7 +31,7 @@ const getPublicInfo = async(req, res) => {
     } else if (req.query.id) {
         if (!(await Seller.exists({ id: req.query.id })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
-
+       
         seller = await Seller.findById(req.query.id);
         buyer = await Buyer.findById(seller.userId);
     }
@@ -50,10 +50,9 @@ const getPublicInfo = async(req, res) => {
             }]
         );
 
-        //ricerco all'interno dei gruppi quello del venditore ricercato usando seller.userId
         let found = false;
         for (let i = 0; i < rt.length && !found; i++) {
-            if ((rt[i]._id).equals(seller.userId)) {
+            if ((rt[i]._id).equals(seller._id)) {
                 found = true;
                 rating = rt[i].avgRating;
             }
