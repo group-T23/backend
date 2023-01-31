@@ -28,7 +28,7 @@ const getInfo = async(req, res) => {
 
 const getInfoBuyer = async(req, res) => {
     // required params
-    if(!req.params.id)
+    if (!req.params.id)
         return res.status(400).json({ code: "", message: "missing arguments" });
 
     // invalid params
@@ -36,8 +36,8 @@ const getInfoBuyer = async(req, res) => {
         return res.status(400).json({ code: "", message: "invalid arguments" });
 
     let buyer = await Buyer.findOne({ _id: req.params.id });
-   
-    return res.status(200).json({ user: buyer, code: "", message: "success" });    
+
+    return res.status(200).json({ user: buyer, code: "", message: "success" });
 }
 
 const create = async(req, res) => {
@@ -45,7 +45,7 @@ const create = async(req, res) => {
     const data = req.body;
 
     if (!(data.firstname && data.lastname && data.username && data.email && data.password && data.terms))
-      return res.status(403).json({ code: 102, message: 'Missing arguments' });
+        return res.status(403).json({ code: 102, message: 'Missing arguments' });
 
     const hash = crypto.createHash('sha256');
     const password = hash.update(data.password, 'utf-8').digest('hex');
@@ -110,11 +110,11 @@ const edit = async(req, res) => {
     }
 
     if (req.body.prefix)
-        buyer.prefix = req.body.prefix;
+        buyer.phone.prefix = req.body.prefix;
 
     if (req.body.number)
-        buyer.number = req.body.number;
-    
+        buyer.phone.number = req.body.number;
+
     if (req.body.addresses)
         buyer.addresses = req.body.addresses
 
@@ -157,13 +157,13 @@ const remove = async(req, res) => {
     return res.status(200).json({ code: "", message: "success" });
 }
 
-const find = async (req, res) => {
-  const username = req.query.username
-  if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
+const find = async(req, res) => {
+    const username = req.query.username
+    if (!username) { res.status(400).json({ code: 102, message: 'Username argument is missing' }); return }
 
-  const check = await Buyer.findOne({ username: username })
-  if (check) res.status(200).json({ code: 107, message: 'Username found'})
-  else res.status(404).json({ code: 104, message: 'Username available'})
+    const check = await Buyer.findOne({ username: username })
+    if (check) res.status(200).json({ code: 107, message: 'Username found' })
+    else res.status(404).json({ code: 104, message: 'Username available' })
 };
 
 module.exports = {
