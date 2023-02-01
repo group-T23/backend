@@ -6,7 +6,6 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Chat test', () => {
     const fetch = require('node-fetch');
-    const url = `http://localhost:${process.env.PORT}`;
     const TIMEOUT = 50000;
     jest.setTimeout(TIMEOUT);
 
@@ -17,8 +16,8 @@ describe('Chat test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
           }
 
-        const response = (await fetch(`${url}/chat?username=najirod`, options).then(response => response.json()))
-        expect({code: "800", message: "success"})
+        const response = (await fetch(`${app}/chat?username=najirod`, options).then(response => response.json()))
+        expect(response).toMatchObject({code: 800, message: "Success"})
         expect(response.chats).toBeDefined();
         expect(response.chats[0]).toHaveProperty('messages');
     });
@@ -30,8 +29,8 @@ describe('Chat test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
           }
 
-        const response = (await fetch(`${url}/chat/message?username=najirod&contact=sic`, options).then(response => response.json()))
-        expect({code: "800", message: "success"})
+        const response = (await fetch(`${app}/chat/message?username=najirod&contact=sic`, options).then(response => response.json()))
+        expect(response).toMatchObject({code: 800, message: "Success"})
         expect(response.messages).toBeDefined();
         expect(response.messages[0]).toHaveProperty('sender');
         expect(response.messages[0]).toHaveProperty('text');

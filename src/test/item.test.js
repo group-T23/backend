@@ -6,7 +6,6 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Item test', () => {
     const fetch = require('node-fetch');
-    const url = `http://localhost:${process.env.PORT}`;
     const TIMEOUT = 50000;
     jest.setTimeout(TIMEOUT);
 
@@ -53,7 +52,7 @@ describe('Item test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN }
           }
 
-        const response = (await fetch(`${url}/item/retire?id=63a031fbff52385f7b1857de`, options).then(response => response.json()))
+        const response = (await fetch(`${app}/item/retire?id=63a031fbff52385f7b1857de`, options).then(response => response.json()))
         expect({code: "904", message: "invalid user type"})
     });
 

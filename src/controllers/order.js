@@ -16,7 +16,7 @@ const create = async(req, res) => {
     const price = req.body.price;
     const shipment = req.body.shipment;
     const state = "PAID";//l'ordine creato ha come stato pagato
-  
+
     //verifica presenza parametri di richiesta
     //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
     //che un valore valido a differenza di price

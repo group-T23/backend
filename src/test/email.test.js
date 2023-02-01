@@ -29,7 +29,7 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email/?email=dorijan.dizepp2@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
+    expect(await fetch(`${url}/email?email=dorijan.dizepp2@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
   });
 
   test('GET /email - Email already used', async () => {
@@ -55,7 +55,7 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 205, message: "Email already used" });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 205, message: "Email already used" });
 
     await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@test.test' }] });
   });
@@ -69,7 +69,7 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
   });
 
 
@@ -79,7 +79,7 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 202 });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 202 });
   });
 
   test('POST /email - Invalid email argument', async () => {
@@ -102,7 +102,7 @@ describe('Email requests', () => {
       body: JSON.stringify({ code: '0123456789abcdef' })
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 208, message: 'Email not associated to any account' });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 208, message: 'Email not associated to any account' });
   });
 
   test('POST /email - Invalid verification code', async () => {
@@ -131,7 +131,7 @@ describe('Email requests', () => {
       body: JSON.stringify({ code })
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 206, message: "Invalid verification code" });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 206, message: "Invalid verification code" });
 
     await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@test.test' }] });
   });
@@ -152,7 +152,7 @@ describe('Email requests', () => {
       verificationCode: code
     });
     
-    await user.save(error => {
+    const result2 = await user.save(error => {
       if (error) console.log(error);
     });
     
@@ -162,7 +162,7 @@ describe('Email requests', () => {
       body: JSON.stringify({ code })
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 207, message: "Email already verified" });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 207, message: "Email already verified" });
 
     await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@test.test' }] });
   });
@@ -193,7 +193,7 @@ describe('Email requests', () => {
       body: JSON.stringify({ code })
     };
 
-    expect(await fetch(`${url}/email/?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 200, message: "Email verified successfully" });
+    expect(await fetch(`${url}/email?email=test@test.test`, options).then(response => response.json())).toMatchObject({ code: 200, message: "Email verified successfully" });
 
     await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@test.test' }] });
   });

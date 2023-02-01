@@ -7,7 +7,6 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Cart test', () => {
     const fetch = require('node-fetch');
-    const url = `http://localhost:${process.env.PORT}`;
     const TIMEOUT = 50000;
     jest.setTimeout(TIMEOUT);
     
@@ -29,7 +28,7 @@ describe('Cart test', () => {
         headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN }
       }
     
-      const result = (await fetch(`${url}/cart`, options).then(response => response.json()))
+      const result = (await fetch(`${app}/cart`, options).then(response => response.json()))
       expect(result).toMatchObject({"code": "400", "message": "success"})
 
       //verifica presenza parametro cart e cart_ids
