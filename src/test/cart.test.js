@@ -3,8 +3,6 @@ dotenv.config();
 
 const request = require('supertest');
 const mongoose = require('mongoose');
-const Buyer = require('../models/Buyer');
-const { response } = require('express');
 const app = `http://localhost:${process.env.PORT}`;
 
 describe('Cart test', () => {
