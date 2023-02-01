@@ -6,7 +6,7 @@ const { getAuthenticatedBuyer } = require('../utils/auth');
 
 const create = async(req, res) => {
     //required params
-    if (!req.body.title || !req.body.rating || !req.body.sellerId)
+    if (!req.body.title || req.body.rating == undefined || !req.body.sellerId)
         return res.status(400).json({ code: "802", message: "missing arguments" });
 
     // params validity
@@ -16,26 +16,26 @@ const create = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.body.sellerId) || !(await Seller.exists({ id: req.body.sellerId })))
         return res.status(400).json({ code: "803", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer(req, res);
-    let seller = await Seller.findById(req.body.sellerId);
-    let review = new Review({
-        authorId: buyer._id,
+    const author = await getAuthenticatedBuyer(req, res);
+    const seller = await Seller.findById(req.body.sellerId);
+    const review = new Review({
+        authorId: author._id,
         sellerId: req.body.sellerId,
         title: req.body.title,
         description: req.body.description,
         rating: req.body.rating
     });
- 
-    try{
-        await review.save();
-        seller.reviews.push(review.id);
-        await seller.save();
 
-        return res.status(200).json ({ code: "800", message: "success" });
-    }catch(err) {
-        return res.status(500).json({ code: "801", message: "unable to create" });
+    try {
+      await review.save()
+      seller.reviews.push(review.id)
+      await seller.save()
+
+      return res.status(200).json({ code: "800", message: "success" });
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ code: "801", message: "Error while creating review" });
     }
-
 }
 
 /**

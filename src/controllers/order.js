@@ -16,7 +16,7 @@ const create = async(req, res) => {
     const price = req.body.price;
     const shipment = req.body.shipment;
     const state = "PAID";//l'ordine creato ha come stato pagato
-  
+
     //verifica presenza parametri di richiesta
     //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
     //che un valore valido a differenza di price
@@ -105,16 +105,13 @@ const edit = async(req, res) => {
     }
 
     //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
-    if(newState){
-        if(newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
-            return res.status(403).json({code: 1003, message: "Invalid arguments"});
-    }
+    if(newState && newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
+        return res.status(403).json({code: 1003, message: "Invalid arguments"});
 
     //recupero ordine e modifica del campo state e/o reviewed
     try{
         let result = await Order.findById(order);
-        if(newState)//il parametro newState è opzionale e può non essere indicato
-            result.state = newState;
+        if (newState) result.state = newState;
         if(newReviewed)//il parametro newReviewed è opzionale e può non essere indicato
             result.reviewed = newReviewed;
 
