@@ -90,6 +90,7 @@ const getAll = async(req, res) => {
  * la funzione permette di modificare lo stato dell'ordine e il flag reviewed
  */
 const edit = async(req, res) => {
+    
     const order = req.body.order;//id ordine
     const newState = req.body.state;//nuovo stato dell'ordine
     const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
@@ -98,7 +99,7 @@ const edit = async(req, res) => {
     if(!order)
         return res.status(400).json({code: 1002, message: "Missing arguments"});
     
-    //verifica esistenza buyer e articoli
+    //verifica esistenza ordine
     if(!(mongoose.Types.ObjectId.isValid(order)) || !(await Order.findById(order))){
         return res.status(404).json({code: 1007, message: "Order not found"});
     }
@@ -107,7 +108,7 @@ const edit = async(req, res) => {
     if(newState && newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
         return res.status(403).json({code: 1003, message: "Invalid arguments"});
 
-    //recupero ordine e modifica del campo state
+    //recupero ordine e modifica del campo state e/o reviewed
     try{
         let result = await Order.findById(order);
         if (newState) result.state = newState;

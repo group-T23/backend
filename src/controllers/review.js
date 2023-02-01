@@ -4,9 +4,7 @@ const Review = require('../models/Review');
 const Seller = require('../models/Seller');
 const { getAuthenticatedBuyer } = require('../utils/auth');
 
-
 const create = async(req, res) => {
-
     //required params
     if (!req.body.title || req.body.rating == undefined || !req.body.sellerId)
         return res.status(400).json({ code: "802", message: "missing arguments" });
@@ -14,7 +12,7 @@ const create = async(req, res) => {
     // params validity
     if (!Number.isInteger(req.body.rating) || !(0 <= req.body.rating && req.body.rating <= 5) || !String.toString(req.body.title).length > 0)
         return res.status(400).json({ code: "803", message: "invalid arguments" });
-
+       
     if (!mongoose.Types.ObjectId.isValid(req.body.sellerId) || !(await Seller.exists({ id: req.body.sellerId })))
         return res.status(400).json({ code: "803", message: "invalid arguments" });
 
