@@ -95,7 +95,7 @@ const edit = async(req, res) => {
     const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
 
     //verifica presenza parametri di richiesta
-    if(!order || !newState)
+    if(!order)
         return res.status(400).json({code: 1002, message: "Missing arguments"});
     
     //verifica esistenza buyer e articoli
@@ -104,13 +104,13 @@ const edit = async(req, res) => {
     }
 
     //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
-    if(newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
+    if(newState && newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
         return res.status(403).json({code: 1003, message: "Invalid arguments"});
 
     //recupero ordine e modifica del campo state
     try{
         let result = await Order.findById(order);
-        result.state = newState;
+        if (newState) result.state = newState;
         if(newReviewed)//il parametro newReviewed è opzionale e può non essere indicato
             result.reviewed = newReviewed;
 
