@@ -100,7 +100,7 @@ const edit = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer;
+    let buyer = await getAuthenticatedBuyer(req, res);
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
@@ -110,23 +110,29 @@ const edit = async(req, res) => {
 
     let item = await Item.findById(req.body.itemId);
 
+    const itemCategories = await Category.find({ title: { $in: req.body.categories } });
+    const categories = itemCategories.map(category => category.id)
+
     item.title = req.body.title ? req.body.title : item.title;
     item.description = req.body.description ? req.body.description : item.description;
-    item.quantity = req.body.quantity ? req.body.quantity : item.quantity;
-    item.categories = req.body.categories ? req.body.categories : item.categories;
+    item.quantity = req.body.quantity ? Number(req.body.quantity) : item.quantity;
+    item.categories = req.body.categories ? categories : item.categories;
     item.conditions = req.body.conditions ? req.body.conditions : item.conditions;
-    item.price = req.body.price ? req.body.price : item.price;
+    item.price = req.body.price ? parseFloat(req.body.price) : item.price;
     item.city = req.body.city ? req.body.city : item.city;
     item.pickUpAvail = req.body.pickUpAvail ? req.body.pickUpAvail : item.pickUpAvail;
     item.shipmentAvail = req.body.shipmentAvail ? req.body.shipmentAvail : item.shipmentAvail;
-    item.shipmentCost = req.body.shipmentCost ? req.body.shipmentCost : item.shipmentCost;
+    item.shipmentCost = req.body.shipmentCost ? parseFloat(req.body.shipmentCost) : item.shipmentCost;
+    item.photos[0] = req.body.ext ? String(buyer.sellerId).concat('_').concat(seller.items.length).concat('.').concat(req.body.ext) : item.photos[0];
 
-    item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
-    });
-
-    return res.status(200).json({ code: "900", message: "success" });
+    item.save()
+        .then(ok => {
+            return res.status(200).json({ code: "900", message: "success" });
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(500).json({ code: "901", message: "unable to save changes" })
+        })
 }
 
 const publish = async(req, res) => {
@@ -233,7 +239,7 @@ const remove = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer;
+    let buyer = await getAuthenticatedBuyer(req, res);
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 

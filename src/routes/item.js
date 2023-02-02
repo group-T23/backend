@@ -29,7 +29,7 @@ router.get('/seller', itemController.getByUser);
 
 
 // U - update
-router.put('/', verifyAuthentication, itemController.edit);
+router.put('/', verifyAuthentication, upload.single('file'), itemController.edit);
 router.put('/publish', verifyAuthentication, itemController.publish);
 router.put('/retire', verifyAuthentication, itemController.retire);
 router.put('/buy', verifyAuthentication, itemController.buy);
