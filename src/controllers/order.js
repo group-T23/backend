@@ -80,6 +80,7 @@ const getAll = async(req, res) => {
     //recupero ordini fatti dal buyer
     try{
         const result = await Order.find({buyer: buyer});
+      
         return res.status(200).json({code: 1000, message: "success", orders: result});
     }catch(error){
         return res.status(500).json({code: 1001, message: "database error"});

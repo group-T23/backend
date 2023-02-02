@@ -89,9 +89,10 @@ const getAllOut = async(req, res) => {
     let proposals = [];
     for(let i=0; i<buyer.proposals.length; i++){
         let result = await Proposal.findById(buyer.proposals[i]);
-        proposals.push(result);
+        if(result != null)
+            proposals.push(result);
     }
-
+    
     return res.status(200).json({ proposals: proposals, code: "1100", message: "success" });
 }
 
@@ -187,12 +188,20 @@ const paid = async(req, res) => {
     if (proposal.authorId != buyer.id)
         return res.status(403).json({ code: "", message: "proposal on not owned item" })
 
-    //cancellazione proposta 
+    //cancellazione proposta da buyer, seller e collection proposals
     result = await Buyer.updateOne({ _id: buyer.id }, {
         $pull: {
             proposals: { $in: req.query.id }
         }
     });
+
+    result = await Seller.updateOne({ proposals: req.query.id }, {
+        $pull: {
+            proposals: { $in: req.query.id }
+        }
+    });
+
+    result = await Proposal.findByIdAndDelete(req.query.id);
 
     if (!result) return res.status(500).json({ code: "", message: "database error" });
         return res.status(200).json({ code: "", message: "proposal paid" });    
