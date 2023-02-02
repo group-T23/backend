@@ -1142,6 +1142,56 @@
         }
       }
     },
+    "/proposal/paid": {
+      "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Conferma il pagamento della proposta",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
     "/proposal/in": {
       "get": {
         "security": [
