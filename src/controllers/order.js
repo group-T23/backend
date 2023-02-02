@@ -52,7 +52,7 @@ const create = async(req, res) => {
         shipment: shipment,
         state: state,
     });
-
+   
     try{
         await order.save();
         return res.status(200).json({code: 1000, message: "success"});

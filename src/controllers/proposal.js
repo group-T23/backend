@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Item = require("../models/Item");
 const Seller = require("../models/Seller");
+const Buyer = require("../models/Buyer");
 const Proposal = require("../models/Proposal");
 const { getAuthenticatedBuyer } = require('../utils/auth');
 
@@ -168,6 +169,32 @@ const remove = async(req, res) => {
         });
 }
 
+const paid = async(req, res) => {
+    //id must exist
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Proposal.exists({ id: req.query.id })))
+    return res.status(500).json({ code: "", message: "invalid arguments" });
+    let proposal = await Proposal.findById(req.query.id);
+
+    // verify authorization
+    let buyer = await getAuthenticatedBuyer(req, res);
+    if (proposal.authorId != buyer.id)
+        return res.status(403).json({ code: "", message: "proposal on not owned item" })
+
+    console.log("delete?");
+    console.log(buyer);
+    console.log("------------------");
+    console.log(req.query.id);
+    result = await Buyer.updateOne({ _id: buyer.id }, {
+        $pull: {
+            proposals: { $in: req.query.id }
+        }
+    });
+
+    console.log(result);
+    if (!result) return res.status(500).json({ code: "", message: "database error" });
+        return res.status(200).json({ code: "", message: "proposal paid" });    
+
+}
 
 module.exports = {
     create,
@@ -176,5 +203,6 @@ module.exports = {
     getAllOut,
     accept,
     reject,
-    remove
+    remove,
+    paid
 };
