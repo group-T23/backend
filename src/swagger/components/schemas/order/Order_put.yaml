@@ -2,7 +2,7 @@ type: object
 
 properties:
 
-  order:
+  orderId:
     type: string
 
   state: 
@@ -14,3 +14,9 @@ properties:
 
   payment:
     tpye: string  
+
+  trackingCode:
+    type: string
+
+  courier:
+    type: string    

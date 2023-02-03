@@ -20,3 +20,9 @@ properties:
   shipment:
     type: number
     format: float
+
+  trackingCode:
+    type: string
+
+  courier:
+    type: string    

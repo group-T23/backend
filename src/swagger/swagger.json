@@ -2363,7 +2363,7 @@
       },
       "put": {
         "summary": "Modifica ordine",
-        "description": "Viene modificato lo stato dell'ordine, lo stato del pagamento e indicato se è stata scritta una recensione",
+        "description": "Possono essere modificati lo stato dell'ordine, lo stato del pagamento, la conferma di avvenuta recensione, il codice di tracking e il corriere dell'ordine",
         "security": [
           {
             "ApiKeyAuth": [
@@ -2851,13 +2851,19 @@
           "shipment": {
             "type": "number",
             "format": "float"
+          },
+          "trackingCode": {
+            "type": "string"
+          },
+          "courier": {
+            "type": "string"
           }
         }
       },
       "OrderPut": {
         "type": "object",
         "properties": {
-          "order": {
+          "orderId": {
             "type": "string"
           },
           "state": {
@@ -2869,6 +2875,12 @@
           },
           "payment": {
             "tpye": "string"
+          },
+          "trackingCode": {
+            "type": "string"
+          },
+          "courier": {
+            "type": "string"
           }
         }
       },
