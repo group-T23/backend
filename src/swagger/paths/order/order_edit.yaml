@@ -1,5 +1,5 @@
-summary: Modifica stato ordine
-description: Viene modificato lo stato dell'ordine e indicato se è stata scritta una recensione
+summary: Modifica ordine
+description: Viene modificato lo stato dell'ordine, lo stato del pagamento e indicato se è stata scritta una recensione
 security: 
   - ApiKeyAuth: [admin]
 tags:
