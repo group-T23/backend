@@ -15,14 +15,14 @@ const create = async(req, res) => {
     let valid = true;
     // article ID must exist
     if (valid)
-        valid = mongoose.Types.ObjectId.isValid(req.body.itemId) && (await Item.exists({ id: req.body.itemId }));
+        valid = mongoose.Types.ObjectId.isValid(req.body.itemId) && (await Item.exists({ _id: req.body.itemId }));
 
 
     let author = await getAuthenticatedBuyer(req, res);
 
     // only one proposal can exists for one author and one item
     if (valid)
-        valid = !(await Proposal.findOne({ itemId: req.body.itemId, authorId: author._id }));
+        valid = !(await Proposal.findOne({ itemId: req.body.itemId, authorId: author._id, state: 'PENDING' }));
 
     // the author of the proposal must be different from the item owner
     if (valid)
@@ -49,8 +49,8 @@ const create = async(req, res) => {
             return res.status(500).json({ code: "1101", message: "unable to save changes" });
         })
 
-    const item = await Item.findOne({ id: req.body.itemId });
-    let seller = await Seller.findOne({ id: item.ownerId });
+    const item = await Item.findById(req.body.itemId);
+    let seller = await Seller.findById(item.ownerId);
     seller.proposals.push(proposal.id);
     seller.save()
         .then(ok => {
