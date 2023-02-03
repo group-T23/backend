@@ -156,29 +156,28 @@ const reject = async(req, res) => {
 }
 
 const remove = async(req, res) => {
-
     //id must exist
     if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Proposal.exists({ id: req.query.id })))
-        return res.status(500).json({ code: "", message: "invalid arguments" });
+        return res.status(500).json({ code: "1102", message: "invalid arguments" });
     let proposal = await Proposal.findById(req.query.id);
 
     // verify authorization
     let buyer = await getAuthenticatedBuyer(req, res);
     if (proposal.authorId != buyer.id)
-        return res.status(403).json({ code: "", message: "proposal on not owned item" })
+        return res.status(403).json({ code: "1106", message: "not authorized" })
 
     //proposal must be in 'PENDING' state
     if (proposal.state != 'PENDING')
-        return res.status(422).json({ code: "", message: "invalid proposal state" });
+        return res.status(422).json({ code: "1104", message: "invalid proposal state" });
 
     proposal.state = 'DELETED';
     proposal.save()
         .then(ok => {
             //TODO: notify buyer via email
-            return res.status(200).json({ code: "", message: "success" });
+            return res.status(200).json({ code: "1100", message: "success" });
         })
         .catch(err => {
-            return res.status(500).json({ code: "", message: "unable to remove" });
+            return res.status(500).json({ code: "1101", message: "unable to remove" });
         });
 }
 
