@@ -3,6 +3,7 @@ const Buyer = require('../models/Buyer');
 const Seller = require('../models/Seller');
 const Item = require('../models/Item');
 const Category = require('../models/Category');
+const Proposal = require('../models/Proposal')
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -221,6 +222,13 @@ const buy = async(req, res) => {
     if (item.quantity <= 0) {
         item.state = 'SOLD';
         item.quantity = 0;
+
+        // delete all proposals
+        var proposals = await Proposal.find({ itemId: item._id });
+        proposals.forEach(proposal => {
+            proposal.state = 'DELETED'
+            proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+        })
     }
 
     item.save(err => {
