@@ -2,12 +2,21 @@ type: object
 
 properties:
 
-  order:
+  orderId:
     type: string
 
-  newState: 
+  state: 
     type: string  
 
-  newReviewed:
+  reviewed:
     type: boolean
     default: false
+
+  payment:
+    tpye: string  
+
+  trackingCode:
+    type: string
+
+  courier:
+    type: string    

@@ -1142,6 +1142,56 @@
         }
       }
     },
+    "/proposal/paid": {
+      "delete": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Conferma il pagamento della proposta",
+        "description": "",
+        "tags": [
+          "Proposal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "403": {
+            "description": "Forbidden: non si è autorizzati ad accedere alla risorsa",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity: parametri validi ma non è possibile eseguire l'operazione con gli stessi",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error: non è stato possibile portare a termine l'operazione",
+            "schema": {
+              "$ref": "#/paths/~1cart/put/responses/200/schema"
+            }
+          }
+        }
+      }
+    },
     "/proposal/in": {
       "get": {
         "security": [
@@ -2312,8 +2362,8 @@
         }
       },
       "put": {
-        "summary": "Modifica stato ordine",
-        "description": "Viene modificato lo stato dell'ordine e indicato se è stata scritta una recensione",
+        "summary": "Modifica ordine",
+        "description": "Possono essere modificati lo stato dell'ordine, lo stato del pagamento, la conferma di avvenuta recensione, il codice di tracking e il corriere dell'ordine",
         "security": [
           {
             "ApiKeyAuth": [
@@ -2780,17 +2830,17 @@
       "Order": {
         "type": "object",
         "properties": {
-          "articles": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "tpye": "string"
-                },
-                "quantity": {
-                  "type": "integer"
-                }
+          "seller": {
+            "type": "string"
+          },
+          "article": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "tpye": "string"
+              },
+              "quantity": {
+                "type": "integer"
               }
             }
           },
@@ -2801,21 +2851,36 @@
           "shipment": {
             "type": "number",
             "format": "float"
+          },
+          "trackingCode": {
+            "type": "string"
+          },
+          "courier": {
+            "type": "string"
           }
         }
       },
       "OrderPut": {
         "type": "object",
         "properties": {
-          "order": {
+          "orderId": {
             "type": "string"
           },
-          "newState": {
+          "state": {
             "type": "string"
           },
-          "newReviewed": {
+          "reviewed": {
             "type": "boolean",
             "default": false
+          },
+          "payment": {
+            "tpye": "string"
+          },
+          "trackingCode": {
+            "type": "string"
+          },
+          "courier": {
+            "type": "string"
           }
         }
       },

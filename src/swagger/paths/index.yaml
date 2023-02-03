@@ -119,6 +119,12 @@
         - ApiKeyAuth: []
     $ref: ./proposal/proposal_remove.yaml
 
+/proposal/paid:
+  delete:
+    security:
+        - ApiKeyAuth: []
+    $ref: ./proposal/proposal_paid.yaml
+
 /proposal/in:
   get:
     security:
@@ -142,6 +148,7 @@
     security:
         - ApiKeyAuth: []
     $ref: ./proposal/proposal_reject.yaml
+
 
 # Review's API
 /review:

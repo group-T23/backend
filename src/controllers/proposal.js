@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Item = require("../models/Item");
 const Seller = require("../models/Seller");
+const Buyer = require("../models/Buyer");
 const Proposal = require("../models/Proposal");
 const { getAuthenticatedBuyer } = require('../utils/auth');
 
@@ -83,7 +84,15 @@ const getAllIn = async(req, res) => {
 
 const getAllOut = async(req, res) => {
     const buyer = await getAuthenticatedBuyer(req, res);
-    const proposals = await Proposal.find({ authorId: buyer.id });
+
+    //ricerco le proposte del buyer nella collection Proposals
+    let proposals = [];
+    for(let i=0; i<buyer.proposals.length; i++){
+        let result = await Proposal.findById(buyer.proposals[i]);
+        if(result != null)
+            proposals.push(result);
+    }
+    
     return res.status(200).json({ proposals: proposals, code: "1100", message: "success" });
 }
 
@@ -168,6 +177,36 @@ const remove = async(req, res) => {
         });
 }
 
+const paid = async(req, res) => {
+    //id must exist
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Proposal.exists({ id: req.query.id })))
+    return res.status(500).json({ code: "", message: "invalid arguments" });
+    let proposal = await Proposal.findById(req.query.id);
+
+    // verify authorization
+    let buyer = await getAuthenticatedBuyer(req, res);
+    if (proposal.authorId != buyer.id)
+        return res.status(403).json({ code: "", message: "proposal on not owned item" })
+
+    //cancellazione proposta da buyer, seller e collection proposals
+    result = await Buyer.updateOne({ _id: buyer.id }, {
+        $pull: {
+            proposals: { $in: req.query.id }
+        }
+    });
+
+    result = await Seller.updateOne({ proposals: req.query.id }, {
+        $pull: {
+            proposals: { $in: req.query.id }
+        }
+    });
+
+    result = await Proposal.findByIdAndDelete(req.query.id);
+
+    if (!result) return res.status(500).json({ code: "", message: "database error" });
+        return res.status(200).json({ code: "", message: "proposal paid" });    
+
+}
 
 module.exports = {
     create,
@@ -176,5 +215,6 @@ module.exports = {
     getAllOut,
     accept,
     reject,
-    remove
+    remove,
+    paid
 };

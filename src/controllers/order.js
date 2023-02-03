@@ -12,48 +12,47 @@ const Seller = require("../models/Seller");
 const create = async(req, res) => {
     let user = await getAuthenticatedBuyer(req, res);
 
-    const buyer = user._id; //id del compratore
-    const articles = req.body.articles;
+    const buyer = user._id;//id del compratore
+    const seller = req.body.seller;//id del venditore
+    const article = req.body.article;
     const price = req.body.price;
     const shipment = req.body.shipment;
     const state = "PAID";//l'ordine creato ha come stato pagato
+    const payment = "LOCKED";//l'ordine create ha come stato pagamento locked
+    const trackingCode = req.body.trackingCode;//codice di tracking del pacco
+    const courier = req.body.courier;//il corriere che gestisce la spedizione
+
 
     //verifica presenza parametri di richiesta
     //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
     //che un valore valido a differenza di price
-    if (!buyer || !articles || !price) {
-        return res.status(400).json({ code: 1002, message: "Missing arguments" });
+    if(!buyer || !seller || !article || !price) {
+        return res.status(400).json({code: 1002, message: "Missing arguments"});
     }
 
-    //verifica esistenza buyer e articoli
-    if (!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))) {
-        return res.status(404).json({ code: 1005, message: "Buyer not found" });
+    //verifica esistenza buyer e articolo
+    if(!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))){
+        return res.status(404).json({code: 1005, message: "Buyer not found"});
     }
 
-    let result = true;
-    for (let i = 0; i < articles.length && result; i++) {
-        let id = articles[i].id;
-        if (mongoose.Types.ObjectId.isValid(id)) {
-            result = await Item.findById(id);
-        } else {
-            result = false;
-        }
-    }
-
-    if (!result) {
-        return res.status(404).json({ code: 1006, message: "Item not found" });
+    if(!(mongoose.Types.ObjectId.isValid(article.id)) || !(await Item.findById(article.id))){
+        return res.status(404).json({code: 1005, message: "Item not found"});
     }
 
     //creazione ordine e salvataggio su db
     const order = new Order({
         buyer: buyer,
-        articles: articles,
+        seller: seller,
+        article: article,
         price: price,
         shipment: shipment,
         state: state,
+        payment: payment,
+        trackingCode: trackingCode,
+        courier: courier
     });
-
-    try {
+   
+    try{
         await order.save();
         return res.status(200).json({ code: 1000, message: "success" });
     } catch (error) {
@@ -78,18 +77,26 @@ const getAll = async(req, res) => {
     }
 
     //recupero ordini fatti dal buyer
-    try {
-        const result = await Order.find({ buyer: buyer });
-        return res.status(200).json({ code: 1000, message: "success", orders: result });
-    } catch (error) {
-        return res.status(500).json({ code: 1001, message: "database error" });
+    try{
+        const result = await Order.find({buyer: buyer});
+      
+        return res.status(200).json({code: 1000, message: "success", orders: result});
+    }catch(error){
+        return res.status(500).json({code: 1001, message: "database error"});
     }
 };
 
 /**
- * la funzione permette di modificare lo stato dell'ordine e il flag reviewed
+ * la funzione permette di modificare lo stato dell'ordine, lo stato reviewed e il pagamento
  */
 const edit = async(req, res) => {
+    
+    const order = req.body.orderId;//id ordine
+    const newState = req.body.state;//nuovo stato dell'ordine
+    const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
+    const newPayment = req.body.payment;//valore nuovo stato pagamento
+    const trackingCode = req.body.trackingCode;//codice di tracking del pacco
+    const courier = req.body.courier;//il corriere che gestisce la spedizione
 
     const order = req.body.order; //id ordine
     const newState = req.body.state; //nuovo stato dell'ordine
@@ -108,12 +115,20 @@ const edit = async(req, res) => {
     if(newState && newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
         return res.status(403).json({code: 1003, message: "Invalid arguments"});
 
-    //recupero ordine e modifica del campo state e/o reviewed
-    try {
+    //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
+    if(newPayment && newPayment != "LOCKED" && newPayment != "SENT" && newPayment != "REJECTED")
+        return res.status(403).json({code: 1003, message: "Invalid arguments"});
+
+
+    //recupero ordine e modifica dei campi
+    try{
         let result = await Order.findById(order);
         if (newState) result.state = newState;
-        if(newReviewed)//il parametro newReviewed è opzionale e può non essere indicato
-            result.reviewed = newReviewed;
+        if(newReviewed) result.reviewed = newReviewed;
+        if (newPayment) result.payment = newPayment;
+        //per la modifica dei parametri riguardanti l'ordine, i valori trackingCode e courier
+        //devono essere entrambi presenti
+        if(trackingCode && courier) {result.trackingCode = trackingCode; result.courier = courier;}
 
         await result.save();
         return res.status(200).json({ code: 1000, message: "success" });

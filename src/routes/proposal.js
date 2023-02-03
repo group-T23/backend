@@ -17,5 +17,6 @@ router.put('/reject/:id', verifyAuthentication, proposalController.reject);
 
 // D - delete
 router.delete('/', verifyAuthentication, proposalController.remove);
+router.delete('/paid', verifyAuthentication, proposalController.paid);
 
 module.exports = router;

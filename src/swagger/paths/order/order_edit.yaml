@@ -1,5 +1,6 @@
-summary: Modifica stato ordine
-description: Viene modificato lo stato dell'ordine e indicato se è stata scritta una recensione
+summary: Modifica ordine
+description: Possono essere modificati lo stato dell'ordine, lo stato del pagamento, la conferma di avvenuta recensione,
+              il codice di tracking e il corriere dell'ordine
 security: 
   - ApiKeyAuth: [admin]
 tags:

@@ -2,15 +2,16 @@ type: object
 
 properties:
 
-  articles:
-    type: array
-    items: 
-      type: object
-      properties:
-        id:
-          tpye: string
-        quantity:
-          type: integer
+  seller:
+    type: string
+
+  article:
+    type: object
+    properties:
+      id:
+        tpye: string
+      quantity:
+        type: integer
   
   price:
     type: number
@@ -19,3 +20,9 @@ properties:
   shipment:
     type: number
     format: float
+
+  trackingCode:
+    type: string
+
+  courier:
+    type: string    
