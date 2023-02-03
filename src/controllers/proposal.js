@@ -77,7 +77,12 @@ const getAllIn = async(req, res) => {
         return res.status(422).json({ code: "1103", message: "invalid user type" });
 
     const seller = await Seller.findById(buyer.sellerId);
-    let proposals = await Proposal.find({ id: { $in: seller.proposals } });
+    let proposals = await Proposal.find({
+        $and: [
+            { _id: { $in: seller.proposals } },
+            { state: { $in: ['PENDING'] } }
+        ]
+    });
 
     return res.status(200).json({ proposals: proposals, code: "1100", message: "success" });
 }
@@ -87,12 +92,12 @@ const getAllOut = async(req, res) => {
 
     //ricerco le proposte del buyer nella collection Proposals
     let proposals = [];
-    for(let i=0; i<buyer.proposals.length; i++){
+    for (let i = 0; i < buyer.proposals.length; i++) {
         let result = await Proposal.findById(buyer.proposals[i]);
-        if(result != null)
+        if (result != null)
             proposals.push(result);
     }
-    
+
     return res.status(200).json({ proposals: proposals, code: "1100", message: "success" });
 }
 
@@ -132,7 +137,7 @@ const reject = async(req, res) => {
 
     // verify authorization
     let buyer = await getAuthenticatedBuyer(req, res);
-    if (!buyer.isSeller || !(await Seller.findById(buyer.sellerId)).proposals.includes(proposal.id))
+    if (!buyer.isSeller || !(await Seller.findById(buyer.sellerId)).proposals.includes(proposal._id))
         return res.status(403).json({ code: "", message: "proposal on not owned item" })
 
     //proposal must be in 'PENDING' state
@@ -180,7 +185,7 @@ const remove = async(req, res) => {
 const paid = async(req, res) => {
     //id must exist
     if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Proposal.exists({ id: req.query.id })))
-    return res.status(500).json({ code: "", message: "invalid arguments" });
+        return res.status(500).json({ code: "", message: "invalid arguments" });
     let proposal = await Proposal.findById(req.query.id);
 
     // verify authorization
@@ -204,7 +209,7 @@ const paid = async(req, res) => {
     result = await Proposal.findByIdAndDelete(req.query.id);
 
     if (!result) return res.status(500).json({ code: "", message: "database error" });
-        return res.status(200).json({ code: "", message: "proposal paid" });    
+    return res.status(200).json({ code: "", message: "proposal paid" });
 
 }
 
