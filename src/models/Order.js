@@ -10,6 +10,8 @@ const OrderSchema = new mongoose.Schema({
     state: { type: String, required: true },
     reviewed: { type: Boolean, default: false },
     payment: { type: String, enum: ['LOCKED', 'SENT', 'REJECTED'], default: 'LOCKED', requried: true },
+    trackingCode: { type: String},
+    courier: { type: String}
 });
 
 const Order = mongoose.model('Order', OrderSchema);

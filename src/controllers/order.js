@@ -18,6 +18,9 @@ const create = async(req, res) => {
     const shipment = req.body.shipment;
     const state = "PAID";//l'ordine creato ha come stato pagato
     const payment = "LOCKED";//l'ordine create ha come stato pagamento locked
+    const trackingCode = req.body.trackingCode;//codice di tracking del pacco
+    const courier = req.body.courier;//il corriere che gestisce la spedizione
+
 
     //verifica presenza parametri di richiesta
     //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
@@ -43,7 +46,9 @@ const create = async(req, res) => {
         price: price,
         shipment: shipment,
         state: state,
-        payment: payment
+        payment: payment,
+        trackingCode: trackingCode,
+        courier: courier
     });
    
     try{
@@ -85,10 +90,12 @@ const getAll = async(req, res) => {
  */
 const edit = async(req, res) => {
     
-    const order = req.body.order;//id ordine
+    const order = req.body.orderId;//id ordine
     const newState = req.body.state;//nuovo stato dell'ordine
     const newReviewed = req.body.reviewed;//valore nuovo flag reviewed
     const newPayment = req.body.payment;//valore nuovo stato pagamento
+    const trackingCode = req.body.trackingCode;//codice di tracking del pacco
+    const courier = req.body.courier;//il corriere che gestisce la spedizione
 
     //verifica presenza parametri di richiesta
     if(!order)
@@ -114,6 +121,9 @@ const edit = async(req, res) => {
         if (newState) result.state = newState;
         if(newReviewed) result.reviewed = newReviewed;
         if (newPayment) result.payment = newPayment;
+        //per la modifica dei parametri riguardanti l'ordine, i valori trackingCode e courier
+        //devono essere entrambi presenti
+        if(trackingCode && courier) {result.trackingCode = trackingCode; result.courier = courier;}
 
         await result.save();
         return res.status(200).json({code: 1000, message: "success"});
