@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
-
-const request = require('supertest');
+const Order = require("../models/Order");
 const url = `http://localhost:${process.env.PORT}`;
 
 describe('Order test', () => {
@@ -21,7 +20,7 @@ describe('Order test', () => {
         expect(response.orders).toBeDefined();
         if(response.orders.length != 0) {
             expect(response.orders[0]).toHaveProperty('buyer');
-            expect(response.orders[0]).toHaveProperty('articles');
+            expect(response.orders[0]).toHaveProperty('article');
             expect(response.orders[0]).toHaveProperty('price');
             expect(response.orders[0]).toHaveProperty('shipment');
             expect(response.orders[0]).toHaveProperty('state');
@@ -34,14 +33,21 @@ describe('Order test', () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
             body: JSON.stringify({
-                articles: [{id: '63a031fbff52385f7b1857de', quantity: 1}],
-                price: 0.1,
-                shipment: 0
+                seller: "639f6b399b38c1bfc9633360",
+                article: {id: '63a034adb93b4039ab376a6c', quantity: 1},
+                price: 10,
+                shipment: 0,
+                trackingCode: "trackingCodeTest",
+                courier: "corriereTest"
             })
           }
 
         const response = (await fetch(`${url}/order`, options).then(response => response.json()))
         expect(response).toMatchObject({code: 1000, message: "success"});
+
+        //cancellazione ordine creato
+        //FIXME: va in timeout per qualche motivo, l'ordine viene creato
+        await Order.deleteOne({"courier": "corriereTest"});
     });
 
 });
