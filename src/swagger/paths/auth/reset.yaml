@@ -1,0 +1,27 @@
+summary: Reset
+description: ''
+tags:
+  - Authentication
+
+parameters:
+  - in: query
+    name: email
+    schema:
+      type: string
+    required: true
+
+responses:
+  '200':
+    description: "Reset: password resettata con successo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+        
+  '400':
+    description: "Bad Request: richiesta non formattata correttamente"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+  
+  '403':
+    description: "Forbidden: email non in utilizzo"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml

@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const Buyer = require('../models/Buyer');
+const Mail = require('../utils/email');
 
 const loginUser = async(req, res) => {
     const data = req.body;
@@ -36,4 +37,29 @@ const loginUser = async(req, res) => {
         res.status(401).json({ code: "303", message: "wrong credentials", ok: false });
 }
 
-module.exports = { loginUser };
+const resetPassword = async (req, res) => {
+  const email = req.query.email;
+  if (!email) return res.status(400).json({ code: '302', message: 'Missing arguments' });
+
+  const result = await Buyer.findOne({ email })
+  if (!result) return res.status(403).json({ code: '306', message: 'Invalid email' })
+
+  const hash = crypto.createHash('sha256');
+  const random = crypto.randomBytes(16).toString('hex');
+  const password = hash.update(random, 'utf-8').digest('hex');
+
+  result.passwordHash = password;
+
+  try { await result.save() }
+  catch (error) {
+    console.log(error);
+    return res.status(500).json({ code: '301', message: 'Database error' });
+  }
+
+  const url = require('../utils/address');
+  await Mail.send(result.email, 'Reset Password Skupply', `La tua nuova password è: ${random}\nPuoi cambiarla in ogni momento dal tuo profilo privato seguendo il seguente link ${url}/profile`);
+
+  res.status(200).json({ code: '300', message: 'Password resettata correttamente' })
+}
+
+module.exports = { loginUser, resetPassword };
