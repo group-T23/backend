@@ -6,8 +6,6 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Item test', () => {
     const fetch = require('node-fetch');
-    const TIMEOUT = 50000;
-    jest.setTimeout(TIMEOUT);
 
     //test ricerca item per id
     test('tests /item - ricerca per id', async() => {

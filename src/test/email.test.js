@@ -4,14 +4,25 @@ dotenv.config();
 const mongoose = require('mongoose');
 const Buyer = require('../models/Buyer');
 
+//FIXME: in alcuni casi, i test danno esito negativo anche se sono corretti
+//molto probabilmente l'errore è dovuto al fatto che il db non riesce ad aggiornasi in tempo 
+//e alla richiesta successiva, mancano i dati che ci si aspetta facendo fallire il test
+
 describe('Email requests', () => {
   const fetch = require('node-fetch');
   const url = `http://localhost:${process.env.PORT}`;
-  const TIMEOUT = 50000;
+  const TIMEOUT = 20000;
   jest.setTimeout(TIMEOUT);
 
   beforeAll(async () => {
     await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+    //cancellazione profilo di testing se presente
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+  });
+
+  afterAll(async () => {
+    //cancellazione profilo di testing se presente
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
   });
 
   test('GET /email - Invalid arguments', async () => {
@@ -24,23 +35,24 @@ describe('Email requests', () => {
   });
 
   test('GET /email - Valid email', async () => {
+
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email?email=dorijan.dizepp2@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
+    expect(await fetch(`${url}/email?email=wasdqwerty396@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
   });
 
   test('GET /email - Email already used', async () => {
-    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
-    if (result) await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const user = new Buyer({
       firstname: 'test',
       lastname: 'test',
       username: 'test',
-      email: 'test@skupply.shop',
+      email: 'test@gmail.com',
       passwordHash: 'test',
       isVerified: false,
       verificationCode: 'fedcba9876543210'
@@ -55,20 +67,20 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 205, message: "Email already used" });
-    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 205, message: "Email already used" });
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
   });
 
   test('GET /email - Email not reachable', async () => {
-    const result = await Buyer.findOne({ email: 'test@skupply.shop' });
-    if (result) await Buyer.deleteOne({ email: 'test@skupply.shop' });
+    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
+    expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
   });
 
 
@@ -78,7 +90,7 @@ describe('Email requests', () => {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 202 });
+    expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 202 });
   });
 
   test('POST /email - Invalid email argument', async () => {
@@ -92,8 +104,8 @@ describe('Email requests', () => {
   });
 
   test('POST /email - Email not associated to any account', async () => {
-    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
-    if (result) await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const options = {
       method: 'POST',
@@ -101,20 +113,20 @@ describe('Email requests', () => {
       body: JSON.stringify({ code: '0123456789abcdef' })
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 208, message: 'Email not associated to any account' });
+    expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 208, message: 'Email not associated to any account' });
   });
 
   test('POST /email - Invalid verification code', async () => {
     const code = '0123456789abcdef';
 
-    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
-    if (result) await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const user = new Buyer({
       firstname: 'test',
       lastname: 'test',
       username: 'test',
-      email: 'test@skupply.shop',
+      email: 'test@gmail.com',
       passwordHash: 'test',
       isVerified: false,
       verificationCode: 'fedcba9876543210'
@@ -127,56 +139,57 @@ describe('Email requests', () => {
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code: code })
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 206, message: "Invalid verification code" });
+    let response = expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json()))
+    response.toMatchObject({ code: 206, message: "Invalid verification code" });
 
-    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
   });
 
   test('POST /email - Email already verified', async () => {
     const code = '0123456789abcdef';
 
-    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
-    if (result) await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const user = new Buyer({
       firstname: 'test',
       lastname: 'test',
       username: 'test',
-      email: 'test@skupply.shop',
+      email: 'test@gmail.com',
       passwordHash: 'test',
       isVerified: true,
       verificationCode: code
     });
     
-    const result2 = await user.save(error => {
+    await user.save(error => {
       if (error) console.log(error);
     });
-    
+
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code: code })
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 207, message: "Email already verified" });
+    expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 207, message: "Email already verified" });
 
-    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
   });
 
   test('POST /email - Email verified successfully', async () => {
     const code = '0123456789abcdef';
 
-    const result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
-    if (result) await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    let result = await Buyer.findOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+    if (result) {await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });}
 
     const user = new Buyer({
       firstname: 'test',
       lastname: 'test',
       username: 'test',
-      email: 'test@skupply.shop',
+      email: 'test@gmail.com',
       passwordHash: 'test',
       isVerified: false,
       verificationCode: code
@@ -185,15 +198,16 @@ describe('Email requests', () => {
     await user.save(error => {
       if (error) console.log(error);
     });
-    
+
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code: code })
     };
 
-    expect(await fetch(`${url}/email?email=test@skupply.shop`, options).then(response => response.json())).toMatchObject({ code: 200, message: "Email verified successfully" });
+    result = expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json()))
+    result.toMatchObject({ code: 200, message: "Email verified successfully" });
 
-    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@skupply.shop' }] });
+    await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
   });
 });

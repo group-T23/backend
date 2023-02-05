@@ -6,8 +6,6 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Chat test', () => {
     const fetch = require('node-fetch');
-    const TIMEOUT = 50000;
-    jest.setTimeout(TIMEOUT);
 
     //test recupero chat utente
     test('tests /chat - recupero chat utente', async() => {

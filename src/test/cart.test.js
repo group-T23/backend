@@ -7,9 +7,7 @@ const app = `http://localhost:${process.env.PORT}`;
 
 describe('Cart test', () => {
     const fetch = require('node-fetch');
-    const TIMEOUT = 50000;
-    jest.setTimeout(TIMEOUT);
-    
+
     beforeAll(async () => {
       await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
     });

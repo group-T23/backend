@@ -6,6 +6,8 @@ const checkEmail = async(req, res) => {
     if (!email) { res.status(400).json({ code: 202, message: 'Email argument is missing' }); return }
 
     const check = await Buyer.findOne({ email: email })
+    console.log("checkEMail ----------------------------------");
+    console.log(check);
     if (check) { res.status(403).json({ code: 205, message: 'Email already used' }); return }
 
     const result = await validator.validate(email);
@@ -19,6 +21,8 @@ const verifyEmail = async(req, res) => {
     if (!email) { res.status(400).json({ code: 202, message: 'Email argument is missing' }); return }
 
     const check = await Buyer.findOne({ email: email })
+    console.log("verifyEmail ----------------------------------");
+    console.log(check);
     if (!check) { res.status(403).json({ code: 208, message: 'Email not associated to any account' }); return }
     if (check.isVerified) { res.status(200).json({ code: 207, message: "Email already verified" }); return; }
 
@@ -26,7 +30,7 @@ const verifyEmail = async(req, res) => {
       check.isVerified = true;
       await check.save();
       res.status(200).json({ code: 200, message: "Email verified successfully" });
-    } else res.status(200).json({ code: 206, message: "Invalid verification code" })
+    } else {res.status(200).json({ code: 206, message: "Invalid verification code" });}
 }
 
 module.exports = { checkEmail, verifyEmail };

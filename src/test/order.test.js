@@ -1,12 +1,15 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const mongoose = require("mongoose");
 const Order = require("../models/Order");
 const url = `http://localhost:${process.env.PORT}`;
 
 describe('Order test', () => {
     const fetch = require('node-fetch');
-    const TIMEOUT = 50000;
-    jest.setTimeout(TIMEOUT);
+    
+    beforeAll(async () => {
+        await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+      });
 
     //test recupero degli ordini fatti da un utente
     test('tests /order - ordini fatti da un utente', async() => {
@@ -42,12 +45,11 @@ describe('Order test', () => {
             })
           }
 
-        const response = (await fetch(`${url}/order`, options).then(response => response.json()))
+        const response = await fetch(`${url}/order`, options).then(response => response.json())
         expect(response).toMatchObject({code: 1000, message: "success"});
 
         //cancellazione ordine creato
-        //FIXME: va in timeout per qualche motivo, l'ordine viene creato
-        await Order.deleteOne({"courier": "corriereTest"});
+        await Order.deleteOne({courier: "corriereTest"});
     });
 
 });
