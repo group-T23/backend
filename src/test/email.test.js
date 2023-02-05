@@ -57,7 +57,7 @@ describe('Email requests', () => {
             verificationCode: 'fedcba9876543210'
         });
 
-        user.save().catch(err => console.log(err))
+        await user.save().catch(err => console.log(err))
 
         const options = {
             method: 'GET',
@@ -129,7 +129,7 @@ describe('Email requests', () => {
             verificationCode: 'fedcba9876543210'
         });
 
-        user.save().catch(err => console.log(err))
+        await user.save().catch(err => console.log(err))
 
         const options = {
             method: 'POST',
@@ -159,7 +159,7 @@ describe('Email requests', () => {
             verificationCode: code
         });
 
-        user.save().catch(err => console.log(err))
+        await user.save().catch(err => console.log(err))
 
         const options = {
             method: 'POST',
@@ -188,7 +188,7 @@ describe('Email requests', () => {
             verificationCode: code
         });
 
-        user.save().catch(err => console.log(err))
+        await user.save().catch(err => console.log(err))
 
         const options = {
             method: 'POST',
