@@ -214,6 +214,10 @@
   post:
     $ref: ./auth/login.yaml   
 
+/login/reset:
+  get:
+    $: ./auth/reset.yaml
+
 # Item's API
 /item:
   post:
