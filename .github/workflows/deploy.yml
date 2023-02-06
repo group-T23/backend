@@ -26,5 +26,6 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm ci --omit=dev
+            npm test
             forever stop src/be.js
             forever start src/be.js
