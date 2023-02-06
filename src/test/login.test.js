@@ -10,9 +10,13 @@ describe('Cart test', () => {
     const TIMEOUT = 10000;
     jest.setTimeout(TIMEOUT);
 
-    beforeAll(async () => {
-      await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+    beforeAll(async() => {
+        await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
     });
+
+    afterAll(async() => {
+        mongoose.disconnect();
+    })
 
     //test autenticazione con credenziali errate
     test('test /login - credenziali errate', async() => {
@@ -26,7 +30,7 @@ describe('Cart test', () => {
         }
 
         const response = (await fetch(`${app}/login`, options).then(response => response.json()))
-        expect({code: "303", message: "wrong credentials", ok: false})
+        expect({ code: "303", message: "wrong credentials", ok: false })
     });
 
 
@@ -42,7 +46,7 @@ describe('Cart test', () => {
         }
 
         const response = (await fetch(`${app}/login`, options).then(response => response.json()))
-        expect({code: "300", message: "loged in", ok: true})
+        expect({ code: "300", message: "loged in", ok: true })
         expect(response.user).toBeDefined();
         expect(response.user).toHaveProperty("id");
         expect(response.user).toHaveProperty("isSeller");

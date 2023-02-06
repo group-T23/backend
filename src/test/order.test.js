@@ -6,22 +6,26 @@ const url = `http://localhost:${process.env.PORT}`;
 
 describe('Order test', () => {
     const fetch = require('node-fetch');
-    
-    beforeAll(async () => {
+
+    beforeAll(async() => {
         await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
-      });
+    });
+
+    afterAll(async() => {
+        mongoose.disconnect();
+    })
 
     //test recupero degli ordini fatti da un utente
     test('tests /order - ordini fatti da un utente', async() => {
         const options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
-          }
+        }
 
         const response = (await fetch(`${url}/order/getAll`, options).then(response => response.json()))
-        expect({code: "1000", message: "success"})
+        expect({ code: "1000", message: "success" })
         expect(response.orders).toBeDefined();
-        if(response.orders.length != 0) {
+        if (response.orders.length != 0) {
             expect(response.orders[0]).toHaveProperty('buyer');
             expect(response.orders[0]).toHaveProperty('article');
             expect(response.orders[0]).toHaveProperty('price');
@@ -37,19 +41,19 @@ describe('Order test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
             body: JSON.stringify({
                 seller: "639f6b399b38c1bfc9633360",
-                article: {id: '63a034adb93b4039ab376a6c', quantity: 1},
+                article: { id: '63a034adb93b4039ab376a6c', quantity: 1 },
                 price: 10,
                 shipment: 0,
                 trackingCode: "trackingCodeTest",
                 courier: "corriereTest"
             })
-          }
+        }
 
         const response = await fetch(`${url}/order`, options).then(response => response.json())
-        expect(response).toMatchObject({code: 1000, message: "success"});
+        expect(response).toMatchObject({ code: 1000, message: "success" });
 
         //cancellazione ordine creato
-        await Order.deleteOne({courier: "corriereTest"});
+        await Order.deleteOne({ courier: "corriereTest" });
     });
 
 });

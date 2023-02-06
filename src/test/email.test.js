@@ -23,6 +23,7 @@ describe('Email requests', () => {
     afterAll(async() => {
         //cancellazione profilo di testing se presente
         await Buyer.deleteOne({ $or: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+        mongoose.disconnect();
     });
 
     test('GET /email - Invalid arguments', async() => {
