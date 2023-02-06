@@ -40,9 +40,9 @@ const insertItem = async(req, res) => {
 
     if (!id_item)
         return res.status(400).json({ code: "402", message: "missing arguments" });
-    
-    if(!(mongoose.Types.ObjectId.isValid(id_item)) || !(await Item.findById(id_item)))
-        return res.status(404).json({code: "401", message: "item not found"});
+
+    if (!(mongoose.Types.ObjectId.isValid(id_item)) || !(await Item.findById(id_item)))
+        return res.status(404).json({ code: "401", message: "item not found" });
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
     //quantità di quello già presente
@@ -73,8 +73,8 @@ const updateQuantity = async(req, res) => {
         //campi non presenti o non validi, sessione probabilmente non valida
     }
 
-    if(!(mongoose.Types.ObjectId.isValid(id)) || !(await Item.findById(id)))
-        return res.status(404).json({code: "401", message: "item not found"});
+    if (!(mongoose.Types.ObjectId.isValid(id)) || !(await Item.findById(id)))
+        return res.status(404).json({ code: "401", message: "item not found" });
 
     let result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
@@ -94,12 +94,12 @@ const updateQuantity = async(req, res) => {
 
     if (notFound) return res.status(404).json({ code: "404", message: "product not found" });
 
-    result = await Buyer.updateOne({ "$and": [{ id: user._id}, { 'cart._id': id_item }] }, {
+    result = await Buyer.updateOne({ "$and": [{ id: user._id }, { 'cart._id': id_item }] }, {
         $set: { 'cart.$.quantity': quantity }
     });
 
     if (!result) return res.status(500).json({ code: "401", message: "database error" });
-        return res.status(200).json({ code: "400", message: "product's quantity updated" });
+    return res.status(200).json({ code: "400", message: "product's quantity updated" });
 
 }
 
@@ -141,7 +141,7 @@ const deleteOneItem = async(req, res) => {
     });
 
     if (!result) return res.status(404).json({ code: "401", message: "database error" });
-        return res.status(200).json({ code: "400", message: "product removed" });
+    return res.status(200).json({ code: "400", message: "product removed" });
 };
 
 /**
@@ -155,24 +155,26 @@ const deleteAll = async(req, res) => {
     //ricerca utente
     let result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
-    
+
     const cart = result.cart;
     let ids = [];
 
     //lettura id articoli
-    for(let i=0; i<cart.length; i++){
+    for (let i = 0; i < cart.length; i++) {
         ids.push(cart[i]._id);
     }
 
     //pull valori array per rimozione articoli dal carrello
-    result = await Buyer.updateOne({ _id: user._id },  { $pull: {
-        cart: {
-            _id: { $in: ids }
+    result = await Buyer.updateOne({ _id: user._id }, {
+        $pull: {
+            cart: {
+                _id: { $in: ids }
+            }
         }
-    }});
+    });
 
     if (!result) return res.status(404).json({ code: "401", message: "database error" });
-        return res.status(200).json({ code: "400", message: "cart cleared" });
+    return res.status(200).json({ code: "400", message: "cart cleared" });
 
 }
 
@@ -184,11 +186,10 @@ const checkout = async(req, res) => {
     //se la quantità è disponibile e, in caso positivo, modificarla sottraendo
     //la quantità definita nel carrello
     let result = await checkQuantity(req.body.items, req.body.modify);
-    if(result) {
-        return res.status(200).json({code: 400, message: "success"});
-    }
-    else
-        return res.status(400).json({code: 406, message: "checkout failed"});
+    if (result) {
+        return res.status(200).json({ code: 400, message: "success" });
+    } else
+        return res.status(400).json({ code: 406, message: "checkout failed" });
 };
 
 /**
@@ -199,34 +200,34 @@ const checkout = async(req, res) => {
 const checkQuantity = async(items, modify) => {
     let success = true;
     let newItems = [];
-    for(let i=0; i<items.length && success; i++){
+    for (let i = 0; i < items.length && success; i++) {
         //viene preso in considerazione l'articolo se ha una quantità maggiore di 0
-        if(items[i].quantity > 0) {
-            
+        if (items[i].quantity > 0) {
+
             if (!(mongoose.Types.ObjectId.isValid(items[i].id)) || !(await Item.exists({ _id: items[i].id }))) {
                 success = false;
             }
-            
+
             let item;
             //se l'item è stato trovato
-            if(success) {
+            if (success) {
                 item = await Item.findById(items[i].id);
 
-                if (item.state != 'PUBLISHED'){
+                if (item.state != 'PUBLISHED') {
                     success = false;
                 }
-            
+
                 if (item.quantity < items[i].quantity) {
                     success = false;
                 }
-     
+
                 //se il flag è true, vengono modificate le quantità
-                if(modify){
+                if (modify) {
                     item.quantity -= items[i].quantity;
                     if (item.quantity <= 0) {
                         item.state = 'SOLD';
                         item.quantity = 0;
-                    }   
+                    }
 
                     //salvataggio del "nuovo" articolo in array
                     newItems.push(item);
@@ -234,16 +235,12 @@ const checkQuantity = async(items, modify) => {
             }
         }
     }
-    
+
     //se il checkout è possibile, vado a salvare gli articoli 
     //modificati così da aggiornare le loro quantità
-    if(success && modify) {
-        for(let i=0; i<newItems.length; i++){
-            newItems[i].save(err => {
-                if (err) {
-                    return false;
-                }
-            });
+    if (success && modify) {
+        for (let i = 0; i < newItems.length; i++) {
+            await newItems[i].save().catch(err => console.log(err))
         }
     }
 

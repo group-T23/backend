@@ -31,7 +31,7 @@ const getPublicInfo = async(req, res) => {
     } else if (req.query.id) {
         if (!(await Seller.exists({ id: req.query.id })))
             return res.status(400).json({ code: "", message: "invalid arguments" });
-       
+
         seller = await Seller.findById(req.query.id);
         buyer = await Buyer.findById(seller.userId);
     }
@@ -106,9 +106,8 @@ const remove = async(req, res) => {
         seller.items.forEach(async itemId => {
             let item = await Item.findById(itemId);
             item.state = 'DELETED';
-            item.save().catch(err => {
-                if (err)
-                    return res.status(500).json({ code: "", message: "unable to save changes" });
+            await item.save().catch(err => {
+                return res.status(500).json({ code: "", message: "unable to save changes" });
             });
         });
 

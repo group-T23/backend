@@ -35,23 +35,19 @@ const create = async(req, res) => {
     });
 
     let error = false;
-    item.save(err => {
-        if (err) {
-            console.log(err);
-            error = true;
-        }
-    });
+    await item.save().catch(err => {
+        console.log(err);
+        error = true
+    })
 
     if (error) return res.status(500).json({ code: "901", message: "unable to create" });
 
     if (!seller.items) seller.items = [];
     seller.items.push(item.id);
 
-    seller.save(err => {
-        if (err) {
-            console.log(err);
-            error = true;
-        }
+    await seller.save().catch(err => {
+        console.log(err);
+        error = true;
     });
 
     if (error) return res.status(500).json({ code: "901", message: "unable to save changes" });
@@ -161,9 +157,8 @@ const publish = async(req, res) => {
         return res.status(400).json({ code: "907", message: "invalid item state" });
 
     item.state = 'PUBLISHED';
-    item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
+    await item.save().catch(err => {
+        return res.status(500).json({ code: "901", message: "unable to save changes" });
     });
 
     return res.status(200).json({ code: "900", message: "success" });
@@ -191,9 +186,8 @@ const retire = async(req, res) => {
         return res.status(400).json({ code: "907", message: "invalid item state" });
 
     item.state = 'DRAFT';
-    item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
+    await item.save().catch(err => {
+        return res.status(500).json({ code: "901", message: "unable to save changes" });
     });
 
     return res.status(200).json({ code: "900", message: "success" });
@@ -225,15 +219,18 @@ const buy = async(req, res) => {
 
         // delete all proposals
         var proposals = await Proposal.find({ itemId: item._id });
-        proposals.forEach(proposal => {
-            proposal.state = 'DELETED'
-            proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+        proposals.forEach(async proposal => {
+            proposal.state = "DELETED"
+            await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
         })
+
+        //TODO: remove from wishlists
+
+        //TODO: remove from carts
     }
 
-    item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
+    await item.save().catch(err => {
+        return res.status(500).json({ code: "901", message: "unable to save changes" });
     });
 
     return res.status(200).json({ code: "900", message: "success" });
@@ -258,9 +255,8 @@ const remove = async(req, res) => {
     let item = await Item.findById(req.query.id);
 
     item.state = 'DELETED';
-    item.save(err => {
-        if (err)
-            return res.status(500).json({ code: "901", message: "unable to save changes" });
+    await item.save().catch(err => {
+        return res.status(500).json({ code: "901", message: "unable to save changes" });
     });
 
     return res.status(200).json({ code: "900", message: "success" });

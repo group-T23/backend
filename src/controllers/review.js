@@ -12,7 +12,7 @@ const create = async(req, res) => {
     // params validity
     if (!Number.isInteger(req.body.rating) || !(0 <= req.body.rating && req.body.rating <= 5) || !String.toString(req.body.title).length > 0)
         return res.status(400).json({ code: "803", message: "invalid arguments" });
-       
+
     if (!mongoose.Types.ObjectId.isValid(req.body.sellerId) || !(await Seller.exists({ id: req.body.sellerId })))
         return res.status(400).json({ code: "803", message: "invalid arguments" });
 
@@ -27,14 +27,14 @@ const create = async(req, res) => {
     });
 
     try {
-      await review.save()
-      seller.reviews.push(review.id)
-      await seller.save()
+        await review.save()
+        seller.reviews.push(review.id)
+        await seller.save()
 
-      return res.status(200).json({ code: "800", message: "success" });
+        return res.status(200).json({ code: "800", message: "success" });
     } catch (error) {
-      console.log(error)
-      return res.status(500).json({ code: "801", message: "Error while creating review" });
+        console.log(error)
+        return res.status(500).json({ code: "801", message: "Error while creating review" });
     }
 }
 
@@ -48,16 +48,16 @@ const getSellerReviews = async(req, res) => {
         return res.status(400).json({ code: "802", message: "missing arguments" });
 
     const id = req.params.id;
-    
+
     // params validity
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(400).json({ code: "803", message: "invalid arguments" });
- 
-   //ricerca delle recensioni
-   var ObjectId = require('mongodb').ObjectId;
-   const result = await Review.find({sellerId: ObjectId(id)});
 
-   return res.status(200).json({ reviews: result, code: "800", message: "success" });
+    //ricerca delle recensioni
+    var ObjectId = require('mongodb').ObjectId;
+    const result = await Review.find({ sellerId: ObjectId(id) });
+
+    return res.status(200).json({ reviews: result, code: "800", message: "success" });
 }
 
 const getInfo = async(req, res) => {
@@ -72,7 +72,7 @@ const getInfo = async(req, res) => {
     const review = await Review.findById(req.params.id);
 
     let pub = null;
-    if(review){
+    if (review) {
         pub = {
             username: await Buyer.findById(review.authorId).username,
             title: review.title,
@@ -116,9 +116,8 @@ const remove = async(req, res) => {
 
     //remove from seller
     seller.reviews = seller.reviews.filter(rid => { return rid != review.id });
-    seller.save(err => {
-        if (err)
-            return res.status(500).json({ code: "801", message: "unable to save changes" });
+    await seller.save().catch(err => {
+        return res.status(500).json({ code: "801", message: "unable to save changes" });
     })
 
     //remove from DB

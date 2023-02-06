@@ -38,13 +38,13 @@ const create = async(req, res) => {
         price: req.body.price
     })
 
-    proposal.save()
+    await proposal.save()
         .catch(err => {
             return res.status(500).json({ code: "1101", message: "unable to create" });
         });
 
     author.proposals.push(proposal.id);
-    author.save()
+    await author.save()
         .catch(err => {
             return res.status(500).json({ code: "1101", message: "unable to save changes" });
         })
