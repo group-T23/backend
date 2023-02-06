@@ -6,7 +6,7 @@ const Buyer = require('../models/Buyer');
 
 describe('Email requests', () => {
     const fetch = require('node-fetch');
-    const url = `http://localhost:${process.env.PORT}`;
+    const url = `${process.env.SERVER}:${process.env.PORT}`;
     const TIMEOUT = 20000;
     jest.setTimeout(TIMEOUT);
 

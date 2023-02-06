@@ -28,3 +28,4 @@ jobs:
             npm ci --omit=dev
             forever stop src/be.js
             forever start src/be.js
+            npm test
