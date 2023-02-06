@@ -185,6 +185,25 @@ const retire = async(req, res) => {
     if (item.state != 'PUBLISHED')
         return res.status(400).json({ code: "907", message: "invalid item state" });
 
+    // delete all proposals
+    var proposals = await Proposal.find({ $and: [{ itemId: item._id }, { state: "PENDING" }] });
+    proposals.forEach(async proposal => {
+        proposal.state = "DELETED"
+        await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+    })
+
+    // remove from carts and wishlists
+    var buyers = await Buyer.find()
+    buyers.forEach(async buyer => {
+        if (buyer.wishlist.find(x => x.id == item._id)) {
+            buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+        } else if (buyer.cart.find(x => x.id == item._id)) {
+            buyer.cart = buyer.cart.filter(x => x.id != item._id)
+        }
+
+        await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+    })
+
     item.state = 'DRAFT';
     await item.save().catch(err => {
         return res.status(500).json({ code: "901", message: "unable to save changes" });
@@ -261,6 +280,25 @@ const remove = async(req, res) => {
         return res.status(400).json({ code: "905", message: "operation not permitted" });
 
     let item = await Item.findById(req.query.id);
+
+    // delete all proposals
+    var proposals = await Proposal.find({ $and: [{ itemId: item._id }, { state: "PENDING" }] });
+    proposals.forEach(async proposal => {
+        proposal.state = "DELETED"
+        await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+    })
+
+    // remove from carts and wishlists
+    var buyers = await Buyer.find()
+    buyers.forEach(async buyer => {
+        if (buyer.wishlist.find(x => x.id == item._id)) {
+            buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+        } else if (buyer.cart.find(x => x.id == item._id)) {
+            buyer.cart = buyer.cart.filter(x => x.id != item._id)
+        }
+
+        await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+    })
 
     item.state = 'DELETED';
     await item.save().catch(err => {

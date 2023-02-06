@@ -5,6 +5,9 @@ const Buyer = require('../models/Buyer');
 const Seller = require('../models/Seller');
 const Item = require('../models/Item');
 const Mail = require('../utils/email');
+const Review = require("../models/Review");
+const Proposal = require("../models/Proposal");
+const Chat = require("../models/Chat");
 
 const getInfo = async(req, res) => {
     const buyer = await getAuthenticatedBuyer(req, res);
@@ -132,21 +135,43 @@ const remove = async(req, res) => {
 
     //remove seller
     if (buyer.isSeller) {
-        let seller = await Seller.find({ _id: buyer.sellerId });
+        let seller = await Seller.findById(buyer.sellerId);
 
         if (seller.items)
             seller.items.forEach(async itemId => {
-                let item = await Item.find({ _id: itemId });
+                let item = await Item.findById(itemId);
                 item.state = 'DELETED';
                 item.save().then(ok => {}).catch(err => {
                     return res.status(500).json({ code: "", message: "unable to save changes" });
                 });
             });
 
+        if (seller.reviews) {
+            await Review.deleteMany({ _id: { $in: seller.reviews } }).catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
+        }
+
+        if (seller.proposals)
+            seller.proposals.forEach(async proposalId => {
+                let proposal = await Proposal.find({ $and: [{ _id: proposalId }, { state: 'PENDING' }] })
+                proposal.state = 'DELETED'
+                await proposal.save().catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
+            })
+
         Seller.deleteOne({ id: seller.id }, err => {
             if (err)
                 return res.status(500).json({ code: "", message: "unable to remove" });
         })
+    }
+
+    if (buyer.proposals)
+        buyer.proposals.forEach(async proposalId => {
+            let proposal = await Proposal.find({ $and: [{ _id: proposalId }, { state: 'PENDING' }] })
+            proposal.state = 'DELETED'
+            await proposal.save().catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
+        })
+
+    if (buyer.chats) {
+        await Chat.deleteMany({ $or: [{ user1: buyer._id }, { user2: buyer._id }] }).catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
     }
 
     Buyer.deleteOne({ id: buyer.id }, err => {
