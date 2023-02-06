@@ -120,7 +120,6 @@ const accept = async(req, res) => {
     proposal.state = 'ACCEPTED';
     proposal.save()
         .then(ok => {
-            //TODO: notify buyer via email
             return res.status(200).json({ code: "1100", message: "success" });
         })
         .catch(err => {
@@ -147,7 +146,6 @@ const reject = async(req, res) => {
     proposal.state = 'REJECTED';
     proposal.save()
         .then(ok => {
-            //TODO: notify buyer via email
             return res.status(200).json({ code: "", message: "success" });
         })
         .catch(err => {
@@ -173,7 +171,6 @@ const remove = async(req, res) => {
     proposal.state = 'DELETED';
     proposal.save()
         .then(ok => {
-            //TODO: notify buyer via email
             return res.status(200).json({ code: "1100", message: "success" });
         })
         .catch(err => {

@@ -4,10 +4,6 @@ dotenv.config();
 const mongoose = require('mongoose');
 const Buyer = require('../models/Buyer');
 
-//FIXME: in alcuni casi, i test danno esito negativo anche se sono corretti
-//molto probabilmente l'errore è dovuto al fatto che il db non riesce ad aggiornasi in tempo 
-//e alla richiesta successiva, mancano i dati che ci si aspetta facendo fallire il test
-
 describe('Email requests', () => {
     const fetch = require('node-fetch');
     const url = `http://localhost:${process.env.PORT}`;

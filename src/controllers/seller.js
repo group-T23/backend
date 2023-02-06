@@ -91,7 +91,7 @@ const create = async(req, res) => {
             return res.status(500).json({ code: "", message: "unable to save changes" });
         });
 
-    //TODO: notify via email
+    await Mail.send(buyer.email, 'Creazione nuovo annuncio', `Grazie per aver scelto skupply.\nA breve il tuo nuovo annuncio sarà disponibile nel negozio!`);
     return res.status(201).json({ code: "", message: "success" });
 }
 
