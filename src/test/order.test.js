@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require("mongoose");
 const Order = require("../models/Order");
-const url = `http://localhost:${process.env.PORT}`;
+const url = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Order test', () => {
     const fetch = require('node-fetch');

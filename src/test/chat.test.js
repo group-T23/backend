@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const request = require('supertest');
-const app = `http://localhost:${process.env.PORT}`;
+const app = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Chat test', () => {
     const fetch = require('node-fetch');
@@ -12,10 +12,10 @@ describe('Chat test', () => {
         const options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
-          }
+        }
 
         const response = (await fetch(`${app}/chat?username=najirod`, options).then(response => response.json()))
-        expect(response).toMatchObject({code: 800, message: "Success"})
+        expect(response).toMatchObject({ code: 800, message: "Success" })
         expect(response.chats).toBeDefined();
         expect(response.chats[0]).toHaveProperty('messages');
     });
@@ -25,10 +25,10 @@ describe('Chat test', () => {
         const options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': process.env.ACCESS_TOKEN },
-          }
+        }
 
         const response = (await fetch(`${app}/chat/message?username=najirod&contact=sic`, options).then(response => response.json()))
-        expect(response).toMatchObject({code: 800, message: "Success"})
+        expect(response).toMatchObject({ code: 800, message: "Success" })
         expect(response.messages).toBeDefined();
         expect(response.messages[0]).toHaveProperty('sender');
         expect(response.messages[0]).toHaveProperty('text');
