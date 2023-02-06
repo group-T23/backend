@@ -198,7 +198,7 @@ const buy = async(req, res) => {
     if (!req.query.id || !req.query.quantity)
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
-    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ _id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
     if (!Number.isInteger(req.query.quantity) || !req.query.quantity > 0)
@@ -218,15 +218,23 @@ const buy = async(req, res) => {
         item.quantity = 0;
 
         // delete all proposals
-        var proposals = await Proposal.find({ itemId: item._id });
+        var proposals = await Proposal.find({ $and: [{ itemId: item._id }, { state: "PENDING" }] });
         proposals.forEach(async proposal => {
             proposal.state = "DELETED"
             await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
         })
 
-        //TODO: remove from wishlists
+        // remove from carts and wishlists
+        var buyers = await Buyer.find()
+        buyers.forEach(async buyer => {
+            if (buyer.wishlist.find(x => x.id == item._id)) {
+                buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+            } else if (buyer.cart.find(x => x.id == item._id)) {
+                buyer.cart = buyer.cart.filter(x => x.id != item._id)
+            }
 
-        //TODO: remove from carts
+            await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+        })
     }
 
     await item.save().catch(err => {

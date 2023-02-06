@@ -1,5 +1,6 @@
 const Buyer = require("../models/Buyer")
 const Item = require("../models/Item");
+const Proposal = require('../models/Proposal')
 const mongoose = require('mongoose');
 const { getAuthenticatedBuyer } = require('../utils/auth');
 
@@ -227,6 +228,25 @@ const checkQuantity = async(items, modify) => {
                     if (item.quantity <= 0) {
                         item.state = 'SOLD';
                         item.quantity = 0;
+
+                        // delete all proposals
+                        var proposals = await Proposal.find({ $and: [{ itemId: item._id }, { state: "PENDING" }] });
+                        proposals.forEach(async proposal => {
+                            proposal.state = "DELETED"
+                            await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+                        })
+
+                        // remove from carts and wishlists
+                        var buyers = await Buyer.find()
+                        buyers.forEach(async buyer => {
+                            if (buyer.wishlist.find(x => x.id == items[i].id)) {
+                                buyer.wishlist = buyer.wishlist.filter(x => x.id != items[i].id)
+                            } else if (buyer.cart.find(x => x.id == items[i].id)) {
+                                buyer.cart = buyer.cart.filter(x => x.id != items[i].id)
+                            }
+
+                            await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+                        })
                     }
 
                     //salvataggio del "nuovo" articolo in array
