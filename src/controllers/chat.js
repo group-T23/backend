@@ -12,8 +12,6 @@ const getChat = async(req, res) => {
 
     const result = await Buyer.findOne({ username: username });
     if (!result) {res.status(404).json({ code: 803, message: 'User not found' }); return;};
-    console.log(result._id);
-    console.log(user._id);
     let idUser = result._id;
 
     //ricerca all'interno della collection Chat 
