@@ -76,6 +76,9 @@ const create = async(req, res) => {
         verificationCode: code,
     });
 
+    if(!data.address)
+        buyer.addresses = [];
+
     let seller;
     if (data.isSeller && data.address && data.prefix && data.number) {
         buyer.isSeller = true;
