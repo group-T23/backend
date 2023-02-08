@@ -8,7 +8,7 @@ const checkEmail = async(req, res) => {
     const check = await Buyer.findOne({ email: email })
     if (check) { res.status(403).json({ code: 205, message: 'Email already used' }); return }
 
-    const result = await validator.validate(email);
+    const result = await validator.validate({ email: email, validateSMTP: false });
     res.status(200).json(result.valid ? { code: 203, message: 'Email reachable' } : { code: 204, message: 'Email not reachable' });
 };
 
@@ -23,10 +23,10 @@ const verifyEmail = async(req, res) => {
     if (check.isVerified) { res.status(200).json({ code: 207, message: "Email already verified" }); return; }
 
     if (check.verificationCode == code) {
-      check.isVerified = true;
-      await check.save();
-      res.status(200).json({ code: 200, message: "Email verified successfully" });
-    } else {res.status(200).json({ code: 206, message: "Invalid verification code" });}
+        check.isVerified = true;
+        await check.save();
+        res.status(200).json({ code: 200, message: "Email verified successfully" });
+    } else { res.status(200).json({ code: 206, message: "Invalid verification code" }); }
 }
 
 module.exports = { checkEmail, verifyEmail };
