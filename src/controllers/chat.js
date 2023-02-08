@@ -2,22 +2,46 @@ const mongoose = require('mongoose')
 const Chat = require('../models/Chat');
 const Buyer = require('../models/Buyer');
 const Message = require('../models/Message');
+const { getAuthenticatedBuyer } = require('../utils/auth');
 
 const getChat = async(req, res) => {
+    let user = await getAuthenticatedBuyer(req, res);
+
     const username = req.query.username;
     if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
 
     const result = await Buyer.findOne({ username: username });
-    if (!result) res.status(404).json({ code: 803, message: 'User not found' });
-
+    if (!result) {res.status(404).json({ code: 803, message: 'User not found' }); return;};
+    console.log(result._id);
+    console.log(user._id);
     let idUser = result._id;
 
     //ricerca all'interno della collection Chat 
-    const result2 = await Chat.find({
-        "$or": [
-            { "user1.id": idUser }, { "user2.id": idUser }
-        ]
-    });
+    let result2;
+    if(username != user.username){
+        result2 = await Chat.find({
+            "$or": [
+                {
+                    $and: [
+                        { "user1.id": idUser }, { "user2.id": user._id }
+                ]
+            },
+            {
+                $and: [
+                    { "user1.id": user._id }, { "user2.id": idUser }
+                ]
+            },
+            ]
+        });
+    }
+    //ricerca contatti 
+    if(username == user.username){
+        result2 =  await Chat.find({
+            "$or": [
+                { "user1.id": user._id }, { "user2.id": user._id }
+            ]
+        });
+    }
 
     res.status(200).json({ code: 800, message: 'Success', chats: result2 });
 }
