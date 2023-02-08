@@ -6,6 +6,7 @@ const Category = require('../models/Category');
 const Proposal = require('../models/Proposal')
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const Mail = require('../utils/email');
 
 const create = async(req, res) => {
     const token = req.headers['x-access-token'];
