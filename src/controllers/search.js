@@ -167,11 +167,12 @@ const search = async(req, res) => {
                         }
                     ]
                 );
-
+                console.log(rt);
+                console.log(seller);
                 //ricerco all'interno dei gruppi quello del venditore ricercato usando seller.userId
                 let found = false;
                 for(let i=0; i<rt.length && !found; i++){
-                    if((rt[i]._id).equals(seller.userId)){
+                    if((rt[i]._id).equals(seller._id)){
                         found = true;
                         valutazione = rt[i].avgRating;
                     }
