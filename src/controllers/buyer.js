@@ -188,7 +188,7 @@ const find = async(req, res) => {
 
     const check = await Buyer.findOne({ username: username })
     if (check) res.status(200).json({ code: 107, message: 'Username found' })
-    else res.status(404).json({ code: 104, message: 'Username available' })
+    else res.status(200).json({ code: 104, message: 'Username available' })
 };
 
 module.exports = {
