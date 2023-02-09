@@ -11,21 +11,6 @@ on:
 
 jobs:
 
-  # node setup
-  setup:
-    name: Setup Node.js ${{ matrix.node-version }}
-    strategy:
-      matrix:
-        node-version: [16.x] 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3  
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-  
   # dotenv(s) config
   create-env-files:
     needs: setup
@@ -62,10 +47,10 @@ jobs:
           JEST_KEY_DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
           JEST_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
   
-  # testing
+  # run & test
   test:
     needs: create-env-files
-    name: Running Jest
+    name: Run & Test
     strategy:
       matrix:
         node-version: [16.x] 
@@ -76,6 +61,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - run: npm ci
+      - run: forever start src/index.js
       - run: npm test
   
   # deploy
