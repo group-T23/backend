@@ -3,6 +3,8 @@ dotenv.config();
 
 const request = require('supertest');
 const mongoose = require('mongoose');
+const Buyer = require('../models/Buyer');
+const crypto = require('crypto');
 const app = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Cart test', () => {
@@ -12,9 +14,29 @@ describe('Cart test', () => {
 
     beforeAll(async() => {
         await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+   
+        //creazione account
+        await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
+
+        //hash della password del profilo (test)
+        const hash = crypto.createHash('sha256');
+        const password = hash.update('test', 'utf-8').digest('hex');
+
+        const user = new Buyer({
+            firstname: 'test',
+            lastname: 'test',
+            username: 'test',
+            email: 'test@gmail.com',
+            passwordHash: password,
+            isVerified: true,
+            verificationCode: 'fedcba9876543210',
+        });
+
+        await user.save().catch(err => console.log(err))
     });
 
     afterAll(async() => {
+        await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
         mongoose.disconnect();
     })
 
@@ -40,8 +62,8 @@ describe('Cart test', () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                email: "andrea@skupply.shop",
-                password: "Skupply30*"
+                email: "test@gmail.com",
+                password: "test"
             })
         }
 
