@@ -39,14 +39,15 @@ jobs:
       - run: npm ci
       - run: npm start &
       - run: sleep 5
-      - run: npm test
+      - name: testing (JEST)
         env:
-          CI: true
           DB_NAME: ${{ secrets.ENV_DB_USER }}
           DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
           SERVER: 'http://localhost'
           PORT: ${{ secrets.ENV_PORT }}
           ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
+        run: npm test
+        
   
   # deploy
   deploy:
