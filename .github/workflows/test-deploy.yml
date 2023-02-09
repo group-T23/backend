@@ -19,6 +19,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
+      
+  
+  # run & test
+  test:
+    needs: create-env-files
+    name: Run & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
       # server variables
       - uses: iamsauravsharma/create-dotenv@v1.2.2
         with:
@@ -45,20 +55,10 @@ jobs:
           JEST_KEY_DB_NAME: ${{ secrets.ENV_DB_USER }}
           JEST_KEY_DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
           JEST_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
-  
-  # run & test
-  test:
-    needs: create-env-files
-    name: Run & Test
-    strategy:
-      matrix:
-        node-version: [16.x] 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3  
+      
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
           cache: 'npm'
       - run: tree
       - run: npm ci
