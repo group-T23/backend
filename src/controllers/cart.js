@@ -11,7 +11,7 @@ const { getAuthenticatedBuyer } = require('../utils/auth');
 const getItems = async(req, res) => {
     //get all items inserted in the cart
     let user = await getAuthenticatedBuyer(req, res);
-
+  
     const result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
 

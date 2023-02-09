@@ -21,7 +21,7 @@ describe('Cart test', () => {
             description: "Libro di matematica sui numeri complessi",
             ownerId: "63e50c0633652302f120e0f5",//id generato casualmente
             quantity:"1",
-            categories: ["63e50c2beea9f2def667a5d9"],//id generato casualmente
+            categories: ["63a033e4498a01f9bada19d2"],//id generale
             photos: [`${"sellerId"}_${"1"}.${"XXX"}`],
             conditions: "NEW",
             price: "20",
@@ -41,7 +41,7 @@ describe('Cart test', () => {
             description: "Blocco di quaderno 10pz",
             ownerId: "63e50c0633652302f120e0f5",
             quantity:"20",
-            categories: ["63e50c2beea9f2def667a5d9"],
+            categories: ["63a033e4498a01f9bada19d2"],
             photos: [`${"sellerId"}_${"1"}.${"XXX"}`],
             conditions: "NEW",
             price: "10",

@@ -63,7 +63,7 @@ const getInfo = async(req, res) => {
         return res.status(400).json({ code: "902", message: "missing arguments" });
 
     // invalid params
-    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.body.id })))
+    if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
     const item = await Item.findById(req.query.id);
