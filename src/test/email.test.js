@@ -38,7 +38,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=wasdqwerty396@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
+        expect(await fetch(`${url}/email?email=wasdqwerty@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
     });
 
     test('GET /email - Email already used', async() => {
@@ -74,7 +74,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
+        expect(await fetch(`${url}/email?email=test@gmal.com`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
     });
 
 
