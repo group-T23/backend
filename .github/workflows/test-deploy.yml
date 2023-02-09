@@ -28,6 +28,7 @@ jobs:
   
   # dotenv(s) config
   create-env-files:
+    needs: setup
     name: Create env files
     runs-on: ubuntu-latest
     
@@ -63,6 +64,7 @@ jobs:
   
   # testing
   test:
+    needs: create-env-files
     name: Running Jest
     strategy:
       matrix:
@@ -78,6 +80,7 @@ jobs:
   
   # deploy
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: deploy
