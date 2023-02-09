@@ -41,6 +41,7 @@ jobs:
       - run: sleep 5
       - run: npm test
         env:
+          CI: true
           DB_NAME: ${{ secrets.ENV_DB_USER }}
           DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
           SERVER: 'http://localhost'
