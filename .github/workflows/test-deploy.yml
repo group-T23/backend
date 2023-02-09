@@ -10,20 +10,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  # dotenv(s) config
-  create-env-files:
-    name: Create env files
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      
   
   # run & test
   test:
-    needs: create-env-files
     name: Run & Test
     runs-on: ubuntu-latest
     steps:
