@@ -38,11 +38,10 @@ jobs:
           cache: 'npm'
       - run: tree
       - run: echo ${{ secrets.JEST_ENVS }} | sed 's/./& /g'
-      - run: echo ${{ secrets.JEST_ENVS }} > jest/setEnvVars.js
-      - run: cat jest/setEnvVars.js
+      - run: echo ${{ secrets.JEST_ENVS }} >> jest/setEnvVars.js
       - run: npm ci
       - run: npm start &
-      - run: sleep 10
+      - run: sleep 5
       - run: npm test
   
   # deploy
