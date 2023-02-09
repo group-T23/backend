@@ -5,7 +5,7 @@
     "main": "./src/index.js",
     "scripts": {
         "start": "node src/index.js",
-        "test": "jest --coverage",
+        "test": "jest --coverage -i",
         "swagger": "swagger-cli bundle src/swagger/index.yaml --outfile src/swagger/swagger.json --type json"
     },
     "engines": {
