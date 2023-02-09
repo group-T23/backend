@@ -76,7 +76,7 @@ const create = async(req, res) => {
         verificationCode: code,
     });
 
-    if(!data.address)
+    if (!data.address)
         buyer.addresses = [];
 
     let seller;
@@ -160,7 +160,7 @@ const remove = async(req, res) => {
                 await proposal.save().catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
             })
 
-        Seller.deleteOne({ id: seller.id }, err => {
+        Seller.deleteOne({ _id: seller._id }, err => {
             if (err)
                 return res.status(500).json({ code: "", message: "unable to remove" });
         })
@@ -177,7 +177,7 @@ const remove = async(req, res) => {
         await Chat.deleteMany({ $or: [{ user1: buyer._id }, { user2: buyer._id }] }).catch(err => { return res.status(500).json({ code: "", message: "unable to save changes" }) })
     }
 
-    Buyer.deleteOne({ id: buyer.id }, err => {
+    Buyer.deleteOne({ _id: buyer._id }, err => {
         if (err)
             return res.status(500).json({ code: "", message: "unable to remove" });
     });
