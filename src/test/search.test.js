@@ -1,7 +1,67 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const request = require('supertest');
+const mongoose = require('mongoose');
+const Item = require('../models/Item');
+
 const app = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Search test', () => {
+
+    beforeAll(async() => {
+        await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
+
+        //creazione due articoli di prova
+        let item = new Item({
+            title: "Libro matematica",
+            description: "Libro di matematica sui numeri complessi",
+            ownerId: "63e50c0633652302f120e0f5",//id generato casualmente
+            quantity:"1",
+            categories: ["63a033e4498a01f9bada19d2"],//id generale
+            photos: [`${"sellerId"}_${"1"}.${"XXX"}`],
+            conditions: "NEW",
+            price: "20",
+            city: "Belluno",
+            state: 'PUBLISHED',
+            pickUpAvail: true,
+            shipmentAvail: false,
+            shipmentCost: 0.00,
+        });
+    
+        await item.save().catch(err => {
+            console.log(err);
+        })
+
+        item = new Item({
+            title: "Quaderni",
+            description: "Blocco di quaderno 10pz",
+            ownerId: "63e50c0633652302f120e0f5",
+            quantity:"20",
+            categories: ["63a033e4498a01f9bada19d2"],
+            photos: [`${"sellerId"}_${"1"}.${"XXX"}`],
+            conditions: "NEW",
+            price: "10",
+            city: "Trento",
+            state: 'PUBLISHED',
+            pickUpAvail: true,
+            shipmentAvail: true,
+            shipmentCost: 10.00,
+        });
+    
+        await item.save().catch(err => {
+            console.log(err);
+        })
+      
+    });
+
+    afterAll(async() => {
+        //cancellazione items di prova
+        await Item.deleteMany({ownerId: "63e50c0633652302f120e0f5"});
+
+        mongoose.disconnect();
+    });
+
     //test search senza parametri
     test('tests /search - no parameters', async() => {
         const response = await request(app).get(`/search`);
@@ -13,7 +73,7 @@ describe('Search test', () => {
     test('tests /search - key parameter', async() => {
         const response = await request(app)
             .get(`/search`)
-            .query({ key: 'programmazione' });
+            .query({ key: 'matematica' });
         expect(response.statusCode).toBe(200)
         expect({ code: "700", message: "success" })
 
@@ -25,7 +85,7 @@ describe('Search test', () => {
     test('tests /search - category parameter', async() => {
         const response = await request(app)
             .get(`/search`)
-            .query({ category: 'università' });
+            .query({ category: 'generale' });
         expect(response.statusCode).toBe(200)
         expect({ code: "700", message: "success" })
 
@@ -49,7 +109,7 @@ describe('Search test', () => {
     test('tests /search - key and category parameters', async() => {
         const response = await request(app)
             .get(`/search`)
-            .query({ key: 'programmazione', category: 'noCateogria' });
+            .query({ key: 'quaderni', category: 'noCateogria' });
         expect(response.statusCode).toBe(404)
         expect({ code: "704", message: "category not found" })
 
@@ -61,7 +121,7 @@ describe('Search test', () => {
     test('tests /search - key, min price and max price parameters', async() => {
         const response = await request(app)
             .get(`/search`)
-            .query({ key: 'programmazione', "min-price": 0.5, "min-price": 125.7 });
+            .query({ key: 'matematica', "min-price": 0.5, "min-price": 125.7 });
         expect(response.statusCode).toBe(200)
         expect({ code: "700", message: "success" })
 
