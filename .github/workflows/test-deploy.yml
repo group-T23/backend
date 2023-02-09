@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Deploy BE
+name: Test & Deploy BE
 
 on:
   push:
@@ -43,24 +43,13 @@ jobs:
           ENV_KEY_DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
           ENV_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
       
-      # jest variables
-      - uses: iamsauravsharma/create-dotenv@v1.2.2
-        with:
-          env-prefix: 'JEST_KEY_'
-          file-name: 'setEnvVars.js'
-          directory: 'jest/' # Optional (default: '.')
-        env:
-          JEST_KEY_SERVER: ${{ secrets.ENV_SERVER }}
-          JEST_KEY_PORT: ${{ secrets.ENV_PORT }}
-          JEST_KEY_DB_NAME: ${{ secrets.ENV_DB_USER }}
-          JEST_KEY_DB_PASSWORD: ${{ secrets.ENV_DB_PASS }}
-          JEST_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
-      
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: 'npm'
       - run: tree
+      - run: echo ${{ secrets.JEST_ENVS }} > jest/setEnvVars.js
+      - run: cat jest/setEnvVars.js
       - run: npm ci
       - run: npm start &
       - run: sleep 10
