@@ -21,23 +21,23 @@ jobs:
       # server variables
       - name: Creating .env file
         uses: iamsauravsharma/create-dotenv@v1.2.2
-          with:
-            env-prefix: 'ENV_KEY_'
-            file-name: '.env'
-            directory: '.' # Optional (default: '.')
-          env:
-            ENV_KEY_PORT:         ${{ secrets.ENV_PORT }}
-            ENV_KEY_EM_USER:      ${{ secrets.ENV_EM_USER }}
-            ENV_KEY_EM_PASSWORD:  ${{ secrets.ENV_EM_PASS }}
-            ENV_KEY_DB_NAME:      ${{ secrets.ENV_DB_USER }}
-            ENV_KEY_DB_PASSWORD:  ${{ secrets.ENV_DB_PASS }}
-            ENV_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
+        with:
+          env-prefix: 'ENV_KEY_'
+          file-name: '.env'
+          directory: '.' # Optional (default: '.')
+        env:
+          ENV_KEY_PORT:         ${{ secrets.ENV_PORT }}
+          ENV_KEY_EM_USER:      ${{ secrets.ENV_EM_USER }}
+          ENV_KEY_EM_PASSWORD:  ${{ secrets.ENV_EM_PASS }}
+          ENV_KEY_DB_NAME:      ${{ secrets.ENV_DB_USER }}
+          ENV_KEY_DB_PASSWORD:  ${{ secrets.ENV_DB_PASS }}
+          ENV_KEY_ACCESS_TOKEN: ${{ secrets.ENV_TOKEN }}
       
       - name: Setting up Node 16
-          uses: actions/setup-node@v3
-          with:
-            node-version: 16.x
-            cache: 'npm'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
             
       - name: Installing dependencies
         run: npm ci
