@@ -36,8 +36,6 @@ jobs:
         with:
           node-version: 16.x
           cache: 'npm'
-      - run: echo ${{ secrets.JEST_ENVS }} >> jest/setEnvVars.js
-      - run: cat jest/setEnvVars.js | sed 's/./& /g'
       - run: npm ci
       - run: npm start &
       - run: sleep 5
