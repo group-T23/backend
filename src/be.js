@@ -10,8 +10,8 @@ const https = require('https');
 const fs = require('fs');
 
 var options = {
-    key: fs.readFileSync('/etc/letsencrypt/archive/skupply.shop/privkey1.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/archive/skupply.shop/cert1.pem')
+    key: fs.readFileSync(process.env.PRIVATE_CERT),
+    cert: fs.readFileSync(process.env.FULLCHAIN_CERT)
 };
 
 app.use(express.json());
