@@ -53,7 +53,7 @@ const create = async(req, res) => {
 
     if (error) return res.status(500).json({ code: "901", message: "unable to save changes" });
 
-    await Mail.send(buyer.email, 'Creazione nuovo annuncio', `Grazie per aver scelto skupply.\nA breve il tuo nuovo annuncio sarà disponibile nel negozio!`);
+    await Mail.send(buyer.email, 'Creazione nuovo annuncio', `Grazie per aver scelto skupply.\nA breve il tuo nuovo annuncio verrà creato!`);
     return res.status(201).json({ code: "900", message: "success", item: item.id });
 }
 
