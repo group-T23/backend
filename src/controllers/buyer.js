@@ -44,7 +44,7 @@ const getInfoBuyer = async(req, res) => {
 }
 
 const create = async(req, res) => {
-    const url = require('../utils/address');
+    const url = process.env.FE_SERVER;
     const data = req.body;
 
     if (!(data.firstname && data.lastname && data.username && data.email && data.password && data.terms))
