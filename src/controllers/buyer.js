@@ -40,7 +40,14 @@ const getInfoBuyer = async(req, res) => {
 
     let buyer = await Buyer.findOne({ _id: req.params.id });
 
-    return res.status(200).json({ user: buyer, code: "", message: "success" });
+    const pub = {
+        _id: buyer._id,
+        username: buyer.username,
+        isSeller: buyer.isSeller,
+        sellerId: buyer.sellerId,
+    }
+
+    return res.status(200).json({ user: pub, code: "", message: "success" });
 }
 
 const create = async(req, res) => {
