@@ -19,6 +19,11 @@ responses:
         message:
           type: string
 
+  '400':
+    description: "Bad Request: parametri mancanti o non validi"
+    schema:
+      $ref: ../../components/schemas/common/response.yaml
+
   '403':
     description: "Forbidden: non si è autorizzati ad accedere alla risorsa"
     schema:

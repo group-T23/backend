@@ -21,7 +21,7 @@ const verifyAuthentication = async(req, res, next) => {
     });
 }
 
-async function getAuthenticatedBuyer(req, res) {
+async function getAuthenticatedUser(req, res) {
     const token = req.headers['x-access-token'];
 
     let email;
@@ -44,5 +44,5 @@ async function getAuthenticatedBuyer(req, res) {
 
 module.exports = {
     verifyAuthentication,
-    getAuthenticatedBuyer,
+    getAuthenticatedUser,
 };

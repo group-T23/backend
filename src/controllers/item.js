@@ -1,4 +1,4 @@
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 const Buyer = require('../models/Buyer');
 const Seller = require('../models/Seller');
 const Item = require('../models/Item');
@@ -99,7 +99,7 @@ const edit = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.body.itemId) || !(await Item.exists({ id: req.body.itemId })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
@@ -174,7 +174,7 @@ const retire = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 
@@ -273,7 +273,7 @@ const remove = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.query.id) || !(await Item.exists({ id: req.query.id })))
         return res.status(400).json({ code: "903", message: "invalid arguments" });
 
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (!buyer.isSeller)
         return res.status(400).json({ code: "904", message: "invalid user type" });
 

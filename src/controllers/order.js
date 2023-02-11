@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 const Order = require('../models/Order');
 const Buyer = require("../models/Buyer");
 const Item = require("../models/Item");
@@ -10,7 +10,7 @@ const Seller = require("../models/Seller");
  * all'interno del db
  */
 const create = async(req, res) => {
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     const buyer = user._id; //id del compratore
     const seller = req.body.seller; //id del venditore
@@ -64,7 +64,7 @@ const create = async(req, res) => {
  * la funzione permette di recuperare tutti gli ordini fatti da un utente
  */
 const getAll = async(req, res) => {
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     const buyer = user._id; //id del compratore
     //verifica presenza parametri di richiesta
@@ -138,7 +138,7 @@ const edit = async(req, res) => {
 
 const getBySeller = async(req, res) => {
 
-    const buyer = await getAuthenticatedBuyer(req, res);
+    const buyer = await getAuthenticatedUser(req, res);
 
     if (!buyer.isSeller)
         return res.status(422).json({ code: 1003, message: "Invalid arguments" })

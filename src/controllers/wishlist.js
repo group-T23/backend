@@ -1,13 +1,13 @@
 const Buyer = require("../models/Buyer");
 const Item = require("../models/Item");
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 
 
 /**
  * la funzione ritorna la lista degli articoli presenti nella wishlist
  */
 const getItems = async(req, res) => {
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     //una volta trovati gli id, trovo gli articoli presenti nella lista
     let wishlist = user.wishlist;
@@ -30,7 +30,7 @@ const getItems = async(req, res) => {
 const insertItem = async(req, res) => {
     const data = req.body;
     let id_item = data.id;
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     if (!id_item)
         return res.status(400).json({ code: "502", message: "missing arguments" });
@@ -54,7 +54,7 @@ const insertItem = async(req, res) => {
 const deleteOneItem = async(req, res) => {
     //remove an item with a defined id
     let id = req.body.id;
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     if (!id)
         return res.status(400).json({ code: "502", message: "missing arguments" });
