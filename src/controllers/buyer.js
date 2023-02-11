@@ -16,8 +16,9 @@ const getInfo = async(req, res) => {
     const buyer = {
       id: user.id, firstname: user.firstname, lastname: user.lastname,
       username: user.username, email: user.email, addresses: user.addresses,
-      phone: user.phone, cart: user.cart, wishlist: user.wishlist, proposal: user.proposal,
-      isVerified: user.isVerified, isSeller: user.isSeller, sellerId: user.isSeller
+      phone: user.phone, cart: user.cart, wishlist: user.wishlist,
+      chats: user.chats, proposal: user.proposal, isVerified: user.isVerified,
+      isSeller: user.isSeller, sellerId: user.isSeller
     };
 
     return res.status(200).json({ buyer, code: '0000', message: 'Success' });
