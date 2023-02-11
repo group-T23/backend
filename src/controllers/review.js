@@ -2,7 +2,7 @@ const { default: mongoose } = require('mongoose');
 const Buyer = require('../models/Buyer');
 const Review = require('../models/Review');
 const Seller = require('../models/Seller');
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 
 const create = async(req, res) => {
     //required params
@@ -16,7 +16,7 @@ const create = async(req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.body.sellerId) || !(await Seller.exists({ id: req.body.sellerId })))
         return res.status(400).json({ code: "803", message: "invalid arguments" });
 
-    const author = await getAuthenticatedBuyer(req, res);
+    const author = await getAuthenticatedUser(req, res);
     const seller = await Seller.findById(req.body.sellerId);
     const review = new Review({
         authorId: author._id,
@@ -85,7 +85,7 @@ const getInfo = async(req, res) => {
 }
 
 const getAllIn = async(req, res) => {
-    const buyer = await getAuthenticatedBuyer;
+    const buyer = await getAuthenticatedUser;
 
     if (!buyer.isSeller)
         return res.status(400).json({ code: "807", message: "invalid user type" });
@@ -97,7 +97,7 @@ const getAllIn = async(req, res) => {
 }
 
 const getAllOut = async(req, res) => {
-    const buyer = await getAuthenticatedBuyer;
+    const buyer = await getAuthenticatedUser;
     const reviews = await Review.find({ authorId: buyer.id });
     return res.status(200).json({ reviews: reviews, code: "800", message: "success" });
 }

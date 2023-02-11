@@ -28,7 +28,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email`, options).then(response => response.json())).toMatchObject({ code: 202, message: "Email argument is missing" });
+        expect(await fetch(`${url}/email`, options).then(response => response.json())).toMatchObject({ code: '0202', message: 'Missing Arguments' });
     });
 
     test('GET /email - Valid email', async() => {
@@ -38,7 +38,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=wasdqwerty@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 203, message: "Email reachable" });
+        expect(await fetch(`${url}/email?email=wasdqwerty@gmail.com`, options).then(response => response.json())).toMatchObject({ code: '0204', message: 'Email Reachable' });
     });
 
     test('GET /email - Email already used', async() => {
@@ -61,7 +61,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 205, message: "Email already used" });
+        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: '0206', message: 'Email Already Used' });
         await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
     });
 
@@ -74,7 +74,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=test@gmal.com`, options).then(response => response.json())).toMatchObject({ code: 204, message: "Email not reachable" });
+        expect(await fetch(`${url}/email?email=test@gmal.com`, options).then(response => response.json())).toMatchObject({ code: '0205', message: 'Email Not Reachable' });
     });
 
 
@@ -84,7 +84,7 @@ describe('Email requests', () => {
             headers: { 'Content-Type': 'application/json' }
         };
 
-        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 202 });
+        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: '0202', message: 'Missing Arguments' });
     });
 
     test('POST /email - Invalid email argument', async() => {
@@ -94,7 +94,7 @@ describe('Email requests', () => {
             body: JSON.stringify({ code: '0123456789abcdef' })
         };
 
-        expect(await fetch(`${url}/email`, options).then(response => response.json())).toMatchObject({ code: 202, message: "Email argument is missing" });
+        expect(await fetch(`${url}/email`, options).then(response => response.json())).toMatchObject({ code: '0202', message: 'Missing Arguments' });
     });
 
     test('POST /email - Email not associated to any account', async() => {
@@ -107,7 +107,7 @@ describe('Email requests', () => {
             body: JSON.stringify({ code: '0123456789abcdef' })
         };
 
-        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 208, message: 'Email not associated to any account' });
+        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: '0209', message: 'Email Not Associated' });
     });
 
     test('POST /email - Invalid verification code', async() => {
@@ -135,7 +135,7 @@ describe('Email requests', () => {
         };
 
         let response = expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json()))
-        response.toMatchObject({ code: 206, message: "Invalid verification code" });
+        response.toMatchObject({ code: '0207', message: 'Invalid Verification Code' });
 
         await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
     });
@@ -164,7 +164,7 @@ describe('Email requests', () => {
             body: JSON.stringify({ code: code })
         };
 
-        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: 207, message: "Email already verified" });
+        expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json())).toMatchObject({ code: '0208', message: 'Email Already Verified' });
 
         await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
     });
@@ -194,7 +194,7 @@ describe('Email requests', () => {
         };
 
         result = expect(await fetch(`${url}/email?email=test@gmail.com`, options).then(response => response.json()))
-        result.toMatchObject({ code: 200, message: "Email verified successfully" });
+        result.toMatchObject({ code: '0200', message: 'Success' });
 
         await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
     });

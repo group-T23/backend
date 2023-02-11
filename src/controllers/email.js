@@ -3,30 +3,30 @@ const Buyer = require('../models/Buyer');
 
 const checkEmail = async(req, res) => {
     const email = req.query.email
-    if (!email) { res.status(400).json({ code: 202, message: 'Email argument is missing' }); return }
+    if (!email) { res.status(400).json({ code: '0202', message: 'Missing Arguments' }); return }
 
     const check = await Buyer.findOne({ email: email })
-    if (check) { res.status(403).json({ code: 205, message: 'Email already used' }); return }
+    if (check) { res.status(403).json({ code: '0206', message: 'Email Already Used' }); return }
 
     const result = await validator.validate({ email: email, validateSMTP: false });
-    res.status(200).json(result.valid ? { code: 203, message: 'Email reachable' } : { code: 204, message: 'Email not reachable' });
+    res.status(200).json(result.valid ? { code: '0204', message: 'Email Reachable' } : { code: '0205', message: 'Email Not Reachable' });
 };
 
 const verifyEmail = async(req, res) => {
     const code = req.body.code
     const email = req.query.email
-    if (!code) { res.status(400).json({ code: 202, message: 'Code argument is missing' }); return }
-    if (!email) { res.status(400).json({ code: 202, message: 'Email argument is missing' }); return }
+    if (!code || !email) { res.status(400).json({ code: '0202', message: 'Missing Arguments' }); return }
 
     const check = await Buyer.findOne({ email: email })
-    if (!check) { res.status(403).json({ code: 208, message: 'Email not associated to any account' }); return }
-    if (check.isVerified) { res.status(200).json({ code: 207, message: "Email already verified" }); return; }
+    if (!check) { res.status(403).json({ code: '0209', message: 'Email Not Associated' }); return }
+    if (check.isVerified) { res.status(200).json({ code: '0208', message: 'Email Already Verified' }); return; }
 
     if (check.verificationCode == code) {
         check.isVerified = true;
-        await check.save();
-        res.status(200).json({ code: 200, message: "Email verified successfully" });
-    } else { res.status(200).json({ code: 206, message: "Invalid verification code" }); }
+        try { await check.save(); }
+        catch (error) { return res.status(500).json({ code: '0201', message: 'Database Error' }) }
+        res.status(200).json({ code: '0200', message: 'Success' });
+    } else { res.status(422).json({ code: '0207', message: 'Invalid Verification Code' }); }
 }
 
 module.exports = { checkEmail, verifyEmail };

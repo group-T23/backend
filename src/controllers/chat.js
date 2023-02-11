@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 const Chat = require('../models/Chat');
 const Buyer = require('../models/Buyer');
 const Message = require('../models/Message');
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 
 const getChat = async(req, res) => {
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     const username = req.query.username;
     if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }

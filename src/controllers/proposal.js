@@ -3,7 +3,7 @@ const Item = require("../models/Item");
 const Seller = require("../models/Seller");
 const Buyer = require("../models/Buyer");
 const Proposal = require("../models/Proposal");
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 
 
 const create = async(req, res) => {
@@ -18,7 +18,7 @@ const create = async(req, res) => {
         valid = mongoose.Types.ObjectId.isValid(req.body.itemId) && (await Item.exists({ _id: req.body.itemId }));
 
 
-    let author = await getAuthenticatedBuyer(req, res);
+    let author = await getAuthenticatedUser(req, res);
 
     // only one proposal can exists for one author and one item
     if (valid)
@@ -71,7 +71,7 @@ const getInfo = async(req, res) => {
 }
 
 const getAllIn = async(req, res) => {
-    const buyer = await getAuthenticatedBuyer(req, res);
+    const buyer = await getAuthenticatedUser(req, res);
 
     if (!buyer.isSeller)
         return res.status(422).json({ code: "1103", message: "invalid user type" });
@@ -88,7 +88,7 @@ const getAllIn = async(req, res) => {
 }
 
 const getAllOut = async(req, res) => {
-    const buyer = await getAuthenticatedBuyer(req, res);
+    const buyer = await getAuthenticatedUser(req, res);
 
     //ricerco le proposte del buyer nella collection Proposals
     let proposals = [];
@@ -109,7 +109,7 @@ const accept = async(req, res) => {
     let proposal = await Proposal.findById(req.params.id);
 
     // verify authorization
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (!buyer.isSeller || !(await Seller.findById(buyer.sellerId)).proposals.includes(proposal.id))
         return res.status(403).json({ code: "1105", message: "proposal on not owned item" })
 
@@ -135,7 +135,7 @@ const reject = async(req, res) => {
     let proposal = await Proposal.findById(req.params.id);
 
     // verify authorization
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (!buyer.isSeller || !(await Seller.findById(buyer.sellerId)).proposals.includes(proposal._id))
         return res.status(403).json({ code: "", message: "proposal on not owned item" })
 
@@ -160,7 +160,7 @@ const remove = async(req, res) => {
     let proposal = await Proposal.findById(req.query.id);
 
     // verify authorization
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (proposal.authorId != buyer.id)
         return res.status(403).json({ code: "1106", message: "not authorized" })
 
@@ -185,7 +185,7 @@ const paid = async(req, res) => {
     let proposal = await Proposal.findById(req.query.id);
 
     // verify authorization
-    let buyer = await getAuthenticatedBuyer(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
     if (proposal.authorId != buyer.id)
         return res.status(403).json({ code: "", message: "proposal on not owned item" })
 

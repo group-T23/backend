@@ -2,7 +2,7 @@ const Buyer = require("../models/Buyer")
 const Item = require("../models/Item");
 const Proposal = require('../models/Proposal')
 const mongoose = require('mongoose');
-const { getAuthenticatedBuyer } = require('../utils/auth');
+const { getAuthenticatedUser } = require('../utils/auth');
 
 /**
  * la funzione ritorna la lista degli articoli presenti nel carrello
@@ -10,7 +10,7 @@ const { getAuthenticatedBuyer } = require('../utils/auth');
  */
 const getItems = async(req, res) => {
     //get all items inserted in the cart
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
   
     const result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
@@ -37,7 +37,7 @@ const getItems = async(req, res) => {
 const insertItem = async(req, res) => {
     const data = req.body;
     let id_item = data.id;
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     if (!id_item)
         return res.status(400).json({ code: "402", message: "missing arguments" });
@@ -67,7 +67,7 @@ const insertItem = async(req, res) => {
 const updateQuantity = async(req, res) => {
     let id = req.body.id; //id item
     let quantity = req.body.quantity;
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     if (!id || quantity < 0) {
         return res.status(400).json({ code: "402", message: "missing arguments" });
@@ -112,7 +112,7 @@ const updateQuantity = async(req, res) => {
 const deleteOneItem = async(req, res) => {
     //remove an item with a defined id
     let id = req.body.id;
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     if (!id)
         return res.status(400).json({ code: "402", message: "missing arguments" });
@@ -151,7 +151,7 @@ const deleteOneItem = async(req, res) => {
  * questa funzione verrà usata nel momento del checkout dal carrello
  */
 const deleteAll = async(req, res) => {
-    let user = await getAuthenticatedBuyer(req, res);
+    let user = await getAuthenticatedUser(req, res);
 
     //ricerca utente
     let result = await Buyer.findById(user._id);
