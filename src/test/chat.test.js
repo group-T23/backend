@@ -12,6 +12,7 @@ const app = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Chat test', () => {
     const fetch = require('node-fetch');
+    let chatId;
 
     beforeAll(async() => {
         await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
@@ -52,35 +53,36 @@ describe('Chat test', () => {
         await user.save().catch(err => console.log(err))
 
         //creazione della chat fra i due profilo e creazione di qualche messaggio
-        let user1 = await Buyer.findOne({email: "test@gmail.com"});
-        let user2 = await Buyer.findOne({email: "tset@gmail.com"});
+        let user1 = await Buyer.findOne({ email: "test@gmail.com" });
+        let user2 = await Buyer.findOne({ email: "tset@gmail.com" });
 
         let message1 = new Message({
-            sender: {id: user1._id},
+            sender: { id: user1._id },
             text: "Ciao, prova messaggio test..."
         });
 
         let message2 = new Message({
-            sender: {id: user2._id},
+            sender: { id: user2._id },
             text: "Ciao, risposta alla prova messaggio test..."
         });
 
         await message1.save().catch(err => console.log(err));
         await message2.save().catch(err => console.log(err));
 
-        message1 = await Message.findOne({text: "Ciao, prova messaggio test..."});
-        message2 = await Message.findOne({text: "Ciao, risposta alla prova messaggio test..."});
-    
+        message1 = await Message.findOne({ text: "Ciao, prova messaggio test..." });
+        message2 = await Message.findOne({ text: "Ciao, risposta alla prova messaggio test..." });
+
         let chat = new Chat({
-            user1: {id: user1._id},
-            user2: {id: user2._id},
+            user1: { id: user1._id },
+            user2: { id: user2._id },
             messages: [message1._id, message2._id]
         });
-        
+
         await chat.save().catch(err => console.log(err));
+        chatId = chat._id
 
         //sovrascrivo i profili con la nuova chat
-        chat = await Chat.findOne({user1: {id: user1._id}, user2: {id: user2._id}});
+        chat = await Chat.findOne({ user1: { id: user1._id }, user2: { id: user2._id } });
         user1.chats = [chat._id];
         user2.chats = [chat._id];
 
@@ -90,22 +92,22 @@ describe('Chat test', () => {
 
     afterAll(async() => {
         //cancellazione profili di testing se presente
-        let user1 = await Buyer.findOne({email: "test@gmail.com"});
+        let user1 = await Buyer.findOne({ email: "test@gmail.com" });
         await Buyer.deleteOne({ $and: [{ username: 'test' }, { email: 'test@gmail.com' }] });
         await Buyer.deleteOne({ $and: [{ username: 'tset' }, { email: 'tset@gmail.com' }] });
 
         //cancellazione chat e messaggi
-        await Message.deleteOne({text: "Ciao, prova messaggio test..."});
-        await Message.deleteOne({text: "Ciao, risposta alla prova messaggio test..."});
+        await Message.deleteOne({ text: "Ciao, prova messaggio test..." });
+        await Message.deleteOne({ text: "Ciao, risposta alla prova messaggio test..." });
 
-        await Chat.deleteOne({user1: user1._id});
+        await Chat.deleteOne({ _id: chatId })
 
         mongoose.disconnect();
     })
 
     //test recupero chat utente
     test('tests /chat - recupero chat utente', async() => {
-         let options = {
+        let options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -116,7 +118,7 @@ describe('Chat test', () => {
 
         const access = (await fetch(`${app}/login`, options).then(response => response.json()))
         let token = access.user.token;
-        
+
         options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': token }
@@ -141,7 +143,7 @@ describe('Chat test', () => {
 
         const access = (await fetch(`${app}/login`, options).then(response => response.json()))
         let token = access.user.token;
-        
+
         options = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': token }
