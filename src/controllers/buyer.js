@@ -42,10 +42,10 @@ const getInfoBuyer = async(req, res) => {
 
     const valid = mongoose.Types.ObjectId.isValid(parameters.id);
     const exists = await Buyer.exists({ userId: parameters.id });
-    if (!valid || !exists)
+    const buyer = await Buyer.findById(parameters.id);
+    if (!valid || !exists || !buyer)
         return res.status(400).json({ code: '0003', message: 'Invalid Arguments' });
 
-    const buyer = await Buyer.findById(parameters.id);
     const pub = {
         _id: buyer._id,
         username: buyer.username,
