@@ -198,10 +198,10 @@ const retire = async(req, res) => {
     var buyers = await Buyer.find()
     buyers.forEach(async buyer => {
         if (buyer.wishlist.find(x => x.id.equals(item._id))) {
-            buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+            buyer.wishlist = buyer.wishlist.filter(x => !x.id.equals(item._id))
         }
         if (buyer.cart.find(x => x.id.equals(item._id))) {
-            buyer.cart = buyer.cart.filter(x => x.id != item._id)
+            buyer.cart = buyer.cart.filter(x => !x.id.equals(item._id))
         }
 
         await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
@@ -250,10 +250,10 @@ const buy = async(req, res) => {
         var buyers = await Buyer.find()
         buyers.forEach(async buyer => {
             if (buyer.wishlist.find(x => x.id.equals(item._id))) {
-                buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+                buyer.wishlist = buyer.wishlist.filter(x => !x.id.equals(item._id))
             }
             if (buyer.cart.find(x => x.id.equals(item._id))) {
-                buyer.cart = buyer.cart.filter(x => x.id != item._id)
+                buyer.cart = buyer.cart.filter(x => !x.id.equals(item._id))
             }
 
             await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
@@ -296,10 +296,10 @@ const remove = async(req, res) => {
     var buyers = await Buyer.find()
     buyers.forEach(async buyer => {
         if (buyer.wishlist.find(x => x.id.equals(item._id))) {
-            buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
+            buyer.wishlist = buyer.wishlist.filter(x => !x.id.equals(item._id))
         }
         if (buyer.cart.find(x => x.id.equals(item._id))) {
-            buyer.cart = buyer.cart.filter(x => x.id != item._id)
+            buyer.cart = buyer.cart.filter(x => !x.id.equals(item._id))
         }
 
         await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))

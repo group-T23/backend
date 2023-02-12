@@ -240,10 +240,10 @@ const checkQuantity = async(items, modify) => {
                         var buyers = await Buyer.find()
                         buyers.forEach(async buyer => {
                             if (buyer.wishlist.find(x => x.id.equals(items[i]._id))) {
-                                buyer.wishlist = buyer.wishlist.filter(x => x.id != items[i]._id)
+                                buyer.wishlist = buyer.wishlist.filter(x => !x.id.equals(items[i]._id))
                             }
                             if (buyer.cart.find(x => x.id.equals(items[i]._id))) {
-                                buyer.cart = buyer.cart.filter(x => x.id != items[i]._id)
+                                buyer.cart = buyer.cart.filter(x => !x.id.equals(items[i]._id))
                             }
 
                             await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
