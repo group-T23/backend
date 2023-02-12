@@ -197,9 +197,10 @@ const retire = async(req, res) => {
     // remove from carts and wishlists
     var buyers = await Buyer.find()
     buyers.forEach(async buyer => {
-        if (buyer.wishlist.find(x => x.id == item._id)) {
+        if (buyer.wishlist.find(x => x.id.equals(item._id))) {
             buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
-        } else if (buyer.cart.find(x => x.id == item._id)) {
+        }
+        if (buyer.cart.find(x => x.id.equals(item._id))) {
             buyer.cart = buyer.cart.filter(x => x.id != item._id)
         }
 
@@ -248,9 +249,10 @@ const buy = async(req, res) => {
         // remove from carts and wishlists
         var buyers = await Buyer.find()
         buyers.forEach(async buyer => {
-            if (buyer.wishlist.find(x => x.id == item._id)) {
+            if (buyer.wishlist.find(x => x.id.equals(item._id))) {
                 buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
-            } else if (buyer.cart.find(x => x.id == item._id)) {
+            }
+            if (buyer.cart.find(x => x.id.equals(item._id))) {
                 buyer.cart = buyer.cart.filter(x => x.id != item._id)
             }
 
@@ -293,9 +295,10 @@ const remove = async(req, res) => {
     // remove from carts and wishlists
     var buyers = await Buyer.find()
     buyers.forEach(async buyer => {
-        if (buyer.wishlist.find(x => x.id == item._id)) {
+        if (buyer.wishlist.find(x => x.id.equals(item._id))) {
             buyer.wishlist = buyer.wishlist.filter(x => x.id != item._id)
-        } else if (buyer.cart.find(x => x.id == item._id)) {
+        }
+        if (buyer.cart.find(x => x.id.equals(item._id))) {
             buyer.cart = buyer.cart.filter(x => x.id != item._id)
         }
 
