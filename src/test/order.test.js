@@ -11,12 +11,12 @@ const app = `${process.env.SERVER}:${process.env.PORT}`;
 
 describe('Order test', () => {
     const fetch = require('node-fetch');
-
+    let item;
     beforeAll(async() => {
         await mongoose.connect(`mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@skupply.sytwitn.mongodb.net/Skupply?retryWrites=true&w=majority`);
    
          //creazione articolo di prova
-         let item = new Item({
+         item = new Item({
             title: "Libro matematica",
             description: "Libro di matematica sui numeri complessi",
             ownerId: "63e50c0633652302f120e0f5",//id generato casualmente
@@ -138,7 +138,7 @@ describe('Order test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': token},
             body: JSON.stringify({
                 seller: "639f6b399b38c1bfc9633360",//id generato casualemente
-                article: { id: '63a034adb93b4039ab376a6c', quantity: 1 },
+                article: { id: item._id, quantity: 1 },
                 price: 10,
                 shipment: 0,
                 trackingCode: "trackingCodeTest",
