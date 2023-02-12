@@ -64,7 +64,7 @@ const create = async(req, res) => {
         return res.status(400).json({ code: '0002', message: 'Missing Arguments' });
 
     const hash = crypto.createHash('sha256');
-    const password = hash.update(data.password, 'utf-8').digest('hex');
+    const password = hash.update(body.password, 'utf-8').digest('hex');
 
     let code = null;
     let result = null;
@@ -94,7 +94,7 @@ const create = async(req, res) => {
         buyer.addresses = [];
 
     let seller;
-    if (data.isSeller && data.address && data.prefix && data.number) {
+    if (body.isSeller && body.address && body.prefix && body.number) {
         buyer.isSeller = true;
         seller = new Seller({
             userId: buyer
@@ -108,7 +108,7 @@ const create = async(req, res) => {
             await seller.save();
 
         const frontend = process.env.FE_SERVER;
-        await Mail.send(data.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${frontend}/verify/?email=${data.email}&code=${code}`);
+        await Mail.send(body.email, 'Creazione Account Skupply', `Grazie per aver scelto skupply.\nPer verificare l'account apra la seguente pagina:\n${frontend}/verify/?email=${body.email}&code=${code}`);
         return res.status(201).json({ code: '0000', message: 'Success' });
     } catch (error) {
         return res.status(500).json({ code: '0001', message: 'Database Error' });
