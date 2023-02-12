@@ -149,7 +149,7 @@ const edit = async(req, res) => {
 }
 
 const remove = async(req, res) => {
-    let buyer = await getAuthenticateder(req, res);
+    let buyer = await getAuthenticatedUser(req, res);
 
     //remove seller
     if (buyer.isSeller) {
