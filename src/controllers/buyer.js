@@ -190,7 +190,7 @@ const remove = async(req, res) => {
         })
 
     if (buyer.chats) {
-        await Chat.deleteMany({ $or: [{ user1: buyer._id }, { user2: buyer._id }] }).catch(err => { return res.status(500).json({ code: '0001', message: 'Database Error' }) })
+        await Chat.deleteMany({ $or: [{ user1: { id: buyer._id } }, { user2: { id: buyer._id } }] }).catch(err => { return res.status(500).json({ code: '0001', message: 'Database Error' }) })
     }
 
     Buyer.deleteOne({ _id: buyer._id }, err => {
