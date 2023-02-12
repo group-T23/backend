@@ -150,11 +150,11 @@ const edit = async(req, res) => {
 
 const remove = async(req, res) => {
     let buyer = await getAuthenticatedUser(req, res);
-
+    
     //remove seller
     if (buyer.isSeller) {
         let seller = await Seller.findById(buyer.sellerId);
-
+       
         if (seller.items)
             seller.items.forEach(async itemId => {
                 let item = await Item.findById(itemId);
@@ -176,7 +176,7 @@ const remove = async(req, res) => {
             })
 
         buyer.isSeller = false
-        Seller.deleteOne({ _id: seller._id }, err => {
+        Seller.findByIdAndDelete(buyer.sellerId, err => {
             if (err)
                 return res.status(500).json({ code: '0001', message: 'Database Error' });
         })
