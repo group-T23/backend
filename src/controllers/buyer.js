@@ -27,7 +27,7 @@ const getInfo = async(req, res) => {
         proposal: user.proposal,
         isVerified: user.isVerified,
         isSeller: user.isSeller,
-        sellerId: user.isSeller
+        sellerId: user.sellerId
     };
 
     return res.status(200).json({ buyer, code: '0000', message: 'Success' });
