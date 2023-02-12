@@ -55,8 +55,7 @@ const resetPassword = async(req, res) => {
         return res.status(500).json({ code: '301', message: 'Database error' });
     })
 
-    const url = require('../utils/address');
-    await Mail.send(result.email, 'Reset Password Skupply', `La tua nuova password è: ${random}\nPuoi cambiarla in ogni momento dal tuo profilo privato seguendo il seguente link ${url}/profile`);
+    await Mail.send(result.email, 'Reset Password Skupply', `La tua nuova password è: ${random}\nPuoi cambiarla in ogni momento dal tuo profilo privato seguendo il seguente link ${process.env.FE_SERVER}/profile`);
 
     res.status(200).json({ code: '300', message: 'Password resettata correttamente' })
 }
