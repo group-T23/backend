@@ -11,7 +11,7 @@ const { getAuthenticatedUser } = require('../utils/auth');
 const getItems = async(req, res) => {
     //get all items inserted in the cart
     let user = await getAuthenticatedUser(req, res);
-  
+
     const result = await Buyer.findById(user._id);
     if (!result) return res.status(404).json({ code: "403", message: "user not found" });
 
@@ -239,10 +239,10 @@ const checkQuantity = async(items, modify) => {
                         // remove from carts and wishlists
                         var buyers = await Buyer.find()
                         buyers.forEach(async buyer => {
-                            if (buyer.wishlist.find(x => x.id == items[i].id)) {
-                                buyer.wishlist = buyer.wishlist.filter(x => x.id != items[i].id)
-                            } else if (buyer.cart.find(x => x.id == items[i].id)) {
-                                buyer.cart = buyer.cart.filter(x => x.id != items[i].id)
+                            if (buyer.wishlist.find(x => x._id == items[i].id)) {
+                                buyer.wishlist = buyer.wishlist.filter(x => x._id != items[i].id)
+                            } else if (buyer.cart.find(x => x._id == items[i].id)) {
+                                buyer.cart = buyer.cart.filter(x => x._id != items[i].id)
                             }
 
                             await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
