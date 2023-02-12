@@ -60,7 +60,7 @@ const create = async(req, res) => {
     const body = req.body;
     const required = ['firstname', 'lastname', 'username', 'email', 'password', 'terms'];
 
-    if (!required.every(param => parameters.hasOwnProperty(param)))
+    if (!required.every(param => body.hasOwnProperty(param)))
         return res.status(400).json({ code: '0002', message: 'Missing Arguments' });
 
     const hash = crypto.createHash('sha256');
@@ -159,7 +159,7 @@ const remove = async(req, res) => {
             seller.items.forEach(async itemId => {
                 let item = await Item.findById(itemId);
                 item.state = 'DELETED';
-                item.save().then(ok => {}).catch(err => {
+                await item.save().catch(err => {
                     return res.status(500).json({ code: '0001', message: 'Database Error' });
                 });
             });
@@ -175,6 +175,7 @@ const remove = async(req, res) => {
                 await proposal.save().catch(err => { return res.status(500).json({ code: '0001', message: 'Database Error' }) })
             })
 
+        buyer.isSeller = false
         Seller.deleteOne({ _id: seller._id }, err => {
             if (err)
                 return res.status(500).json({ code: '0001', message: 'Database Error' });
