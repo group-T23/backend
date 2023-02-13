@@ -125,7 +125,7 @@ describe('Chat test', () => {
         }
 
         const response = (await fetch(`${app}/chat?username=test`, options).then(response => response.json()))
-        expect(response).toMatchObject({ code: 800, message: "Success" })
+        expect(response).toMatchObject({ code: '1100', message: 'Success' })
         expect(response.chats).toBeDefined();
         expect(response.chats[0]).toHaveProperty('messages');
     });
@@ -150,7 +150,7 @@ describe('Chat test', () => {
         }
 
         const response = (await fetch(`${app}/chat/message?username=test&contact=tset`, options).then(response => response.json()))
-        expect(response).toMatchObject({ code: 800, message: "Success" })
+        expect(response).toMatchObject({ code: '1100', message: 'Success' })
         expect(response.messages).toBeDefined();
         expect(response.messages[0]).toHaveProperty('sender');
         expect(response.messages[0]).toHaveProperty('text');

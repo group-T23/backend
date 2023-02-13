@@ -13,7 +13,7 @@ const getItems = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     const result = await Buyer.findById(user._id);
-    if (!result) return res.status(404).json({ code: "403", message: "user not found" });
+    if (!result) return res.status(404).json({ code: '0403', message: 'User Not Found' });
 
     //una volta trovati gli id, devo trovare i prodotti all'interno della collection articoli
     let cart = result.cart;
@@ -25,7 +25,7 @@ const getItems = async(req, res) => {
     }
 
     //inserire nella risposta gli articoli
-    return res.status(200).json({ code: "400", message: "success", cart: articoli, cart_ids: cart });
+    return res.status(200).json({ code: '0400', message: 'Success', cart: articoli, cart_ids: cart });
 }
 
 /**
@@ -40,22 +40,22 @@ const insertItem = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     if (!id_item)
-        return res.status(400).json({ code: "402", message: "missing arguments" });
+        return res.status(400).json({ code: '0402', message: 'Missing Arguments' });
 
     if (!(mongoose.Types.ObjectId.isValid(id_item)) || !(await Item.findById(id_item)))
-        return res.status(404).json({ code: "401", message: "item not found" });
+        return res.status(404).json({ code: '0403', message: 'Invalid Arguments' });
 
     //se l'elemento è un duplicato, questo non viene inserito e non va a modificare la 
     //quantità di quello già presente
     const result = await Buyer.find({ "$and": [{ _id: user._id }, { cart: { "$elemMatch": { id: id_item } } }] });
-    if (!result) return res.status(404).json({ code: "401", message: "user or item not found" });
+    if (!result) return res.status(404).json({ code: "0403", message: 'Invalid Arguments' });
     else {
         if (Object.keys(result).length === 0) {
             //item non già presente nel carrello, inserimento id
             const result = await Buyer.updateOne({ _id: user._id }, { $push: { cart: { id: id_item } } });
-            return res.status(200).json({ code: "400", message: "product added in cart" });
+            return res.status(200).json({ code: '0400', message: 'Success' });
         } else
-            return res.status(200).json({ code: "400", message: "product not added in cart" });
+            return res.status(200).json({ code: '0407', message: 'Item Already Present' });
     }
 
 }
@@ -70,15 +70,15 @@ const updateQuantity = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     if (!id || quantity < 0) {
-        return res.status(400).json({ code: "402", message: "missing arguments" });
+        return res.status(400).json({ code: '0402', message: 'Missing Arguments' });
         //campi non presenti o non validi, sessione probabilmente non valida
     }
 
     if (!(mongoose.Types.ObjectId.isValid(id)) || !(await Item.findById(id)))
-        return res.status(404).json({ code: "401", message: "item not found" });
+        return res.status(404).json({ code: '0403', message: 'Invalid Arguments' });
 
     let result = await Buyer.findById(user._id);
-    if (!result) return res.status(404).json({ code: "403", message: "user not found" });
+    if (!result) return res.status(404).json({ code: '0403', message: 'Invalid Arguments' });
 
     //modifica quantità articolo carrello
     const items = result.cart;
@@ -93,14 +93,14 @@ const updateQuantity = async(req, res) => {
         }
     }
 
-    if (notFound) return res.status(404).json({ code: "404", message: "product not found" });
+    if (notFound) return res.status(404).json({ code: '0404', message: 'Product Not Found' });
 
     result = await Buyer.updateOne({ "$and": [{ id: user._id }, { 'cart._id': id_item }] }, {
         $set: { 'cart.$.quantity': quantity }
     });
 
-    if (!result) return res.status(500).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "product's quantity updated" });
+    if (!result) return res.status(500).json({ code: '0401', message: 'Database Error' });
+    return res.status(200).json({ code: '0400', message: 'Success' });
 
 }
 
@@ -115,7 +115,7 @@ const deleteOneItem = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     if (!id)
-        return res.status(400).json({ code: "402", message: "missing arguments" });
+        return res.status(400).json({ code: '0402', message: 'Missing Arguments' });
     //campi non presenti, sessione probabilmente non valida
 
     //modifica carrello del risultato ottenuto
@@ -131,7 +131,7 @@ const deleteOneItem = async(req, res) => {
         }
     }
 
-    if (notFound) return res.status(404).json({ code: "404", message: "product not found" });
+    if (notFound) return res.status(404).json({ code: '0404', message: 'Product Not Found' });
 
     result = await Buyer.updateOne({ _id: user._id }, {
         $pull: {
@@ -141,8 +141,8 @@ const deleteOneItem = async(req, res) => {
         }
     });
 
-    if (!result) return res.status(404).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "product removed" });
+    if (!result) return res.status(404).json({ code: '0401', message: 'Database Error' });
+    return res.status(200).json({ code: '0400', message: 'Success' });
 };
 
 /**
@@ -155,7 +155,7 @@ const deleteAll = async(req, res) => {
 
     //ricerca utente
     let result = await Buyer.findById(user._id);
-    if (!result) return res.status(404).json({ code: "403", message: "user not found" });
+    if (!result) return res.status(404).json({ code: '0403', message: 'Invalid Arguments' });
 
     const cart = result.cart;
     let ids = [];
@@ -174,9 +174,8 @@ const deleteAll = async(req, res) => {
         }
     });
 
-    if (!result) return res.status(404).json({ code: "401", message: "database error" });
-    return res.status(200).json({ code: "400", message: "cart cleared" });
-
+    if (!result) return res.status(404).json({ code: '0401', message: 'Database Error' });
+    return res.status(200).json({ code: '0400', message: 'Success' });
 }
 
 /**
@@ -188,9 +187,9 @@ const checkout = async(req, res) => {
     //la quantità definita nel carrello
     let result = await checkQuantity(req.body.items, req.body.modify);
     if (result) {
-        return res.status(200).json({ code: 400, message: "success" });
+        return res.status(200).json({ code: '0400', message: 'Success' });
     } else
-        return res.status(400).json({ code: 406, message: "checkout failed" });
+        return res.status(400).json({ code: '0406', message: 'Checkout Failed' });
 };
 
 /**
@@ -233,7 +232,7 @@ const checkQuantity = async(items, modify) => {
                         var proposals = await Proposal.find({ $and: [{ itemId: item._id }, { state: "PENDING" }] });
                         proposals.forEach(async proposal => {
                             proposal.state = "DELETED"
-                            await proposal.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+                            await proposal.save().catch(err => res.status(500).json({ code: '0401', message: 'Database Error' }))
                         })
 
                         // remove from carts and wishlists
@@ -246,7 +245,7 @@ const checkQuantity = async(items, modify) => {
                                 buyer.cart = buyer.cart.filter(x => !x.id.equals(items[i]._id))
                             }
 
-                            await buyer.save().catch(err => res.status(500).json({ code: "901", message: "unable to save changes" }))
+                            await buyer.save().catch(err => res.status(500).json({ code: '0401', message: 'Database Error' }))
                         })
                     }
 

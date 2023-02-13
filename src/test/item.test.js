@@ -119,7 +119,7 @@ describe('Item test', () => {
         const item = await Item.findOne({city: "Belluno-test"});
         const response = await request(app).get(`/item?id=`+item._id);
         expect(response.statusCode).toBe(200)
-        expect({ code: "900", message: "success" })
+        expect({ code: '0600', message: 'Success' })
         expect(response.body.item).toBeDefined();
         expect(response.body.item).toHaveProperty('title', "Libro matematica");
     });
@@ -128,7 +128,7 @@ describe('Item test', () => {
     test('tests /item - ricerca senza id', async() => {
         const response = await request(app).get(`/item`)
         expect(response.statusCode).toBe(400)
-        expect({ code: "902", message: "missing arguments" })
+        expect({ code: '0602', message: 'Missing Arguments' })
         expect(response.body.item).toBeUndefined();
     });
 
@@ -137,14 +137,14 @@ describe('Item test', () => {
         const response = await request(app).get(`/item`)
             .query({ id: '63a0fffffffffffff' });
         expect(response.statusCode).toBe(400)
-        expect({ code: "903", message: "invalid arguments" })
+        expect({ code: '0603', message: 'Iwwwlid Arguments' })
     });
 
     //test ricerca items di un utente venditore
     test('tests /item - ricerca items di un venditore', async() => {
         const response = await request(app).get(`/item/seller?username=test`);
         expect(response.statusCode).toBe(200)
-        expect({ code: "900", message: "success" })
+        expect({ code: '0600', message: 'Success' })
         expect(response.body.items).toBeDefined();
         expect(response.body.items).toStrictEqual(expect.arrayContaining([expect.any(Object)]))
     });
@@ -157,7 +157,7 @@ describe('Item test', () => {
         }
 
         const response = (await fetch(`${app}/item/retire?id=63a031fbff52385f7b1857de`, options).then(response => response.json()))
-        expect({ code: "904", message: "invalid user type" })
+        expect({ code: '0604', message: 'Invalid User Type' })
     });
 
 });

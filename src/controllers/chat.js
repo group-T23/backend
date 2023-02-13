@@ -8,10 +8,10 @@ const getChat = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     const username = req.query.username;
-    if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
+    if (!username) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
 
     const result = await Buyer.findOne({ username: username });
-    if (!result) {res.status(404).json({ code: 803, message: 'User not found' }); return;};
+    if (!result) {res.status(404).json({ code: '1104', message: 'User Not Found' }); return;};
     let idUser = result._id;
 
     //ricerca all'interno della collection Chat 
@@ -41,22 +41,22 @@ const getChat = async(req, res) => {
         });
     }
 
-    res.status(200).json({ code: 800, message: 'Success', chats: result2 });
+    res.status(200).json({ code: '1100', message: 'Success', chats: result2 });
 }
 
 const createChat = async(req, res) => {
     const username = req.query.username;
-    if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
+    if (!username) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
 
     const contactUsername = req.body.contact;
-    if (!contactUsername) { res.status(400).json({ code: 802, message: 'Contact property is missing' }); return }
-    if (username == contactUsername) { res.status(400).json({ code: 806, message: 'Contact can not coincide with the username' }); return }
+    if (!contactUsername) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
+    if (username == contactUsername) { res.status(400).json({ code: '1108', message: 'Contact Not Match Username' }); return }
 
     const contact = await Buyer.findOne({ username: contactUsername });
-    if (!contact) { res.status(404).json({ code: 804, message: 'The provided contact does not exist' }); return }
+    if (!contact) { res.status(404).json({ code: '1105', message: 'Contact Not Found' }); return }
 
     const user = await Buyer.findOne({ username: username });
-    if (!user) { res.status(404).json({ code: 805, message: 'The provided user does not exist' }); return }
+    if (!user) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const Id = mongoose.Types.ObjectId;
     const checkChat = await Chat.findOne({
@@ -75,22 +75,22 @@ const createChat = async(req, res) => {
         await chat.save().catch(err => console.log(err))
     }
 
-    res.status(200).json({ code: 800, message: 'Chat created successfully' });
+    res.status(200).json({ code: '1100', message: 'Success' });
 }
 
 const deleteChat = async(req, res) => {
     const username = req.query.username;
-    if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
+    if (!username) { res.status(400).json({ code: '1102', message: 'Missing arguments' }); return }
 
     const contactUsername = req.body.contact;
-    if (!contactUsername) { res.status(400).json({ code: 802, message: 'Contact property is missing' }); return }
-    if (username == contactUsername) { res.status(400).json({ code: 806, message: 'Contact can not coincide with the username' }); return }
+    if (!contactUsername) { res.status(400).json({ code: '1102', message: 'Missing arguments' }); return }
+    if (username == contactUsername) { res.status(400).json({ code: '1107', message: 'Contact Not Match Username' }); return }
 
     const contact = await Buyer.findOne({ username: contactUsername });
-    if (!contact) { res.status(404).json({ code: 804, message: 'The provided contact does not exist' }); return }
+    if (!contact) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const user = await Buyer.findOne({ username: username });
-    if (!user) { res.status(404).json({ code: 805, message: 'The provided user does not exist' }); return }
+    if (!user) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const Id = mongoose.Types.ObjectId;
     const chat = await Chat.findOne({
@@ -100,7 +100,7 @@ const deleteChat = async(req, res) => {
         ]
     })
 
-    if (!chat) res.status(404).json({ code: 807, message: 'Chat not found' });
+    if (!chat) res.status(404).json({ code: '1106', message: 'Chat Not Found' });
     else await Message.deleteMany({ _id: { $in: chat.messages.map(message => new Id(message.id)) } });
 
     Chat.deleteOne({
@@ -109,24 +109,24 @@ const deleteChat = async(req, res) => {
             { $and: [{ user1: { id: new Id(contact.id) } }, { user2: { id: new Id(user.id) } }] }
         ]
     }, (err, data) => {
-        if (err) res.status(500).json({ code: 801, message: 'Database error' });
-        else res.status(200).json({ code: 800, message: 'Chat deleted successfully' });
+        if (err) res.status(500).json({ code: '1101', message: 'Database Error' });
+        else res.status(200).json({ code: '1100', message: 'Sucess' });
     });
 }
 
 const getMessage = async(req, res) => {
     const username = req.query.username;
-    if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
+    if (!username) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
 
     const contactUsername = req.query.contact;
-    if (!contactUsername) { res.status(400).json({ code: 802, message: 'Contact property is missing' }); return }
-    if (username == contactUsername) { res.status(400).json({ code: 806, message: 'Contact can not coincide with the username' }); return }
+    if (!contactUsername) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
+    if (username == contactUsername) { res.status(400).json({ code: '1107', message: 'Contact Not Match Username' }); return }
 
     const contact = await Buyer.findOne({ username: contactUsername });
-    if (!contact) { res.status(404).json({ code: 804, message: 'The provided contact does not exist' }); return }
+    if (!contact) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const user = await Buyer.findOne({ username: username });
-    if (!user) { res.status(404).json({ code: 805, message: 'The provided user does not exist' }); return }
+    if (!user) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const Id = mongoose.Types.ObjectId;
     const chat = await Chat.findOne({
@@ -136,41 +136,41 @@ const getMessage = async(req, res) => {
         ]
     });
 
-    if (!chat) { res.status(404).json({ code: 807, message: 'Chat not found' }); return }
+    if (!chat) { res.status(404).json({ code: '1106', message: 'Chat Not Found' }); return }
 
     const result = await Message.find({ id: { $in: [chat.messages.map(message => Id(message.id))] } })
-    res.status(200).json({ code: 800, message: 'Success', messages: result });
+    res.status(200).json({ code: '1100', message: 'Success', messages: result });
 }
 
 const getMessageById = async(req, res) => {
     const id = req.query.id;
 
-    if (!id) { res.status(400).json({ code: 802, message: 'Id argument is missing' }); return }
+    if (!id) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
 
     const message = await Message.findById(id);
 
-    if (!message) { res.status(404).json({ code: 807, message: 'Message not found' }); return }
+    if (!message) { res.status(404).json({ code: '1107', message: 'Message Not Found' }); return }
 
-    res.status(200).json({ code: 800, message: 'Succes', message: message });
+    res.status(200).json({ code: '1100', message: 'Success', message: message });
 }
 
 // Supports only text messages at the moment
 const sendMessage = async(req, res) => {
     const username = req.query.username;
-    if (!username) { res.status(400).json({ code: 802, message: 'Username argument is missing' }); return }
+    if (!username) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
 
     const contactUsername = req.body.contact;
-    if (!contactUsername) { res.status(400).json({ code: 802, message: 'Contact property is missing' }); return }
+    if (!contactUsername) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
     const messageText = req.body.message;
 
-    if (!messageText) { res.status(400).json({ code: 802, message: 'Message property is missing' }); return }
-    if (username == contactUsername) { res.status(400).json({ code: 806, message: 'Contact can not coincide with the username' }); return }
+    if (!messageText) { res.status(400).json({ code: '1102', message: 'Missing Arguments' }); return }
+    if (username == contactUsername) { res.status(400).json({ code: '1108', message: 'Contact Not Match Username' }); return }
 
     const contact = await Buyer.findOne({ username: contactUsername });
-    if (!contact) { res.status(404).json({ code: 804, message: 'The provided contact does not exist' }); return }
+    if (!contact) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const user = await Buyer.findOne({ username: username });
-    if (!user) { res.status(404).json({ code: 805, message: 'The provided user does not exist' }); return }
+    if (!user) { res.status(404).json({ code: '1103', message: 'Invalid Arguments' }); return }
 
     const Id = mongoose.Types.ObjectId;
 
@@ -181,7 +181,7 @@ const sendMessage = async(req, res) => {
         ]
     });
 
-    if (!chat) { res.status(404).json({ code: 807, message: 'Chat not found' }); return }
+    if (!chat) { res.status(404).json({ code: '1106', message: 'Chat Not Found' }); return }
     const message = new Message({
         sender: { id: new Id(user.id) },
         text: messageText
@@ -197,7 +197,7 @@ const sendMessage = async(req, res) => {
         ]
     }, { $push: { "messages": { id: new Id(message._id) } } })
 
-    res.status(200).json({ code: 800, message: 'Message sent successfully' });
+    res.status(200).json({ code: '1100', message: 'Success' });
 }
 
 module.exports = { getChat, createChat, deleteChat, getMessage, getMessageById, sendMessage };

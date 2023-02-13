@@ -21,7 +21,7 @@ const getItems = async(req, res) => {
     }
 
     //inserire nella risposta gli articoli
-    return res.status(200).json({ code: "500", message: "success", wishlist: articoli, wishlist_ids: wishlist });
+    return res.status(200).json({ code: '0500', message: 'Success', wishlist: articoli, wishlist_ids: wishlist });
 }
 
 /**
@@ -33,18 +33,18 @@ const insertItem = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     if (!id_item)
-        return res.status(400).json({ code: "502", message: "missing arguments" });
+        return res.status(400).json({ code: '0502', message: 'Missing Arguments' });
 
     //se l'elemento è un duplicato, questo non viene inserito
     const result = await Buyer.find({ "$and": [{ _id: user._id }, { wishlist: { "$elemMatch": { id: id_item } } }] });
-    if (!result) return res.status(404).json({ code: "501", message: "user or item not found" });
+    if (!result) return res.status(404).json({ code: '0502', message: 'Invalid Arguments' });
     else {
         if (Object.keys(result).length === 0) {
             //item non presente nel carrello, inserimento id
             const result = await Buyer.updateOne({ _id: user._id }, { $push: { wishlist: { id: id_item } } });
-            return res.status(200).json({ code: "500", message: "product added in wishlist" });
+            return res.status(200).json({ code: '0500', message: 'Success' });
         } else
-            return res.status(200).json({ code: "500", message: "product not added in wishlist" });
+            return res.status(200).json({ code: '0505', message: 'Item Already Present' });
     }
 }
 
@@ -57,7 +57,7 @@ const deleteOneItem = async(req, res) => {
     let user = await getAuthenticatedUser(req, res);
 
     if (!id)
-        return res.status(400).json({ code: "502", message: "missing arguments" });
+        return res.status(400).json({ code: '0502', message: 'Missing Arguments' });
 
     //modifica wishlist
     const items = user.wishlist;
@@ -72,7 +72,7 @@ const deleteOneItem = async(req, res) => {
         }
     }
 
-    if (notFound) return res.status(404).json({ code: "504", message: "product not found" });
+    if (notFound) return res.status(404).json({ code: '0504', message: 'Product Not Found' });
 
     result = await Buyer.updateOne({ _id: user._id }, {
         $pull: {
@@ -82,8 +82,8 @@ const deleteOneItem = async(req, res) => {
         }
     });
 
-    if (!result) return res.status(500).json({ code: "501", message: "database error" });
-    return res.status(200).json({ code: "500", message: "product removed" });
+    if (!result) return res.status(500).json({ code: '0501', message: 'Dwwabase Error' });
+    return res.status(200).json({ code: '0500', message: 'Success' });
 }
 
 module.exports = {

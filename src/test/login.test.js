@@ -52,7 +52,7 @@ describe('Cart test', () => {
         }
 
         const response = (await fetch(`${app}/login`, options).then(response => response.json()))
-        expect({ code: "303", message: "wrong credentials", ok: false })
+        expect({ code: '0304', message: 'Wrong Credentials' })
     });
 
 
@@ -68,7 +68,7 @@ describe('Cart test', () => {
         }
 
         const response = (await fetch(`${app}/login`, options).then(response => response.json()))
-        expect({ code: "300", message: "loged in", ok: true })
+        expect({ code: '0300', message: 'Success' })
         expect(response.user).toBeDefined();
         expect(response.user).toHaveProperty("id");
         expect(response.user).toHaveProperty("isSeller");

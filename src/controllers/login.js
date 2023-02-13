@@ -13,9 +13,7 @@ const loginUser = async(req, res) => {
 
     if (result && result.passwordHash == password)
         res.status(200).json({
-            code: "300",
-            message: "loged in",
-            ok: true,
+            code: '0300', message: 'Success',
             user: {
                 id: result.id,
                 firstname: result.firstname,
@@ -34,15 +32,15 @@ const loginUser = async(req, res) => {
             }
         });
     else
-        res.status(401).json({ code: "303", message: "wrong credentials", ok: false });
+        res.status(401).json({ code: '0303', message: 'Wront Credentials' });
 }
 
 const resetPassword = async(req, res) => {
     const email = req.query.email;
-    if (!email) return res.status(400).json({ code: '302', message: 'Missing arguments' });
+    if (!email) return res.status(400).json({ code: '0302', message: 'Missing arguments' });
 
     const result = await Buyer.findOne({ email })
-    if (!result) return res.status(403).json({ code: '306', message: 'Invalid email' })
+    if (!result) return res.status(403).json({ code: '0306', message: 'Invalid Email' })
 
     const hash = crypto.createHash('sha256');
     const random = crypto.randomBytes(16).toString('hex');
@@ -52,12 +50,12 @@ const resetPassword = async(req, res) => {
 
     await result.save().catch(err => {
         console.log(err);
-        return res.status(500).json({ code: '301', message: 'Database error' });
+        return res.status(500).json({ code: '0301', message: 'Database Error' });
     })
 
     await Mail.send(result.email, 'Reset Password Skupply', `La tua nuova password è: ${random}\nPuoi cambiarla in ogni momento dal tuo profilo privato seguendo il seguente link ${process.env.FE_SERVER}/profile`);
 
-    res.status(200).json({ code: '300', message: 'Password resettata correttamente' })
+    res.status(200).json({ code: '0300', message: 'Success' })
 }
 
 module.exports = { loginUser, resetPassword };

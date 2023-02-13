@@ -66,7 +66,7 @@ describe('Search test', () => {
     test('tests /search - no parameters', async() => {
         const response = await request(app).get(`/search`);
         expect(response.statusCode).toBe(400)
-        expect({ code: "702", message: "missing arguments" })
+        expect({ code: '0702', message: 'Missing Arguments' })
     });
 
     //test search con parametro key
@@ -75,7 +75,7 @@ describe('Search test', () => {
             .get(`/search`)
             .query({ key: 'matematica' });
         expect(response.statusCode).toBe(200)
-        expect({ code: "700", message: "success" })
+        expect({ code: '0700', message: 'Success' })
 
         //verifico che l'attributo articles sia presente
         expect(response.body.articles).toBeDefined();
@@ -87,7 +87,7 @@ describe('Search test', () => {
             .get(`/search`)
             .query({ category: 'generale' });
         expect(response.statusCode).toBe(200)
-        expect({ code: "700", message: "success" })
+        expect({ code: '0700', message: 'Success' })
 
         //verifico che l'attributo articles sia presente
         expect(response.body.articles).toBeDefined();
@@ -99,7 +99,7 @@ describe('Search test', () => {
             .get(`/search`)
             .query({ 'min-price': 30 });
         expect(response.statusCode).toBe(400)
-        expect({ code: "702", message: "missing arguments" })
+        expect({ code: '0702', message: 'Missing Arguments' })
 
         //verifico che l'attributo articles non sia presente in quanto la risposta è di errore
         expect(response.body.articles).toBeUndefined();
@@ -111,7 +111,7 @@ describe('Search test', () => {
             .get(`/search`)
             .query({ key: 'quaderni', category: 'noCateogria' });
         expect(response.statusCode).toBe(404)
-        expect({ code: "704", message: "category not found" })
+        expect({ code: '0705', message: 'Category Not Found' })
 
         //verifico che l'attributo articles non sia presente in quanto la risposta è di errore
         expect(response.body.articles).toBeUndefined();
@@ -123,7 +123,7 @@ describe('Search test', () => {
             .get(`/search`)
             .query({ key: 'matematica', "min-price": 0.5, "min-price": 125.7 });
         expect(response.statusCode).toBe(200)
-        expect({ code: "700", message: "success" })
+        expect({ code: '0700', message: 'Success' })
 
         //verifica presenza attributo articles
         expect(response.body.articles).toBeDefined()

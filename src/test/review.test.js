@@ -92,7 +92,7 @@ describe('Review test', () => {
         }
 
         const response = (await fetch(`${app}/review/seller/id=639f6b399b38c1bfc9633360`, options).then(response => response.json()))
-        expect({ code: "800", message: "success" })
+        expect({ code: '1000', message: 'Success' })
         expect(response.reviews).toBeDefined();
         if (response.reviews.length != 0) {
             expect(response.reviews[0]).toHaveProperty('authorId');
@@ -123,7 +123,7 @@ describe('Review test', () => {
         }
 
         const response = (await fetch(`${app}/review/out`, options).then(response => response.json()))
-        expect({ code: "800", message: "success" })
+        expect({ code: '1000', message: 'Success' })
         expect(response.reviews).toBeDefined();
         if (response.reviews.length != 0) {
             expect(response.reviews[0]).toHaveProperty('authorId');

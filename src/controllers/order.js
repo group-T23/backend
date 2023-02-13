@@ -27,16 +27,16 @@ const create = async(req, res) => {
     //non viene fatto il controller per shipment perchè potrebbe avere valore zero 
     //che un valore valido a differenza di price
     if (!buyer || !seller || !article || !price) {
-        return res.status(400).json({ code: 1002, message: "Missing arguments" });
+        return res.status(400).json({ code: '0902', message: 'Missing Arguments' });
     }
 
     //verifica esistenza buyer e articolo
     if (!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))) {
-        return res.status(404).json({ code: 1005, message: "Buyer not found" });
+        return res.status(404).json({ code: '0905', message: 'Buyer Not Found' });
     }
 
     if (!(mongoose.Types.ObjectId.isValid(article.id)) || !(await Item.findById(article.id))) {
-        return res.status(404).json({ code: 1005, message: "Item not found" });
+        return res.status(404).json({ code: '0906', message: 'Item Not Found' });
     }
 
     //creazione ordine e salvataggio su db
@@ -54,9 +54,9 @@ const create = async(req, res) => {
 
     try {
         await order.save();
-        return res.status(200).json({ code: 1000, message: "success" });
+        return res.status(200).json({ code: '0900', message: 'Success' });
     } catch (error) {
-        return res.status(500).json({ code: 1001, message: "database error" });
+        return res.status(500).json({ code: '0901', message: 'Database Error' });
     }
 };
 
@@ -69,20 +69,20 @@ const getAll = async(req, res) => {
     const buyer = user._id; //id del compratore
     //verifica presenza parametri di richiesta
     if (!buyer)
-        return res.status(400).json({ code: 1002, message: "Missing arguments" });
+        return res.status(400).json({ code: '0902', message: 'Missing Arguments' });
 
     //verifica esistenza buyer e articoli
     if (!(mongoose.Types.ObjectId.isValid(buyer)) || !(await Buyer.findById(buyer))) {
-        return res.status(404).json({ code: 1005, message: "Buyer not found" });
+        return res.status(404).json({ code: '0905', message: 'Buyer Not Found' });
     }
 
     //recupero ordini fatti dal buyer
     try {
         const result = await Order.find({ buyer: buyer });
 
-        return res.status(200).json({ code: 1000, message: "success", orders: result });
+        return res.status(200).json({ code: '0900', message: 'Success', orders: result });
     } catch (error) {
-        return res.status(500).json({ code: 1001, message: "database error" });
+        return res.status(500).json({ code: '0901', message: 'Database Error' });
     }
 };
 
@@ -100,20 +100,20 @@ const edit = async(req, res) => {
 
     //verifica presenza parametri di richiesta
     if (!order)
-        return res.status(400).json({ code: 1002, message: "Missing arguments" });
+        return res.status(400).json({ code: '0902', message: 'Missing Arguments' });
 
     //verifica esistenza ordine
     if (!(mongoose.Types.ObjectId.isValid(order)) || !(await Order.findById(order))) {
-        return res.status(404).json({ code: 1007, message: "Order not found" });
+        return res.status(404).json({ code: '0907', message: 'Order Not Found' });
     }
 
     //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
     if (newState && newState != "PAID" && newState != "SHIPPED" && newState != "COMPLETED" && newState != "DELETED")
-        return res.status(403).json({ code: 1003, message: "Invalid arguments" });
+        return res.status(403).json({ code: '0903', message: 'Invalid Arguments' });
 
     //verifica valore enumerativo newState [ PAID, SHIPPED, COMPLETED, DELETED]
     if (newPayment && newPayment != "LOCKED" && newPayment != "SENT" && newPayment != "REJECTED")
-        return res.status(403).json({ code: 1003, message: "Invalid arguments" });
+        return res.status(403).json({ code: '0903', message: 'Invalid Arguments' });
 
 
     //recupero ordine e modifica dei campi
@@ -130,9 +130,9 @@ const edit = async(req, res) => {
         }
 
         await result.save();
-        return res.status(200).json({ code: 1000, message: "success" });
+        return res.status(200).json({ code: '0900', message: 'Success' });
     } catch (error) {
-        return res.status(500).json({ code: 1001, message: "database error" });
+        return res.status(500).json({ code: '0901', message: 'Database Error' });
     }
 };
 
@@ -141,12 +141,12 @@ const getBySeller = async(req, res) => {
     const buyer = await getAuthenticatedUser(req, res);
 
     if (!buyer.isSeller)
-        return res.status(422).json({ code: 1003, message: "Invalid arguments" })
+        return res.status(422).json({ code: '0903', message: 'Invalid Arguments' })
 
     const seller = await Seller.findById(buyer.sellerId);
     const query = await Order.find({ seller: seller.id });
 
-    return res.status(200).json({ orders: query, code: 1000, message: "success" })
+    return res.status(200).json({ orders: query, code: '0900', message: 'Success' })
 }
 
 module.exports = {

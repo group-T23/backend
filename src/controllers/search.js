@@ -26,9 +26,7 @@ const search = async(req, res) => {
             //ricerca id della categoria indicata
             result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
             category_id = result;
-            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
-
-            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
+            if (!category_id) return res.status(404).json({ code: '0705', message: 'Category Not Found' });
 
             result = await Item.find({
                 $and: [{ title: { '$regex': keyWord, '$options': 'i' } },
@@ -47,9 +45,7 @@ const search = async(req, res) => {
             //ricerca completa 
             result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
             category_id = result;
-            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
-
-            if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
+            if (!category_id) return res.status(404).json({ code: '0705', message: 'Category Not Found' });
 
             result = await Item.find({
                 $and: [{ title: { '$regex': keyWord, '$options': 'i' } }, { city: { '$regex': location, '$options': 'i' } },
@@ -61,7 +57,7 @@ const search = async(req, res) => {
         //ricerca con almeno parametro category
         result = await Category.findOne({ title: { '$regex': category, '$options': 'i' } });
         category_id = result;
-        if (!category_id) return res.status(404).json({ code: "704", message: "category not found" });
+        if (!category_id) return res.status(404).json({ code: '0705', message: 'Category Not Found' });
 
         if (!keyWord && !location) {
             //ricerca solo per categoria
@@ -87,11 +83,11 @@ const search = async(req, res) => {
         }
     } else {
         //mancanza parametri base per la ricerca
-        return res.status(400).json({ code: "702", message: "missing arguments" });
+        return res.status(400).json({ code: '0702', message: 'Missing Arguments' });
     }
 
     if (!result)
-        return res.status(404).json({ code: "701", message: "database error" });
+        return res.status(404).json({ code: '0701', message: 'Database Error' });
 
     /**
      * parametri diposnibili per i filrti:
@@ -209,7 +205,7 @@ const search = async(req, res) => {
         return ((elem.state == "PUBLISHED" ? true : false));
     });
 
-    return res.status(200).json({articles: result, code: "700", message: "success"});
+    return res.status(200).json({articles: result, code: '0700', message: 'Success'});
 }
 
 /**
@@ -219,9 +215,9 @@ const getCategories = async (req, res) => {
     const result = await Category.find({});
 
     if(!result)
-    res.status(500).json({code: "701", message: "database error"});
+    res.status(500).json({code: '0701', message: 'Database Error'});
 
-    res.status(200).json({categories: result, code: "700", message: "success"});
+    res.status(200).json({categories: result, code: '0700', message: 'Success'});
 };
 
 module.exports = { 

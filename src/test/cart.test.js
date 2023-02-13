@@ -94,7 +94,7 @@ describe('Cart test', () => {
     test('test /cart - senza autorizzazione', async() => {
         const response = await request(app).post('/cart')
         expect(response.statusCode).toBe(403);
-        expect({ code: "", message: "Invalid access token" })
+        expect({ code: '1202', message: 'Invalid Access Token' })
     });
 
     //test con autenticazione
@@ -117,7 +117,7 @@ describe('Cart test', () => {
             headers: { 'Content-Type': 'application/json', 'x-access-token': token }
         }
         const result = (await fetch(`${app}/cart`, options).then(response => response.json()))
-        expect(result).toMatchObject({ "code": "400", "message": "success" })
+        expect(result).toMatchObject({ code: '0400', message: 'Success' })
 
         //verifica presenza parametro cart e cart_ids
         expect(result.cart).toBeDefined();

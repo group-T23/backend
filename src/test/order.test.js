@@ -108,7 +108,7 @@ describe('Order test', () => {
         }
 
         const response = (await fetch(`${app}/order/getAll`, options).then(response => response.json()))
-        expect({ code: "1000", message: "success" })
+        expect({ code: '0900', message: 'Success' })
         expect(response.orders).toBeDefined();
         if (response.orders.length != 0) {
             expect(response.orders[0]).toHaveProperty('buyer');
@@ -147,7 +147,7 @@ describe('Order test', () => {
         }
 
         const response = await fetch(`${app}/order`, options).then(response => response.json())
-        expect(response).toMatchObject({ code: 1000, message: "success" });
+        expect(response).toMatchObject({ code: '0900', message: 'Success' });
 
         //cancellazione ordine creato
         await Order.deleteOne({ courier: "corriereTest" , seller: "639f6b399b38c1bfc9633360"});
